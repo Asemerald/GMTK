@@ -66,3 +66,4 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /Assets/StreamingAssets/aa.meta
 /Assets/StreamingAssets/aa/*
+ProjectSettings/Packages/com.unity.probuilder/
