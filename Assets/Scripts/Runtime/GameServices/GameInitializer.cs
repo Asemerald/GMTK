@@ -41,20 +41,21 @@ namespace Runtime.GameServices
             var debugUIState = new DebugUIState();
             var debugSystem = new DebugSystem();
 
-            // Crée et enregistre le service d'input debug
             var debugInputService = new DebugInputService(debugUIState);
             debugSystem.Register(debugInputService);
 
-            // Crée et enregistre le BeatSync debugger
             var beatDebugService = new BeatSyncDebugService(_beatSyncService, debugUIState);
             debugSystem.Register(beatDebugService);
 
-            // Crée et enregistre le FPS Debugger
+            var timelineDebugService = new TimelineDebugService(debugUIState, _beatSyncService);
+            debugSystem.Register(timelineDebugService);
+
             var fpsDebugService = new FPSDebugService(debugUIState);
             debugSystem.Register(fpsDebugService);
 
             debugSystemInitializer.DebugSystem = debugSystem;
         }
+
 #endif
 
 
