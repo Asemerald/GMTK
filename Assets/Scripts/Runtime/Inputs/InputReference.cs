@@ -1,5 +1,6 @@
 using Runtime.Actions;
 using UnityEngine;
+using Runtime.Enums;
 
 [System.Serializable]
 public class InputReference
@@ -8,3 +9,4 @@ public class InputReference
     public ActionType actionType;
     public int holdDuration;
 }
+

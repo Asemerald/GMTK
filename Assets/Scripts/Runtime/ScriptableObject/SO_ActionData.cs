@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Runtime.Actions;
+using Runtime.Enums;
 
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject
