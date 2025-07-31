@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace Runtime {
-    public class BeatSyncManager : MonoBehaviour
+    public class BeatSyncManager : MonoBehaviour, IGameSystem
     {
         public static BeatSyncManager Instance { get; private set; }
         
@@ -111,7 +111,21 @@ namespace Runtime {
             
             return RESULT.OK;
         }
-        
-        
+
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Tick()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
