@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
@@ -18,15 +18,23 @@ namespace Runtime.GameServices
 
         internal TimelineInfo timelineInfo;
         private int lastBeat = -1;
+        private int lastHalfBeat = -1;
+        private int lastBar = -1;
         private string lastMarker = "";
 
+        
         public event Action OnBeat;
+        public event Action OnHalfBeat;
+        public event Action OnBar;
         public event Action OnMarker;
 
         [StructLayout(LayoutKind.Sequential)]
         public class TimelineInfo
         {
             public int currentBeat = 0;
+            public int currentBar = 0;
+            public float currentTempo = 0f;
+            public int currentHalfBeat = 0;
             public FMOD.StringWrapper lastMarker = new FMOD.StringWrapper();
         }
 
@@ -57,18 +65,34 @@ namespace Runtime.GameServices
 
             // Check Marker
             string currentMarker = timelineInfo.lastMarker;
-            if (currentMarker != lastMarker)
-            {
+            if (currentMarker != lastMarker) {
                 lastMarker = currentMarker;
                 OnMarker?.Invoke();
             }
 
             // Check Beat
-            int currentBeat = timelineInfo.currentBeat;
-            if (currentBeat != lastBeat)
-            {
+            var currentBeat = timelineInfo.currentBeat;
+            if (currentBeat != lastBeat) {
                 lastBeat = currentBeat;
                 OnBeat?.Invoke();
+                
+                //Check Bar
+                var currentBar = timelineInfo.currentBar;
+                if (currentBar != lastBar) {
+                    lastBar = currentBar;
+                    OnBar?.Invoke();
+                }
+            }
+            
+            //Check HalfBeat
+            musicInstance.getTimelinePosition(out var position);
+            var halfBeatCount = Mathf.FloorToInt(position / (60000f / timelineInfo.currentTempo / 2f));
+
+            if (halfBeatCount != lastHalfBeat) {
+                lastHalfBeat = halfBeatCount;
+                timelineInfo.currentHalfBeat = halfBeatCount % 2;
+                
+                if(halfBeatCount % 2 == 1) OnHalfBeat?.Invoke();
             }
         }
 
@@ -98,7 +122,11 @@ namespace Runtime.GameServices
             {
                 case EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
                     var beatProps = Marshal.PtrToStructure<TIMELINE_BEAT_PROPERTIES>(parameterPtr);
-                    if (info != null) info.currentBeat = beatProps.beat;
+                    if (info != null) {
+                        info.currentBeat = beatProps.beat;
+                        info.currentBar = beatProps.bar;
+                        info.currentTempo = beatProps.tempo;
+                    }
                     break;
 
                 case EVENT_CALLBACK_TYPE.TIMELINE_MARKER:

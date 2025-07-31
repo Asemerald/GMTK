@@ -26,7 +26,9 @@ public class BeatSyncDebugService : IDebugSystem, IDebugGUI
 
         GUILayout.BeginVertical("box");
         GUILayout.Label($"[BeatSync] Current Beat: {_beatSync.timelineInfo.currentBeat}");
-        GUILayout.Label($"[BeatSync] Last Marker: {_beatSync.timelineInfo.lastMarker}");
+        GUILayout.Label($"[BeatSync] Current Half Beat: {_beatSync.timelineInfo.currentHalfBeat}");
+        GUILayout.Label($"[BeatSync] Current Bar: {_beatSync.timelineInfo.currentBar}");
+        GUILayout.Label($"[BeatSync] Last Marker: {(string)_beatSync.timelineInfo.lastMarker}");
         GUILayout.EndVertical();
     }
 
