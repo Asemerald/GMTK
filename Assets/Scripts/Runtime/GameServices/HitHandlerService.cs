@@ -89,7 +89,7 @@ public class HitHandlerService : IGameSystem
     }
 
     void HandleRightInputCanceled() {
-        
+        //Savoir quelle était le temps lorsque l'input a été press pour déterminer quel coup va être lancé ou non
     }
 
     void HandleLeftInputCanceled() {
