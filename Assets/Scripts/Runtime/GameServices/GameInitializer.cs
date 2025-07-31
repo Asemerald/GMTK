@@ -1,4 +1,4 @@
-﻿using Runtime._Debug;
+using Runtime._Debug;
 using Runtime.Inputs;
 using UnityEngine;
 
@@ -12,6 +12,7 @@ namespace Runtime.GameServices
 
         private InputManager _inputManager;
         private BeatSyncService _beatSyncService;
+        private HitHandlerService _hitHandlerService;
         private ActionDatabase _actionDatabase;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -25,9 +26,11 @@ namespace Runtime.GameServices
             // Instancie et enregistre les systèmes
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(musicEvent);
+            _hitHandlerService = new HitHandlerService(_gameSystems);
 
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
+            _gameSystems.Register(_hitHandlerService);
             _gameSystems.Register(_actionDatabase);
 
             _gameSystems.Initialize();

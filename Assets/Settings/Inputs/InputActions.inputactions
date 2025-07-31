@@ -6,7 +6,7 @@
             "id": "b8f96425-4500-4ccb-8b79-1b7c85610b1d",
             "actions": [
                 {
-                    "name": "Direct",
+                    "name": "Right",
                     "type": "Button",
                     "id": "4824ee16-ba65-46c4-a8a7-2ccbf24e46bf",
                     "expectedControlType": "",
@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crochet",
+                    "name": "Left",
                     "type": "Button",
                     "id": "7b06b07c-5099-4bc1-824f-a0500a42e19d",
                     "expectedControlType": "",
@@ -46,22 +46,22 @@
                 {
                     "name": "",
                     "id": "e786ef25-00b4-419f-8262-445978b7e2ba",
-                    "path": "",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Direct",
+                    "groups": ";Gamepad",
+                    "action": "Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ea3281f1-ade1-4d43-8172-71ada4ec9f3d",
-                    "path": "",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Crochet",
+                    "groups": ";Gamepad",
+                    "action": "Left",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
