@@ -3,9 +3,10 @@ using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using Runtime.GameServices.Interfaces;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace Runtime.Rhythm
+namespace Runtime.GameServices
 {
     public class BeatSyncService : IGameSystem
     {

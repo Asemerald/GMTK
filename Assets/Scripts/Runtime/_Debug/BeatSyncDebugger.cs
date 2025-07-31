@@ -1,4 +1,4 @@
-﻿using Runtime.Rhythm;
+﻿using Runtime.GameServices;
 using UnityEngine;
 
 public class BeatSyncDebugService : IDebugSystem, IDebugGUI

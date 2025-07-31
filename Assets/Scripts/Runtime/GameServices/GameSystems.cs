@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Runtime.GameServices.Interfaces;
 
-namespace Runtime
+namespace Runtime.GameServices
 {
     public class GameSystems : IDisposable
     {

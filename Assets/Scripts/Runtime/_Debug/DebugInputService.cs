@@ -10,7 +10,7 @@
         input.Debug.Enable();
         input.Debug.ToggleBeatDebug.performed += _ => _debugUIState.Toggle("BeatSync");
         //TODO to add 
-        //input.Debug.ToggleFpsDebug.performed += _ => _debugUIState.Toggle("FPS");
+        input.Debug.ToggleFPSDebug.performed += _ => _debugUIState.Toggle("FPS");
     }
 
     public void Initialize()

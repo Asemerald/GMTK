@@ -1,5 +1,6 @@
 using System;
 using Runtime.Actions;
+using Runtime.GameServices.Interfaces;
 
 namespace Runtime.Inputs {
     public class InputManager : IGameSystem
