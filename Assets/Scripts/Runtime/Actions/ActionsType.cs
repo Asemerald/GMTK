@@ -1,8 +1,10 @@
-﻿public enum ActionType
-{
-    None,
-    Direct,
-    Crochet,
-    BlockLeft,
-    BlockRight
+﻿namespace Runtime.Actions {
+    public enum ActionType
+    {
+        None,
+        Direct,
+        Crochet,
+        BlockLeft,
+        BlockRight
+    }
 }
