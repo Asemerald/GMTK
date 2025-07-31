@@ -8,8 +8,7 @@ public class GameSystems : IDisposable
 
     public void Register<T>(T system) where T : class, IGameSystem
     {
-        if (system == null) throw new ArgumentNullException(nameof(system));
-        systems[typeof(T)] = system;
+        systems[typeof(T)] = system ?? throw new ArgumentNullException(nameof(system));
     }
 
     public T Get<T>() where T : class, IGameSystem
