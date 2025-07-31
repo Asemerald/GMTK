@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Runtime.Actions;
+using Runtime.Enums;
 
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject 
@@ -8,7 +8,7 @@ public class SO_ActionData : ScriptableObject
     [Header("Core")]
     public string actionName;
     public List<SO_InputCondition> inputConditions;
-    public ActionType type;
+    public InputType type;
     
     [Header("Potential")]
     public float damageAmount;

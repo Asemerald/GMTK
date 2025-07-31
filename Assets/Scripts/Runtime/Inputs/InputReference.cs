@@ -1,4 +1,5 @@
 using UnityEngine;
+using Runtime.Enums;
 
 [System.Serializable]
 public class InputReference
@@ -8,10 +9,3 @@ public class InputReference
     public float holdDuration = 0; 
 }
 
-public enum InputType
-{
-    Button,
-    Axis,
-    Directional,
-    CustomTag 
-}
