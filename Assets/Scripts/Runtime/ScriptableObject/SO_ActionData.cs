@@ -3,20 +3,15 @@ using UnityEngine;
 using Runtime.Actions;
 
 [CreateAssetMenu(menuName = "Action")]
-public class SO_ActionData : ScriptableObject 
+public class SO_ActionData : ScriptableObject
 {
-    [Header("Core")]
-    public string actionName;
+    [Header("Core")] public string actionName;
     public List<SO_InputCondition> inputConditions;
-    public ActionType type;
-    
-    [Header("Potential")]
-    public float damageAmount;
+    public List<SO_ActionData> counterActions; // Enemy actions that can counter this action
+
+    [Header("Potential")] public float damageAmount;
     public float cooldown;
-    public int level;
-    
-    [Header("Feedback")]
-    public AnimationClip animation;
+
+    [Header("Feedback")] public AnimationClip animation;
     public AudioClip soundEffect;
-    
 }
