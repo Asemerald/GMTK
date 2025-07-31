@@ -35,10 +35,10 @@ namespace Runtime.GameServices
         public class TimelineInfo
         {
             public int currentBeat = 0;
-            public int currentBar = 0;
-            public float currentTempo = 0f;
             public int currentHalfBeat = 0;
             public int currentQuarterBeat = 0;
+            public int currentBar = 0;
+            public float currentTempo = 0f;
             public FMOD.StringWrapper lastMarker = new FMOD.StringWrapper();
         }
 
