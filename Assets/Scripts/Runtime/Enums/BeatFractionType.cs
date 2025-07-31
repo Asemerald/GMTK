@@ -1,4 +1,4 @@
-﻿namespace Runtime.Enums {
+namespace Runtime.Enums {
     public enum BeatFractionType {
         None,
         FirstQuarter,
