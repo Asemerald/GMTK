@@ -2,44 +2,46 @@
 using System.Collections.Generic;
 using Runtime.GameServices.Interfaces;
 
-public class GameSystems : IDisposable
+namespace Runtime.GameServices
 {
-    private readonly Dictionary<Type, IGameSystem> systems = new();
-
-    public void Register<T>(T system) where T : class, IGameSystem
+    public class GameSystems : IDisposable
     {
-        if (system == null) throw new ArgumentNullException(nameof(system));
-        systems[typeof(T)] = system;
-    }
+        private readonly Dictionary<Type, IGameSystem> systems = new();
 
-    public T Get<T>() where T : class, IGameSystem
-    {
-        systems.TryGetValue(typeof(T), out var system);
-        return system as T;
-    }
-
-    public void Initialize()
-    {
-        foreach (var system in systems.Values)
+        public void Register<T>(T system) where T : class, IGameSystem
         {
-            system.Initialize();
+            systems[typeof(T)] = system ?? throw new ArgumentNullException(nameof(system));
         }
-    }
 
-    public void Tick()
-    {
-        foreach (var system in systems.Values)
+        public T Get<T>() where T : class, IGameSystem
         {
-            system.Tick();
+            systems.TryGetValue(typeof(T), out var system);
+            return system as T;
         }
-    }
 
-    public void Dispose()
-    {
-        foreach (var system in systems.Values)
+        public void Initialize()
         {
-            system.Dispose();
+            foreach (var system in systems.Values)
+            {
+                system.Initialize();
+            }
         }
-        systems.Clear();
+
+        public void Tick()
+        {
+            foreach (var system in systems.Values)
+            {
+                system.Tick();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var system in systems.Values)
+            {
+                system.Dispose();
+            }
+            systems.Clear();
+        }
     }
 }
