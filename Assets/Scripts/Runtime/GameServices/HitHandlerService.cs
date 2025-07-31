@@ -67,6 +67,7 @@ public class HitHandlerService : IGameSystem
         }
     }
 
+    
     void HandleRightInputCanceled() {
         
     }
