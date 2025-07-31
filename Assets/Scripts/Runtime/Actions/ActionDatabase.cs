@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ActionDatabase : IGameSystem
 {
-    private Dictionary<SO_ActionData, List<InputReference>> actionDatas = new();
-    public IReadOnlyDictionary<SO_ActionData, List<InputReference>> ActionDatas => actionDatas;
+    private Dictionary<InputReference, List<SO_ActionData>> actionDatas = new();
+    public IReadOnlyDictionary<InputReference, List<SO_ActionData>> ActionDatas => actionDatas;
 
+    readonly List<SO_ActionData> _actionDatas = new();
+    
     public void Initialize()
     {
         LoadFromResources();
@@ -21,33 +23,29 @@ public class ActionDatabase : IGameSystem
 
         // Charge tous les ScriptableObjects dans Resources/Actions
         var allActions = Resources.LoadAll<SO_ActionData>("Actions");
-
+        _actionDatas.AddRange(allActions);
+        
         foreach (var data in allActions)
         {
-            if (data == null || actionDatas.ContainsKey(data))
+            if (data.inputsRequired.Count == 0) {
+                Debug.Log("ActionDatabase::LoadFromResources: No Inputs Required Detected in " + data.name);
                 continue;
+            }
 
-            var inputRefs = new List<InputReference>();
-
-            if (data.inputConditions != null)
-            {
-                foreach (var inputCondition in data.inputConditions)
-                {
-                    if (inputCondition == null || inputCondition.inputsRequired == null) continue;
-
-                    foreach (var inputRef in inputCondition.inputsRequired)
-                    {
-                        if (inputRef != null)
-                            inputRefs.Add(inputRef);
-                    }
+            if (data.inputsRequired.Count > 1) {
+                foreach (var input in data.inputsRequired) {
+                    if(!actionDatas.ContainsKey(input))
+                        actionDatas.Add(input, new List<SO_ActionData>());
+                    
+                    actionDatas[input].Add(data);
                 }
             }
-            else
-            {
-                Debug.LogWarning($"{data.actionName} has no input conditions");
+            else {
+                if(!actionDatas.ContainsKey(data.inputsRequired[0]))
+                    actionDatas.Add(data.inputsRequired[0], new List<SO_ActionData>());
+                    
+                actionDatas[data.inputsRequired[0]].Add(data);
             }
-
-            actionDatas.Add(data, inputRefs);
         }
 
         Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");

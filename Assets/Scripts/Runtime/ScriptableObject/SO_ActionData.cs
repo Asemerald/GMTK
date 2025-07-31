@@ -6,8 +6,9 @@ using Runtime.Enums;
 public class SO_ActionData : ScriptableObject
 {
     [Header("Core")] public string actionName;
-    public List<SO_InputCondition> inputConditions;
+    public List<InputReference> inputsRequired;
     public List<SO_ActionData> counterActions; // Enemy actions that can counter this action
+    public float inputBufferTime = 0.3f;
 
     [Header("Potential")] public float damageAmount;
     public float cooldown;
