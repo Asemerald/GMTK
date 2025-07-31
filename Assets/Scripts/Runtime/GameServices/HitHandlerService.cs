@@ -117,3 +117,4 @@ public class HitHandlerService : IGameSystem
         return BeatFractionType.None;
     }
 }
+
