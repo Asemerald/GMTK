@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class InputReference
 {
-    public string inputName;       // e.g. "LightAttack", "Dodge", "Down"
+    public string inputName;       // ex: "LongHoldX", "TapDown"
     public InputType inputType;    
     public float holdDuration = 0; 
 }
