@@ -65,7 +65,6 @@ public class HitHandlerService : IGameSystem
                 Debug.LogError($"Unhandled Input Type: {inputType}");
                 break;
         }
-        
     }
 
     void HandleRightInputCanceled() {
