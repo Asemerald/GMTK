@@ -2,12 +2,7 @@
     "name": "GMTK.Runtime",
     "rootNamespace": "",
     "references": [],
-    "includePlatforms": [
-        "WSA",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
