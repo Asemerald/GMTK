@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: Uppercut dans ta soeur
+  m_Name: Uppercut gauche
   m_EditorClassIdentifier: 
-  actionName: 
-  inputConditions: []
+  actionName: Uppercut gauche
+  inputsRequired:
+  - inputName: 
+    actionType: 2
   counterActions: []
+  inputBufferTime: 0.3
+  holdDuration: 2
   damageAmount: 0
   cooldown: 0
   animation: {fileID: 0}

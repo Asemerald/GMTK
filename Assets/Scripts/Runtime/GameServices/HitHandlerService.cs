@@ -11,6 +11,8 @@ public class HitHandlerService : IGameSystem
     private BeatSyncService _beatSyncService;
     private ActionDatabase _actionDatabase;
     
+    private SO_ActionData currentActionData;
+    
     public HitHandlerService(GameSystems gameSystems) {
         _gameSystems = gameSystems;
     }
@@ -30,75 +32,92 @@ public class HitHandlerService : IGameSystem
     }
 
     public void Tick() {
-        
+        //Ici faire la validation de action data base
+        if (currentActionData != null) {
+            if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action
+                //ajoute l'action pour être joué sur le prochain temps dans le BeatSyncService
+                Debug.Log("HitHandlerService::Tick - Execute Action ");
+                currentActionData = null;
+            }
+        }
     }
 
     #region ActionPerformed
     
     void HandleInputPerformed(InputType inputType) {
-        switch (inputType) {
-            case InputType.Right:
-                HandleRightInputPerformed();
-                break;
-            case InputType.Left:
-                HandleLeftInputPerformed();
-                break;
-            default:
-                Debug.LogError($"Unhandled Input Type: {inputType}");
-                break;
-        }
+        if(inputType is InputType.Right or InputType.Left)
+            HandleAttackInputPerformed(inputType);
     }
     
-    void HandleRightInputPerformed() {
+    void HandleAttackInputPerformed(InputType inputType) {
         var currentFraction = GetBeatFraction();
         if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
             Debug.LogError($"HitHandlerService::BeatFractionType - Return None ");
             return;
         }
 
-        Debug.Log("HitHandlerService::HandleRightInputPerformed - Fraction " + currentFraction);
         //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+        foreach (var action in _actionDatabase.ActionDatas) {
+            var breakLoop = false;
+            
+            if (action.Key.actionType == inputType) {
+                
+                foreach (var hit in action.Value) {
+                    
+                    if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
+                        //Ici déclencher l'action
+                        Debug.Log($"HitHandlerService::HandleAttackInputPerformed - {inputType} - Set Action {hit.name}");
+                        currentActionData = hit;
+                        breakLoop = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(breakLoop) 
+                break;
+        }
     }
     
-    void HandleLeftInputPerformed() {
-        var currentFraction = GetBeatFraction();
-        if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
-            Debug.LogError($"HitHandlerService::BeatFractionType - Return None ");
-            return;
-        }
-
-        Debug.Log("HitHandlerService::HandleRightInputPerformed - Fraction " + currentFraction);
-        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
-    }
     
     #endregion
     
     #region ActionCanceled
 
     void HandleInputCanceled(InputType inputType) {
-        switch (inputType) {
-            case InputType.Right:
-                HandleRightInputCanceled();
-                break;
-            case InputType.Left:
-                HandleLeftInputCanceled();
-                break;
-            default:
-                Debug.LogError($"Unhandled Input Type: {inputType}");
-                break;
+        if(inputType is InputType.Right or InputType.Left)
+            HandleAttackInputCanceled();
+    }
+
+    void HandleAttackInputCanceled() {
+        //Savoir quelle était le temps lorsque l'input a été press pour déterminer quel coup va être lancé ou non
+        if(currentActionData == null) return;
+        
+        if(GetBeatFraction() == BeatFractionType.ThirdQuarter) return; //Si dans le 3/4 de temps l'action va être executé
+
+        if (currentActionData.holdDuration == AttackHoldDuration.Full) { //Si l'action doit être pressé plus d'un demi temps et qu'on est en dehors du 3/4 de temps, alors on reset l'action
+            currentActionData = null;
+            Debug.Log("HitHandlerService::HandleAttackInputCanceled - Attack Cancelled ");
         }
     }
-
-    void HandleRightInputCanceled() {
-        //Savoir quelle était le temps lorsque l'input a été press pour déterminer quel coup va être lancé ou non
-    }
-
-    void HandleLeftInputCanceled() {
-        
-    }
+    
 
     #endregion
-    
+
+    AttackHoldDuration GetPossibleAttackOnBeat(BeatFractionType fractionType) {
+        if (fractionType == BeatFractionType.None)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.Full)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.FirstQuarter)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.Half)
+            return AttackHoldDuration.Half;
+        if (fractionType == BeatFractionType.ThirdQuarter)
+            return AttackHoldDuration.Half;
+        
+        return AttackHoldDuration.None;
+    }
     
     //Fonction pour aller chercher la mesure
     BeatFractionType GetBeatFraction() {
