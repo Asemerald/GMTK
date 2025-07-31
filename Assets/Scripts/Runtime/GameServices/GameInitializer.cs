@@ -12,6 +12,7 @@ namespace Runtime.GameServices
 
         private InputManager _inputManager;
         private BeatSyncService _beatSyncService;
+        private ActionDatabase _actionDatabase;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -27,6 +28,7 @@ namespace Runtime.GameServices
 
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
+            _gameSystems.Register(_actionDatabase);
 
             _gameSystems.Initialize();
 
