@@ -64,9 +64,9 @@ public class HitHandlerService : IGameSystem
                 
                 foreach (var hit in action.Value) {
                     
-                    if (hit.holdDuration == GetByIntBeatFraction(currentFraction)) {
+                    if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
                         //Ici déclencher l'action
-                        Debug.Log("HitHandlerService::HandleRightInputPerformed - Set Action " + hit.name);
+                        Debug.Log($"HitHandlerService::HandleAttackInputPerformed - {inputType} - Set Action {hit.name}");
                         currentActionData = hit;
                         breakLoop = true;
                         break;
@@ -95,7 +95,7 @@ public class HitHandlerService : IGameSystem
         
         if(GetBeatFraction() == BeatFractionType.ThirdQuarter) return; //Si dans le 3/4 de temps l'action va être executé
 
-        if (currentActionData.holdDuration == 0) { //Si l'action doit être pressé plus d'un demi temps et qu'on est en dehors du 3/4 de temps, alors on reset l'action
+        if (currentActionData.holdDuration == AttackHoldDuration.Full) { //Si l'action doit être pressé plus d'un demi temps et qu'on est en dehors du 3/4 de temps, alors on reset l'action
             currentActionData = null;
             Debug.Log("HitHandlerService::HandleAttackInputCanceled - Attack Cancelled ");
         }
@@ -104,16 +104,19 @@ public class HitHandlerService : IGameSystem
 
     #endregion
 
-    int GetByIntBeatFraction(BeatFractionType fractionType) {
-        var value = fractionType switch {
-            BeatFractionType.None => 0,
-            BeatFractionType.FirstQuarter => 0,
-            BeatFractionType.Half => 1,
-            BeatFractionType.ThirdQuarter => 1,
-            BeatFractionType.Full => 0,
-        };
+    AttackHoldDuration GetPossibleAttackOnBeat(BeatFractionType fractionType) {
+        if (fractionType == BeatFractionType.None)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.Full)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.FirstQuarter)
+            return AttackHoldDuration.Full;
+        if (fractionType == BeatFractionType.Half)
+            return AttackHoldDuration.Half;
+        if (fractionType == BeatFractionType.ThirdQuarter)
+            return AttackHoldDuration.Half;
         
-        return value;
+        return AttackHoldDuration.None;
     }
     
     //Fonction pour aller chercher la mesure
