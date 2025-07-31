@@ -8,6 +8,7 @@ public class ActionDatabase : IGameSystem
     public IReadOnlyDictionary<InputReference, List<SO_ActionData>> ActionDatas => actionDatas;
 
     readonly List<SO_ActionData> _actionDatas = new();
+    readonly List<SO_ComboData> _comboDatas = new();
     
     public void Initialize()
     {
@@ -25,10 +26,13 @@ public class ActionDatabase : IGameSystem
         var allActions = Resources.LoadAll<SO_ActionData>("Actions");
         _actionDatas.AddRange(allActions);
         
+        var allCombos = Resources.LoadAll<SO_ComboData>("Combos");
+        _comboDatas.AddRange(allCombos);
+        
         foreach (var data in allActions)
         {
-            if (data.inputsRequired.Count == 0) {
-                Debug.Log("ActionDatabase::LoadFromResources: No Inputs Required Detected in " + data.name);
+            if (data.inputsRequired.Count == 0|| data.isComboAction) {
+                Debug.LogWarning("ActionDatabase::LoadFromResources: No Inputs Required Detected in " + data.name);
                 continue;
             }
 
