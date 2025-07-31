@@ -19,13 +19,13 @@ namespace Runtime.Inputs {
         {
             input.Gameplay.Enable();
 
-            input.Gameplay.Direct.performed += OnRightPerformed;
-            input.Gameplay.Crochet.performed += OnLeftPerformed;
+            input.Gameplay.Right.performed += OnRightPerformed;
+            input.Gameplay.Left.performed += OnLeftPerformed;
             input.Gameplay.BlockLeft.performed += OnBlockLeftPerformed;
             input.Gameplay.BlockRight.performed += OnBlockRightPerformed;
             
-            input.Gameplay.Direct.canceled += OnRightReleased;
-            input.Gameplay.Crochet.canceled += OnLeftReleased;
+            input.Gameplay.Right.canceled += OnRightReleased;
+            input.Gameplay.Left.canceled += OnLeftReleased;
         }
         
         public void Tick()
@@ -35,13 +35,13 @@ namespace Runtime.Inputs {
 
         public void Dispose()
         {
-            input.Gameplay.Direct.performed -= OnRightPerformed;
-            input.Gameplay.Crochet.performed -= OnLeftPerformed;
+            input.Gameplay.Right.performed -= OnRightPerformed;
+            input.Gameplay.Left.performed -= OnLeftPerformed;
             input.Gameplay.BlockLeft.performed -= OnBlockLeftPerformed;
             input.Gameplay.BlockRight.performed -= OnBlockRightPerformed;
             
-            input.Gameplay.Direct.canceled -= OnRightReleased;
-            input.Gameplay.Crochet.canceled -= OnLeftReleased;
+            input.Gameplay.Right.canceled -= OnRightReleased;
+            input.Gameplay.Left.canceled -= OnLeftReleased;
 
             input.Dispose();
         }

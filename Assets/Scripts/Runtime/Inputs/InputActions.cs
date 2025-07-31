@@ -92,7 +92,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""b8f96425-4500-4ccb-8b79-1b7c85610b1d"",
             ""actions"": [
                 {
-                    ""name"": ""Direct"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""4824ee16-ba65-46c4-a8a7-2ccbf24e46bf"",
                     ""expectedControlType"": """",
@@ -101,7 +101,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crochet"",
+                    ""name"": ""Left"",
                     ""type"": ""Button"",
                     ""id"": ""7b06b07c-5099-4bc1-824f-a0500a42e19d"",
                     ""expectedControlType"": """",
@@ -132,22 +132,22 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e786ef25-00b4-419f-8262-445978b7e2ba"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Direct"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""ea3281f1-ade1-4d43-8172-71ada4ec9f3d"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Crochet"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -281,8 +281,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Direct = m_Gameplay.FindAction("Direct", throwIfNotFound: true);
-        m_Gameplay_Crochet = m_Gameplay.FindAction("Crochet", throwIfNotFound: true);
+        m_Gameplay_Right = m_Gameplay.FindAction("Right", throwIfNotFound: true);
+        m_Gameplay_Left = m_Gameplay.FindAction("Left", throwIfNotFound: true);
         m_Gameplay_BlockLeft = m_Gameplay.FindAction("BlockLeft", throwIfNotFound: true);
         m_Gameplay_BlockRight = m_Gameplay.FindAction("BlockRight", throwIfNotFound: true);
         // Debug
@@ -371,8 +371,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Direct;
-    private readonly InputAction m_Gameplay_Crochet;
+    private readonly InputAction m_Gameplay_Right;
+    private readonly InputAction m_Gameplay_Left;
     private readonly InputAction m_Gameplay_BlockLeft;
     private readonly InputAction m_Gameplay_BlockRight;
     /// <summary>
@@ -387,13 +387,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Direct".
+        /// Provides access to the underlying input action "Gameplay/Right".
         /// </summary>
-        public InputAction @Direct => m_Wrapper.m_Gameplay_Direct;
+        public InputAction @Right => m_Wrapper.m_Gameplay_Right;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Crochet".
+        /// Provides access to the underlying input action "Gameplay/Left".
         /// </summary>
-        public InputAction @Crochet => m_Wrapper.m_Gameplay_Crochet;
+        public InputAction @Left => m_Wrapper.m_Gameplay_Left;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/BlockLeft".
         /// </summary>
@@ -428,12 +428,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Direct.started += instance.OnDirect;
-            @Direct.performed += instance.OnDirect;
-            @Direct.canceled += instance.OnDirect;
-            @Crochet.started += instance.OnCrochet;
-            @Crochet.performed += instance.OnCrochet;
-            @Crochet.canceled += instance.OnCrochet;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
             @BlockLeft.started += instance.OnBlockLeft;
             @BlockLeft.performed += instance.OnBlockLeft;
             @BlockLeft.canceled += instance.OnBlockLeft;
@@ -451,12 +451,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="GameplayActions" />
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @Direct.started -= instance.OnDirect;
-            @Direct.performed -= instance.OnDirect;
-            @Direct.canceled -= instance.OnDirect;
-            @Crochet.started -= instance.OnCrochet;
-            @Crochet.performed -= instance.OnCrochet;
-            @Crochet.canceled -= instance.OnCrochet;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
             @BlockLeft.started -= instance.OnBlockLeft;
             @BlockLeft.performed -= instance.OnBlockLeft;
             @BlockLeft.canceled -= instance.OnBlockLeft;
@@ -648,19 +648,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Direct" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Right" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDirect(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Crochet" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Left" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCrochet(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "BlockLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
