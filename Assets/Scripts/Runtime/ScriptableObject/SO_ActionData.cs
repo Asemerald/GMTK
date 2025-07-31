@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Combat/Action")]
-public class SO_CombatActionData : ScriptableObject 
+[CreateAssetMenu(menuName = "Action")]
+public class SO_ActionData : ScriptableObject 
 {
     [Header("Core")]
     public string actionName;
     public List<SO_InputCondition> inputConditions;
-    public CombatActionType type;
+    public ActionType type;
     
     [Header("Potential")]
     public float damageAmount;
