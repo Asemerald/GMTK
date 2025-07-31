@@ -12,6 +12,7 @@ namespace Runtime.GameServices
 
         private InputManager _inputManager;
         private BeatSyncService _beatSyncService;
+        private HitHandlerService _hitHandlerService;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -24,9 +25,11 @@ namespace Runtime.GameServices
             // Instancie et enregistre les systèmes
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(musicEvent);
+            _hitHandlerService = new HitHandlerService();
 
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
+            _gameSystems.Register(_hitHandlerService);
 
             _gameSystems.Initialize();
 

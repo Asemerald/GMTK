@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="35a587fa-a000-4f0d-9fb2-d32f78326b61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/AudioBanks/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/AudioBanks/Master.bank" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameInitializer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +22,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ce25f60185214755aecd20f4c928c90e1eae00/2a/aab3a570/MonoBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Runtime/BeatSyncManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/HitHandlerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/BeatSyncDebugger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@7fe8299111a7/InputSystem/InputSystem.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
