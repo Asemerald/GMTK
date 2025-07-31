@@ -5,14 +5,14 @@ using Runtime.Enums;
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject
 {
-    [Header("Core")] public string actionName;
+    public string actionName;
+    public bool isComboAction;
     public List<InputReference> inputsRequired;
     public List<SO_ActionData> counterActions; // Enemy actions that can counter this action
     public float inputBufferTime = 0.3f;
     public AttackHoldDuration holdDuration;
-
-    [Header("Potential")] public float damageAmount;
-    public float cooldown;
+    public float damageAmount;
+    public int cooldown;
 
     [Header("Feedback")] public AnimationClip animation;
     public AudioClip soundEffect;
