@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ActionDatabase : IGameSystem
 {
-    public static ActionDatabase Instance { get; private set; }
+    //public static ActionDatabase Instance { get; private set; }
 
     [SerializeField] SO_ActionData[] actionDatasToSet; 
 
@@ -15,17 +15,17 @@ public class ActionDatabase : IGameSystem
     
     public void Dispose()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public void Initialize()
     {
-        SetActionDatas();
+        //SetActionDatas();
     }
 
     public void Tick()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
     
 
