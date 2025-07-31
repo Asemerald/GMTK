@@ -1,39 +1,28 @@
-using System;
 using System.Collections.Generic;
-using Runtime.GameServices;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
 
 public class ActionDatabase : IGameSystem
 {
-    //public static ActionDatabase Instance { get; private set; }
-
-    [SerializeField] SO_ActionData[] actionDatasToSet; 
-
-    private Dictionary<SO_ActionData, List<InputReference>> actionDatas = new  Dictionary<SO_ActionData, List<InputReference>>();
+    private Dictionary<SO_ActionData, List<InputReference>> actionDatas = new();
     public IReadOnlyDictionary<SO_ActionData, List<InputReference>> ActionDatas => actionDatas;
-    
-    public void Dispose()
-    {
-        //throw new NotImplementedException();
-    }
 
     public void Initialize()
     {
-        //SetActionDatas();
+        LoadFromResources();
     }
 
-    public void Tick()
-    {
-        //throw new NotImplementedException();
-    }
-    
+    public void Tick() { }
+    public void Dispose() { }
 
-    private void SetActionDatas()
+    private void LoadFromResources()
     {
         actionDatas.Clear();
 
-        foreach (SO_ActionData data in actionDatasToSet)
+        // Charge tous les ScriptableObjects dans Resources/Actions
+        var allActions = Resources.LoadAll<SO_ActionData>("Actions");
+
+        foreach (var data in allActions)
         {
             if (data == null || actionDatas.ContainsKey(data))
                 continue;
@@ -42,11 +31,11 @@ public class ActionDatabase : IGameSystem
 
             if (data.inputConditions != null)
             {
-                foreach (SO_InputCondition inputCondition in data.inputConditions)
+                foreach (var inputCondition in data.inputConditions)
                 {
                     if (inputCondition == null || inputCondition.inputsRequired == null) continue;
 
-                    foreach (InputReference inputRef in inputCondition.inputsRequired)
+                    foreach (var inputRef in inputCondition.inputsRequired)
                     {
                         if (inputRef != null)
                             inputRefs.Add(inputRef);
@@ -55,10 +44,12 @@ public class ActionDatabase : IGameSystem
             }
             else
             {
-                Debug.LogWarning(data.actionName+" has no input conditions");
+                Debug.LogWarning($"{data.actionName} has no input conditions");
             }
 
             actionDatas.Add(data, inputRefs);
         }
+
+        Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");
     }
 }
