@@ -5,25 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35a587fa-a000-4f0d-9fb2-d32f78326b61" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/FPSDebugService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/FPSDebugService.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/BeatSyncManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/BeatSyncManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/BeatSyncService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/BeatSyncService.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/GameInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameInitializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/GameInitializer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameInitializer.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/GameSystems.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameSystems.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/GameSystems.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/GameSystems.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/Interfaces.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/Interfaces.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/Interfaces/IGameSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/Interfaces/IGameSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameSystems/Interfaces/IGameSystem.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/Interfaces/IGameSystem.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Inputs/InputActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Inputs/InputActions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Inputs/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Inputs/InputManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/BeatSyncDebugger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/BeatSyncDebugger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/DebugInputService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/_Debug/DebugInputService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Inputs/InputActions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Inputs/InputActions.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Editor/Audio.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,22 +31,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/DebugServices",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "rider.code.cleanup.on.save": "true",
-    "rider.code.cleanup.on.save.profile": "Built-in: Reformat & Apply Syntax Style",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/DebugServices&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;rider.code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;rider.code.cleanup.on.save.profile&quot;: &quot;Built-in: Reformat &amp; Apply Syntax Style&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.14f1\Editor\Unity.exe" />
