@@ -20,12 +20,14 @@ namespace Runtime.GameServices
         internal TimelineInfo timelineInfo;
         private int lastBeat = -1;
         private int lastHalfBeat = -1;
+        private int lastQuarterBeat = -1;
         private int lastBar = -1;
         private string lastMarker = "";
 
         
         public event Action OnBeat;
         public event Action OnHalfBeat;
+        public event Action OnQuarterBeat;
         public event Action OnBar;
         public event Action OnMarker;
 
@@ -36,6 +38,7 @@ namespace Runtime.GameServices
             public int currentBar = 0;
             public float currentTempo = 0f;
             public int currentHalfBeat = 0;
+            public int currentQuarterBeat = 0;
             public FMOD.StringWrapper lastMarker = new FMOD.StringWrapper();
         }
 
@@ -85,7 +88,7 @@ namespace Runtime.GameServices
                 }
             }
             
-            //Check HalfBeat
+            //Check Demi temps
             musicInstance.getTimelinePosition(out var position);
             var halfBeatCount = Mathf.FloorToInt(position / (60000f / timelineInfo.currentTempo / 2f));
 
@@ -94,6 +97,16 @@ namespace Runtime.GameServices
                 timelineInfo.currentHalfBeat = halfBeatCount % 2;
                 
                 if(halfBeatCount % 2 == 1) OnHalfBeat?.Invoke();
+            }
+            
+            //Check Quart de temps
+            var quarterBeatCount = Mathf.FloorToInt(position / (60000f / timelineInfo.currentTempo / 4f));
+
+            if (quarterBeatCount != lastQuarterBeat) {
+                lastQuarterBeat = quarterBeatCount;
+                
+                timelineInfo.currentQuarterBeat = quarterBeatCount % 2;
+                if(quarterBeatCount % 2 == 1) OnQuarterBeat?.Invoke();
             }
         }
 

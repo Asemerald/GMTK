@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35a587fa-a000-4f0d-9fb2-d32f78326b61" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GMTK/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/AudioBanks/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/AudioBanks/Master.bank" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/GameServices/BeatSyncService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
