@@ -9,6 +9,7 @@ public class HitHandlerService : IGameSystem
     private readonly GameSystems _gameSystems;
     private InputManager _inputManager;
     private BeatSyncService _beatSyncService;
+    private ActionDatabase _actionDatabase;
     
     public HitHandlerService(GameSystems gameSystems) {
         _gameSystems = gameSystems;
@@ -21,6 +22,7 @@ public class HitHandlerService : IGameSystem
 
     public void Initialize() {
         _beatSyncService = _gameSystems.Get<BeatSyncService>();
+        _actionDatabase = _gameSystems.Get<ActionDatabase>();
         _inputManager = _gameSystems.Get<InputManager>();
         
         _inputManager.OnActionPressed += HandleInputPerformed;
@@ -56,7 +58,6 @@ public class HitHandlerService : IGameSystem
 
         Debug.Log("HitHandlerService::HandleRightInputPerformed - Fraction " + currentFraction);
         //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
-       
     }
     
     void HandleLeftInputPerformed() {
