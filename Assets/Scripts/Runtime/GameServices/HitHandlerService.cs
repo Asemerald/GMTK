@@ -15,7 +15,8 @@ public class HitHandlerService : IGameSystem
     }
     
     public void Dispose() {
-        
+        _inputManager.OnActionPressed -= HandleInputPerformed;
+        _inputManager.OnActionReleased -= HandleInputCanceled;
     }
 
     public void Initialize() {
@@ -27,8 +28,7 @@ public class HitHandlerService : IGameSystem
     }
 
     public void Tick() {
-        _inputManager.OnActionPressed -= HandleInputPerformed;
-        _inputManager.OnActionReleased -= HandleInputCanceled;
+        
     }
 
     #region ActionPerformed
