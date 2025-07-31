@@ -1,15 +1,18 @@
 using Runtime._Debug;
 using Runtime.Inputs;
+using Runtime.ScriptableObject;
 using UnityEngine;
 
 namespace Runtime.GameServices
 {
     public class GameInitializer : MonoBehaviour
     {
+        [Header("Game Config")] [Tooltip("Le SO de la config du jeu si c vide bah ça marchera paslol")] [SerializeField]
+        private SO_GameConfig _gameConfig;
+
         private GameSystems _gameSystems;
 
-        [SerializeField] private FMODUnity.EventReference musicEvent;
-
+        private GameConfigService _gameConfigService;
         private InputManager _inputManager;
         private BeatSyncService _beatSyncService;
         private HitHandlerService _hitHandlerService;
@@ -23,9 +26,12 @@ namespace Runtime.GameServices
         {
             _gameSystems = new GameSystems();
 
+
             // Instancie et enregistre les systèmes
+            _gameConfigService = new GameConfigService(_gameConfig);
+
             _inputManager = new InputManager();
-            _beatSyncService = new BeatSyncService(musicEvent);
+            _beatSyncService = new BeatSyncService(_gameConfigService.GameConfig.gameMusic);
             _hitHandlerService = new HitHandlerService(_gameSystems);
             _actionDatabase = new ActionDatabase();
 
