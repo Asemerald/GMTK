@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Uppercut dans ta soeur
   m_EditorClassIdentifier: 
   actionName: 
-  inputConditions: []
+  inputsRequired:
+  - inputName: 
+    actionType: 2
   counterActions: []
+  inputBufferTime: 0.3
+  holdDuration: 0
   damageAmount: 0
   cooldown: 0
   animation: {fileID: 0}

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: "Uppercut dans ton p\xE8re"
   m_EditorClassIdentifier: 
   actionName: 
-  inputConditions: []
+  inputsRequired: []
   counterActions: []
+  inputBufferTime: 0.3
+  holdDuration: 0
   damageAmount: 0
   cooldown: 0
   animation: {fileID: 0}
