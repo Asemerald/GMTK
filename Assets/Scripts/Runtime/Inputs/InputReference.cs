@@ -1,4 +1,4 @@
-using Runtime.Actions;
+using Runtime.Enums;
 using UnityEngine;
 using Runtime.Enums;
 
@@ -6,7 +6,7 @@ using Runtime.Enums;
 public class InputReference
 {
     public string inputName; // ex: "LongHoldX", "TapDown"
-    public ActionType actionType;
+    public InputType actionType;
     public int holdDuration;
 }
 
