@@ -446,6 +446,26 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: musicEvent.Path
+      value: event:/Music/70BPM
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: musicEvent.Guid.Data1
+      value: -2052988494
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: musicEvent.Guid.Data2
+      value: 1095787314
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: musicEvent.Guid.Data3
+      value: 1703904187
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: musicEvent.Guid.Data4
+      value: -765690697
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: debugSystemInitializer
       value: 
       objectReference: {fileID: 461025838}

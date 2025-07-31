@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Uppercut dans ton chien
   m_EditorClassIdentifier: 
   actionName: 
-  inputConditions: []
+  inputsRequired:
+  - inputName: 
+    actionType: 1
   counterActions: []
+  inputBufferTime: 0.3
+  holdDuration: 1
   damageAmount: 0
   cooldown: 0
   animation: {fileID: 0}
