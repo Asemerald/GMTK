@@ -26,7 +26,7 @@ namespace Runtime.GameServices
             // Instancie et enregistre les systèmes
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(musicEvent);
-            _hitHandlerService = new HitHandlerService();
+            _hitHandlerService = new HitHandlerService(_gameSystems);
 
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
