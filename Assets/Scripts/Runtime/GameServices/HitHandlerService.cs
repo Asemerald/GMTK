@@ -35,8 +35,13 @@ public class HitHandlerService : IGameSystem
     }
     
     void HandleRightInputPerformed() {
-        //Fonction pour savoir sur quelle mesure je suis actuellement
-        //Fonction de tri pour savoir qu'elle action va être lancé
+        if (GetBeatFraction() == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
+            Debug.LogError($"HitHandlerService::BeatFractionType - Return None ");
+            return;
+        }
+
+        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+       
     }
     
     void HandleLeftInputPerformed() {
@@ -74,5 +79,8 @@ public class HitHandlerService : IGameSystem
     
     
     //Fonction pour aller chercher la mesure
-    
+    BeatFractionType GetBeatFraction() {
+        
+        return BeatFractionType.None;
+    }
 }
