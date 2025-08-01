@@ -22,9 +22,8 @@ public class ComboManagerService : IGameSystem
     public void Tick() {}
     public void Dispose() {}
 
-    public void LaunchCombo(SO_ComboData comboToLaunch) 
-    {
-        Debug.Log("ComboManagerService::LaunchCombo - Como launch");
+    public void LaunchCombo(SO_ComboData comboToLaunch) {
+        Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
         foreach (var action in comboToLaunch.comboActions) {
             _actionHandlerService.RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
         }

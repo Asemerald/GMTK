@@ -13,7 +13,7 @@ namespace Runtime.GameServices {
         private BeatSyncService _beatSyncService;
         private ComboManagerService _comboManager;
         
-        private Queue<(SO_ActionData, bool)> _actionQueue = new();
+        internal Queue<(SO_ActionData, bool)> _actionQueue = new();
         
         private bool _waitForNextBeat = false;
         internal bool _inCombo = false;

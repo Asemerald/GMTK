@@ -58,7 +58,7 @@ public class ActionDatabase : IGameSystem
             }
         }
 
-        Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");
+        //Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");
         
         foreach (var combo in allCombos)
         {
