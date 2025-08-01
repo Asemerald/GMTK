@@ -16,6 +16,8 @@ namespace Runtime.GameServices {
         
         private bool _waitForNextBeat = false;
         
+        internal List<SO_ActionData> _previousActions = new();
+        
         public ActionHandlerService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
         }
@@ -36,31 +38,44 @@ namespace Runtime.GameServices {
             
         }
 
-        public void RegisterActionOnBeat(SO_ActionData data) { //Register les actions dans une Queue
+        public void RegisterActionOnBeat(SO_ActionData data, bool waitForNextBeat) { //Register les actions dans une Queue
             _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
+            _waitForNextBeat = waitForNextBeat;
         }
         
-        void PerformActionOnBeat() { //S'exécute sur chaque Beat -- Va trier et vider la queue d'action et se charge d'exécuter les actions
+        void PerformActionOnBeat() { //S'exécute sur chaque Temps
             if (_actionQueue.Count <= 0) return;
             
-            if(!_actionQueue.Peek().Item2)
+            if(!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un temps
                 ExecuteAction();
         }
 
-        void PerformActionOnHalfBeat() {
-            if (_actionQueue.Count <= 0) return;
+        void PerformActionOnHalfBeat() { //S'exécute sur chaque Demi Temps
+            if (_actionQueue.Count <= 0 || _waitForNextBeat) return;
             
-            if(_actionQueue.Peek().Item2)
+            if(_actionQueue.Peek().Item2)//Check s'il s'agit d'une action qui s'execute sur un demi-temps
                 ExecuteAction(true);
         }
 
-        void ExecuteAction(bool halfBeat = false) {
-            _actionQueue.Dequeue();
-           
-            if(halfBeat)
+        void ExecuteAction(bool halfBeat = false) { //Se charge d'exécuter l'action
+            var action = _actionQueue.Dequeue();
+            RegisterPreviousAction(action.Item1);
+            
+            if (halfBeat) {
                 Debug.Log("Half Beat Execute");
-            else
+            }
+            else {
+                _waitForNextBeat = false;
                 Debug.Log("Beat Execute");
+            }
+        }
+
+        void RegisterPreviousAction(SO_ActionData data) { //Enregistre les actions effectuées dans une limite de 2 - les combos ne nécessitant que 2 actions pour être déclenché
+            _previousActions.Add(data);
+
+            if (_previousActions.Count > 2) {
+                _previousActions.RemoveAt(0);
+            }
         }
     }
 }

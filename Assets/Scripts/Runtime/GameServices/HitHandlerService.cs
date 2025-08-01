@@ -38,7 +38,7 @@ public class HitHandlerService : IGameSystem
         if (currentActionData != null) {
             if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action
                 //Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
-                _actionHandlerService.RegisterActionOnBeat(currentActionData);
+                _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
                 currentActionData = null;
             }
         }
