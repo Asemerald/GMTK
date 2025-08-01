@@ -41,6 +41,7 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
+            _beatSyncService.OnQuarterBeat += PerformActionOnQuarterBeat;
         }
 
         public void Tick() {
@@ -71,16 +72,23 @@ namespace Runtime.GameServices {
         void PerformActionOnHalfBeat() { //S'exécute sur chaque Demi Temps
             if (_actionQueue.Count <= 0 || _waitForNextBeat) return;
 
-            if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
-            {
+            if (_inCombo) { //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
                 ExecuteAction();
                 return;
             }
 
-            if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
-            {
+            if (_actionQueue.Peek().Item2) { //Check s'il s'agit d'une action qui s'execute sur un demi-temps
                 ExecuteAction();
                 return;
+            }
+        }
+        
+        void PerformActionOnQuarterBeat() { //S'exécute sur chaque Demi Temps
+            if (_actionQueue.Count <= 0) return;
+
+            if (_actionQueue.Peek().Item1.dodgeAction) {
+                Debug.Log("ActionHandlerService::PerformActionOnQuarterBeat - Dodge");
+                ExecuteAction();
             }
         }
 
@@ -88,10 +96,8 @@ namespace Runtime.GameServices {
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
 
-            if(_isAI)
-                _fightResolverService.GetAIAction(item.Item1);
-            else
-                _fightResolverService.GetPlayerAction(item.Item1);
+            if(_isAI) _fightResolverService.GetAIAction(item.Item1);
+            else _fightResolverService.GetPlayerAction(item.Item1);
             
             if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
                 RegisterPreviousAction(item.Item1);

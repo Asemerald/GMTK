@@ -47,11 +47,44 @@ public class HitHandlerService : IGameSystem
     #region ActionPerformed
     
     void HandleInputPerformed(InputType inputType) {
-        if(inputType is InputType.Right or InputType.Left)
+        if(inputType is InputType.Right or InputType.Left or InputType.Down or InputType.Up)
             HandleAttackInputPerformed(inputType);
+        else if (inputType is InputType.DodgeRight or InputType.DodgeLeft)
+            HandleDodgeInputPerformed(inputType);
     }
     
     void HandleAttackInputPerformed(InputType inputType) {
+        var currentFraction = GetBeatFraction();
+        if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
+            Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
+            return;
+        }
+        
+        if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
+
+        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+        foreach (var action in _actionDatabase.ActionDatas) {
+            var breakLoop = false;
+            
+            if (action.Key.actionType == inputType) {
+                
+                foreach (var hit in action.Value) {
+                    
+                    if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
+                        //Ici enregistre une var l'action et sort de la loop
+                        currentActionData = hit;
+                        breakLoop = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(breakLoop) 
+                break;
+        }
+    }
+
+    void HandleDodgeInputPerformed(InputType inputType) {
         var currentFraction = GetBeatFraction();
         if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
             Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
@@ -88,7 +121,7 @@ public class HitHandlerService : IGameSystem
     #region ActionCanceled
 
     void HandleInputCanceled(InputType inputType) {
-        if(inputType is InputType.Right or InputType.Left)
+        if(inputType is InputType.Right or InputType.Left or InputType.Down or InputType.Up)
             HandleAttackInputCanceled();
     }
 

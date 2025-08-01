@@ -15,21 +15,22 @@ namespace Runtime.Inputs {
             input = new InputActions();
         }
 
-        public void Initialize()
-        {
+        public void Initialize() {
             input.Gameplay.Enable();
 
             input.Gameplay.Right.performed += OnRightPerformed;
             input.Gameplay.Left.performed += OnLeftPerformed;
             input.Gameplay.Up.performed += OnUpPerformed;
             input.Gameplay.Down.performed += OnDownPerformed;
-            
+
             input.Gameplay.Right.canceled += OnRightReleased;
             input.Gameplay.Left.canceled += OnLeftReleased;
             input.Gameplay.Up.canceled += OnUpReleased;
             input.Gameplay.Down.canceled += OnDownReleased;
+
+            input.Gameplay.Dogde.performed += OnDodgePerformed;
         }
-        
+
         public void Tick()
         {
             // rien à faire ici si event-driven
@@ -46,6 +47,8 @@ namespace Runtime.Inputs {
             input.Gameplay.Left.canceled -= OnLeftReleased;
             input.Gameplay.Up.canceled -= OnUpReleased;
             input.Gameplay.Down.canceled -= OnDownReleased;
+            
+            input.Gameplay.Dogde.performed -= OnDodgePerformed;
 
             input.Dispose();
         }
@@ -79,20 +82,8 @@ namespace Runtime.Inputs {
         
         
         //Dodge Input
-        private void OnDodgeRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
-            OnActionPressed?.Invoke(InputType.DodgeRight);
-        }
-        
-        private void OnDodgeLeftPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
-            OnActionPressed?.Invoke(InputType.DodgeLeft);
-        }
-        
-        private void OnDodgeRightReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
-            OnActionReleased?.Invoke(InputType.DodgeRight);
-        }
-        
-        private void OnDodgeLeftReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
-            OnActionReleased?.Invoke(InputType.DodgeLeft);
+        private void OnDodgePerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
+            OnActionPressed?.Invoke(ctx.ReadValue<float>() > 0 ? InputType.DodgeRight : InputType.DodgeLeft);
         }
     }
 }
