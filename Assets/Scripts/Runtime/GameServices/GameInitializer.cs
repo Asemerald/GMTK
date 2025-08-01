@@ -19,6 +19,7 @@ namespace Runtime.GameServices
         private ActionDatabase _actionDatabase;
         private ComboManagerService _comboManagerService;
         private ActionHandlerService _actionHandlerService;
+        private FeedbackService _feedbackService;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -47,13 +48,16 @@ namespace Runtime.GameServices
             _actionDatabase = new ActionDatabase();
             _comboManagerService = new ComboManagerService(_gameSystems);
             _actionHandlerService = new ActionHandlerService(_gameSystems);
-            
+            _feedbackService = new FeedbackService(_gameSystems);
+
+            _gameSystems.Register(_gameConfigService);
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
             _gameSystems.Register(_hitHandlerService);
             _gameSystems.Register(_actionDatabase);
             _gameSystems.Register(_comboManagerService);
             _gameSystems.Register(_actionHandlerService);
+            _gameSystems.Register(_feedbackService);
 
             _gameSystems.Initialize();
         }
