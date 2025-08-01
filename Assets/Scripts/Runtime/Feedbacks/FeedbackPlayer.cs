@@ -71,7 +71,6 @@ public class FeedbackPlayer : MonoBehaviour
 
         animator.SetTrigger(animationTriggerName);
     }
-    
 
 
     public void PlayParticle(FeedbackSide side, FeedbackTarget target, GameObject particlePrefab)
@@ -216,6 +215,7 @@ public class FeedbackPlayer : MonoBehaviour
     [ContextMenu("Test Lens Distortion")]
     private void TestLensDistortion()
     {
+        Initialize(debugGlobalVolume);
         PlayDistortion(_feedbackDebugData);
     }
 #endif
