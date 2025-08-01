@@ -13,6 +13,7 @@ namespace Runtime.GameServices {
         private BeatSyncService _beatSyncService;
         private ComboManagerService _comboManager;
         private ActionDatabase _actionDatabase;
+        private FightResolverService _fightResolverService;
         
         internal Queue<(SO_ActionData, bool)> _actionQueue = new();
         
@@ -36,6 +37,7 @@ namespace Runtime.GameServices {
             _beatSyncService = _gameSystems.Get<BeatSyncService>();
             _comboManager = _gameSystems.Get<ComboManagerService>();
             _actionDatabase = _gameSystems.Get<ActionDatabase>();
+            _fightResolverService = _gameSystems.Get<FightResolverService>();
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
@@ -86,6 +88,11 @@ namespace Runtime.GameServices {
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
 
+            if(_isAI)
+                _fightResolverService.GetAIAction(item.Item1);
+            else
+                _fightResolverService.GetPlayerAction(item.Item1);
+            
             if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
                 RegisterPreviousAction(item.Item1);
             }
