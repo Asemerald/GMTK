@@ -10,6 +10,8 @@ namespace Runtime.GameServices {
         private ActionDatabase _actionDatabase;
         
         private List<SO_ActionData> _actionList;
+
+        bool doingPattern = false;
         
         public AIService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
@@ -36,7 +38,13 @@ namespace Runtime.GameServices {
 
         void CallAction() {
             Debug.Log("AIService::CallAction");
-            _actionHandlerService.RegisterActionOnBeat(GetActionData(), true);
+            
+            var random = Random.Range(0,101); //Random pour déterminer le % de chance de déclencher un combo
+
+            if (random > 69) //30% de chance de faire un combo
+                DoPatternAction();
+            else
+                _actionHandlerService.RegisterActionOnBeat(GetActionData(), true);
         }
 
         List<SO_ActionData> SetActionDataList() {
@@ -57,6 +65,17 @@ namespace Runtime.GameServices {
             
             return _actionList[randomIndex];
         }
+
+        void DoPatternAction() {
+            var randomIndex = Random.Range(0, _actionDatabase._aiPatterns.Count);
+
+            if (!_actionDatabase._aiPatterns[randomIndex].isUnlock) return;
+            
+            var open = _actionDatabase._aiPatterns[randomIndex].pattern.openingAction;
+            var close = _actionDatabase._aiPatterns[randomIndex].pattern.confirmationAction;
+                
+            _actionHandlerService.RegisterActionOnBeat(open, true);
+            _actionHandlerService.RegisterActionOnBeat(close, true);
+        }
     }
-    
 }

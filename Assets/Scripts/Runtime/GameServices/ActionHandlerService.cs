@@ -12,6 +12,7 @@ namespace Runtime.GameServices {
         private readonly GameSystems _gameSystems;
         private BeatSyncService _beatSyncService;
         private ComboManagerService _comboManager;
+        private ActionDatabase _actionDatabase;
         
         internal Queue<(SO_ActionData, bool)> _actionQueue = new();
         
@@ -34,6 +35,7 @@ namespace Runtime.GameServices {
         public void Initialize() {
             _beatSyncService = _gameSystems.Get<BeatSyncService>();
             _comboManager = _gameSystems.Get<ComboManagerService>();
+            _actionDatabase = _gameSystems.Get<ActionDatabase>();
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
@@ -115,6 +117,8 @@ namespace Runtime.GameServices {
             if (comboAction) {
                 //_comboManager.LaunchCombo(comboAction); //Envoi le combo
                 Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
+
+                _actionDatabase.UnlockPattern(comboAction);
                 
                 foreach (var action in comboAction.comboActions) {
                     RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
