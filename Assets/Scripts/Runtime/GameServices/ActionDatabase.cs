@@ -8,6 +8,11 @@ public class ActionDatabase : IGameSystem
     public IReadOnlyDictionary<InputReference, List<SO_ActionData>> ActionDatas => actionDatas;
 
     readonly List<SO_ActionData> _actionDatas = new();
+    
+    
+    private Dictionary<SO_ActionData, SO_ComboData> comboDatas = new();
+    public IReadOnlyDictionary<SO_ActionData,SO_ComboData> ComboDatas => comboDatas;
+    
     readonly List<SO_ComboData> _comboDatas = new();
     
     public void Initialize()
@@ -21,6 +26,7 @@ public class ActionDatabase : IGameSystem
     private void LoadFromResources()
     {
         actionDatas.Clear();
+        comboDatas.Clear();
 
         // Charge tous les ScriptableObjects dans Resources/Actions
         var allActions = Resources.LoadAll<SO_ActionData>("Actions");
@@ -53,5 +59,24 @@ public class ActionDatabase : IGameSystem
         }
 
         Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");
+        
+        foreach (var combo in allCombos)
+        {
+            if (combo.openingAction == null || combo.confirmationAction)
+            {
+                Debug.LogWarning("ActionDatabase::LoadFromResources: No OP Action or Conf Action Detected in COMBO " + combo.name);
+                continue;
+            }
+
+            if (comboDatas.ContainsKey(combo.openingAction) && comboDatas[combo.openingAction]!=combo.confirmationAction)
+            {
+                //comboDatas[combo.openingAction] = new List<SO_ComboData>();
+            }
+
+            //comboDatas[input].Add(combo);
+        }
+
+        Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions and {comboDatas.Count} combos from Resources.");
+
     }
 }
