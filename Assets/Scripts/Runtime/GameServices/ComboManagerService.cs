@@ -33,9 +33,9 @@ public class ComboManagerService : IGameSystem
 
     public void GetCombo()
     {
-        foreach (SO_ComboData comboData in _actionDatabase.ComboDatas)
+        /*foreach (SO_ComboData comboData in _actionDatabase.ComboDatas)
         {
             //_actionDatabase.ComboDatas.
-        }
+        }*/
     }
 }
