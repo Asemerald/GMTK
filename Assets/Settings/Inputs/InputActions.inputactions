@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BlockLeft",
+                    "name": "Up",
                     "type": "Button",
                     "id": "9315758d-0b1b-4ae9-a2bf-646b4ae757f1",
                     "expectedControlType": "",
@@ -33,10 +33,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BlockRight",
+                    "name": "Down",
                     "type": "Button",
                     "id": "492dc73c-cb61-4836-bcb2-7c8843500b4e",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dogde",
+                    "type": "PassThrough",
+                    "id": "eca2149a-f9ba-4ede-a24d-91d168c0186c",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -68,22 +77,33 @@
                 {
                     "name": "",
                     "id": "388bf031-dead-4bd8-8998-80a4cea3ce73",
-                    "path": "",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "BlockLeft",
+                    "groups": ";Gamepad",
+                    "action": "Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "65871a22-195c-40d1-a915-1c013fe0a286",
-                    "path": "",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "BlockRight",
+                    "groups": ";Gamepad",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a3266f7-e160-4fc4-94e7-1b503284ee29",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dogde",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

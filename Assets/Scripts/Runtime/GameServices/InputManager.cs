@@ -21,11 +21,13 @@ namespace Runtime.Inputs {
 
             input.Gameplay.Right.performed += OnRightPerformed;
             input.Gameplay.Left.performed += OnLeftPerformed;
-            input.Gameplay.BlockLeft.performed += OnBlockLeftPerformed;
-            input.Gameplay.BlockRight.performed += OnBlockRightPerformed;
+            input.Gameplay.Up.performed += OnUpPerformed;
+            input.Gameplay.Down.performed += OnDownPerformed;
             
             input.Gameplay.Right.canceled += OnRightReleased;
             input.Gameplay.Left.canceled += OnLeftReleased;
+            input.Gameplay.Up.canceled += OnUpReleased;
+            input.Gameplay.Down.canceled += OnDownReleased;
         }
         
         public void Tick()
@@ -37,31 +39,60 @@ namespace Runtime.Inputs {
         {
             input.Gameplay.Right.performed -= OnRightPerformed;
             input.Gameplay.Left.performed -= OnLeftPerformed;
-            input.Gameplay.BlockLeft.performed -= OnBlockLeftPerformed;
-            input.Gameplay.BlockRight.performed -= OnBlockRightPerformed;
+            input.Gameplay.Up.performed -= OnUpPerformed;
+            input.Gameplay.Down.performed -= OnDownPerformed;
             
             input.Gameplay.Right.canceled -= OnRightReleased;
             input.Gameplay.Left.canceled -= OnLeftReleased;
+            input.Gameplay.Up.canceled -= OnUpReleased;
+            input.Gameplay.Down.canceled -= OnDownReleased;
 
             input.Dispose();
         }
 
+        //Performed Input
         private void OnRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
             => OnActionPressed?.Invoke(InputType.Right);
 
         private void OnLeftPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
             => OnActionPressed?.Invoke(InputType.Left);
 
-        private void OnBlockLeftPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-            => OnActionPressed?.Invoke(InputType.BlockLeft);
+        private void OnUpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionPressed?.Invoke(InputType.Up);
 
-        private void OnBlockRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-            => OnActionPressed?.Invoke(InputType.BlockRight);
+        private void OnDownPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionPressed?.Invoke(InputType.Down);
         
+        
+        //Released Input
         private void OnRightReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        => OnActionReleased?.Invoke(InputType.Right);
+            => OnActionReleased?.Invoke(InputType.Right);
         
         private void OnLeftReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
             => OnActionReleased?.Invoke(InputType.Left);
+        
+        private void OnUpReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionReleased?.Invoke(InputType.Up);
+
+        private void OnDownReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionReleased?.Invoke(InputType.Down);
+        
+        
+        //Dodge Input
+        private void OnDodgeRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
+            OnActionPressed?.Invoke(InputType.DodgeRight);
+        }
+        
+        private void OnDodgeLeftPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
+            OnActionPressed?.Invoke(InputType.DodgeLeft);
+        }
+        
+        private void OnDodgeRightReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
+            OnActionReleased?.Invoke(InputType.DodgeRight);
+        }
+        
+        private void OnDodgeLeftReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
+            OnActionReleased?.Invoke(InputType.DodgeLeft);
+        }
     }
 }
