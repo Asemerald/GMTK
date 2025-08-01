@@ -13,15 +13,17 @@ namespace Runtime.GameServices {
         private BeatSyncService _beatSyncService;
         private ComboManagerService _comboManager;
         
-        private Queue<(SO_ActionData, bool)> _actionQueue = new();
+        internal Queue<(SO_ActionData, bool)> _actionQueue = new();
         
         private bool _waitForNextBeat = false;
         internal bool _inCombo = false;
+        internal bool _isAI;
         
         internal List<SO_ActionData> _previousActions = new();
         
-        public ActionHandlerService(GameSystems gameSystems) {
+        public ActionHandlerService(GameSystems gameSystems, bool isAI = false) {
             _gameSystems = gameSystems;
+            _isAI = isAI;
         }
         
         public void Dispose() {
@@ -90,9 +92,11 @@ namespace Runtime.GameServices {
             }
             
             if (halfBeat) { //Pour le moment c'est juste du debug pour voir quand est jouer une action
+                Debug.Log("AIService::PerformActionOnHalfBeat - " + (_isAI ? "AI" : "Player"));
             }
             else {
                 _waitForNextBeat = false; //Permet d'attendre un temps avant de jouer sur des demis temps
+                Debug.Log("AIService::PerformActionBeat - " + (_isAI ? "AI" : "Player"));
             }
         }
 
@@ -109,7 +113,12 @@ namespace Runtime.GameServices {
                 comboAction = _comboManager.FindCombo(_previousActions[0], _previousActions[1]);
 
             if (comboAction) {
-                _comboManager.LaunchCombo(comboAction); //Envoi le combo
+                //_comboManager.LaunchCombo(comboAction); //Envoi le combo
+                Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
+                
+                foreach (var action in comboAction.comboActions) {
+                    RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
+                }
                 _previousActions.Clear();
             }
         }
