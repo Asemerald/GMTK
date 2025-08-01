@@ -6,13 +6,17 @@ using Runtime.ScriptableObject;
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject
 {
+    [Header("General")]
     public string actionName;
     public bool isComboAction;
     public List<InputReference> inputsRequired;
     public List<SO_ActionData> counterActions; // Enemy actions that can counter this action
-    public float inputBufferTime = 0.3f;
+    //public float inputBufferTime = 0.3f;
     public AttackHoldDuration holdDuration;
     public bool CanExecuteOnHalfBeat = false;
+    public bool dodgeAction = false;
+    
+    [Header("Stats")]
     public float damageAmount;
     public int cooldown;
 
