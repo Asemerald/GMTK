@@ -110,7 +110,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BlockLeft"",
+                    ""name"": ""Up"",
                     ""type"": ""Button"",
                     ""id"": ""9315758d-0b1b-4ae9-a2bf-646b4ae757f1"",
                     ""expectedControlType"": """",
@@ -119,10 +119,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BlockRight"",
+                    ""name"": ""Down"",
                     ""type"": ""Button"",
                     ""id"": ""492dc73c-cb61-4836-bcb2-7c8843500b4e"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dogde"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""eca2149a-f9ba-4ede-a24d-91d168c0186c"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -154,22 +163,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""388bf031-dead-4bd8-8998-80a4cea3ce73"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""BlockLeft"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""65871a22-195c-40d1-a915-1c013fe0a286"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""BlockRight"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a3266f7-e160-4fc4-94e7-1b503284ee29"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Dogde"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -283,8 +303,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Right = m_Gameplay.FindAction("Right", throwIfNotFound: true);
         m_Gameplay_Left = m_Gameplay.FindAction("Left", throwIfNotFound: true);
-        m_Gameplay_BlockLeft = m_Gameplay.FindAction("BlockLeft", throwIfNotFound: true);
-        m_Gameplay_BlockRight = m_Gameplay.FindAction("BlockRight", throwIfNotFound: true);
+        m_Gameplay_Up = m_Gameplay.FindAction("Up", throwIfNotFound: true);
+        m_Gameplay_Down = m_Gameplay.FindAction("Down", throwIfNotFound: true);
+        m_Gameplay_Dogde = m_Gameplay.FindAction("Dogde", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_ToggleBeatDebug = m_Debug.FindAction("ToggleBeatDebug", throwIfNotFound: true);
@@ -373,8 +394,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Right;
     private readonly InputAction m_Gameplay_Left;
-    private readonly InputAction m_Gameplay_BlockLeft;
-    private readonly InputAction m_Gameplay_BlockRight;
+    private readonly InputAction m_Gameplay_Up;
+    private readonly InputAction m_Gameplay_Down;
+    private readonly InputAction m_Gameplay_Dogde;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -395,13 +417,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Left => m_Wrapper.m_Gameplay_Left;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/BlockLeft".
+        /// Provides access to the underlying input action "Gameplay/Up".
         /// </summary>
-        public InputAction @BlockLeft => m_Wrapper.m_Gameplay_BlockLeft;
+        public InputAction @Up => m_Wrapper.m_Gameplay_Up;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/BlockRight".
+        /// Provides access to the underlying input action "Gameplay/Down".
         /// </summary>
-        public InputAction @BlockRight => m_Wrapper.m_Gameplay_BlockRight;
+        public InputAction @Down => m_Wrapper.m_Gameplay_Down;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Dogde".
+        /// </summary>
+        public InputAction @Dogde => m_Wrapper.m_Gameplay_Dogde;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -434,12 +460,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
-            @BlockLeft.started += instance.OnBlockLeft;
-            @BlockLeft.performed += instance.OnBlockLeft;
-            @BlockLeft.canceled += instance.OnBlockLeft;
-            @BlockRight.started += instance.OnBlockRight;
-            @BlockRight.performed += instance.OnBlockRight;
-            @BlockRight.canceled += instance.OnBlockRight;
+            @Up.started += instance.OnUp;
+            @Up.performed += instance.OnUp;
+            @Up.canceled += instance.OnUp;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
+            @Dogde.started += instance.OnDogde;
+            @Dogde.performed += instance.OnDogde;
+            @Dogde.canceled += instance.OnDogde;
         }
 
         /// <summary>
@@ -457,12 +486,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
-            @BlockLeft.started -= instance.OnBlockLeft;
-            @BlockLeft.performed -= instance.OnBlockLeft;
-            @BlockLeft.canceled -= instance.OnBlockLeft;
-            @BlockRight.started -= instance.OnBlockRight;
-            @BlockRight.performed -= instance.OnBlockRight;
-            @BlockRight.canceled -= instance.OnBlockRight;
+            @Up.started -= instance.OnUp;
+            @Up.performed -= instance.OnUp;
+            @Up.canceled -= instance.OnUp;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
+            @Dogde.started -= instance.OnDogde;
+            @Dogde.performed -= instance.OnDogde;
+            @Dogde.canceled -= instance.OnDogde;
         }
 
         /// <summary>
@@ -662,19 +694,26 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeft(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "BlockLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Up" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnBlockLeft(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "BlockRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Down" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnBlockRight(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dogde" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDogde(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.
