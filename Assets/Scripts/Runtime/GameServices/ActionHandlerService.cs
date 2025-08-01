@@ -71,7 +71,7 @@ namespace Runtime.GameServices {
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
 
-            if (!_inCombo) {
+            if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
                 RegisterPreviousAction(item.Item1);
             }
             else {
@@ -90,19 +90,19 @@ namespace Runtime.GameServices {
         void RegisterPreviousAction(SO_ActionData data) { //Enregistre les actions effectuées dans une limite de 2 - les combos ne nécessitant que 2 actions pour être déclenché
             _previousActions.Add(data);
 
-            if (_previousActions.Count > 2) {
+            if (_previousActions.Count > 2)
                 _previousActions.RemoveAt(0);
-            }
-            
-            Debug.Log(_previousActions.Count + " Action count previously made");
 
+            //TODO clear la liste d'action après un temps sans actions, actuellement on peut faire une action puis attendre plusieurs temps pour en faire une autre et cela va déclencher un combo si ça remplit les conditions
+            
             SO_ComboData comboAction = null;
             if(_previousActions.Count == 2) //Envoi au combo manager les deux dernier input
                 comboAction = _comboManager.FindCombo(_previousActions[0], _previousActions[1]);
 
-            if (comboAction)
+            if (comboAction) {
                 _comboManager.LaunchCombo(comboAction); //Envoi le combo
-            
+                _previousActions.Clear();
+            }
         }
     }
 }
