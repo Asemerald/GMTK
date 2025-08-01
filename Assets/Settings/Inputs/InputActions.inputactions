@@ -42,10 +42,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dogde",
-                    "type": "PassThrough",
+                    "name": "Dogde Right",
+                    "type": "Button",
                     "id": "eca2149a-f9ba-4ede-a24d-91d168c0186c",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dogde Left",
+                    "type": "Button",
+                    "id": "97bd267f-5d1f-45b8-8c1b-682aee63311d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -99,11 +108,22 @@
                 {
                     "name": "",
                     "id": "9a3266f7-e160-4fc4-94e7-1b503284ee29",
-                    "path": "<Gamepad>/leftStick/right",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Dogde",
+                    "action": "Dogde Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "323e0b3e-1802-49d3-8c39-c49038575692",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dogde Left",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
