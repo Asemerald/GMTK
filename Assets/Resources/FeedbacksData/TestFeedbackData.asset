@@ -16,30 +16,9 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   side: 0
   target: 0
-  hueShiftData:
-    intensity: 10
-    duration: 1
-    intensityOverTime:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+  hueShiftData: 0
+  enableLensDistortion: 1
+  targetIntensity: 0.5
+  timeToTargetIntensity: 0.1
+  timeAtTargetIntensity: 0.3
+  timeToBaseIntensity: 0.8
