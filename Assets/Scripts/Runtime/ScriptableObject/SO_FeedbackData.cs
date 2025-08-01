@@ -11,7 +11,7 @@ namespace Runtime.ScriptableObject
         public GameObject particlePrefab;
         public FeedbackSide side;
         public FeedbackTarget target;
-        public Color colorTint;
+        public HUEShiftValue hueShiftData;
     }
 
     public enum FeedbackTarget
@@ -25,5 +25,11 @@ namespace Runtime.ScriptableObject
         Left,
         Right,
         Center
+    }
+
+    public enum HUEShiftValue
+    {
+        None,
+        Zero
     }
 }

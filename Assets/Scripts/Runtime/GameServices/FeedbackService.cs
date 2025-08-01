@@ -1,12 +1,14 @@
 ﻿using Runtime.GameServices;
 using Runtime.GameServices.Interfaces;
 using Runtime.ScriptableObject;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FeedbackService : IGameSystem
 {
     private FeedbackPlayer _feedbackPlayer;
     private readonly GameSystems _gameSystems;
+    private SO_GameConfig _gameConfig;
 
 
     public FeedbackService(GameSystems gameSystems)
@@ -16,9 +18,27 @@ public class FeedbackService : IGameSystem
 
     public void Initialize()
     {
-        _feedbackPlayer = GameObject.FindObjectOfType<FeedbackPlayer>();
+        _gameConfig = _gameSystems.Get<GameConfigService>()?.GameConfig ??
+                      throw new System.NullReferenceException("GameConfigService is not registered in GameSystems");
+
+        // Spawn Global Volume if it exists in the config
+        if (_gameConfig.volumePrefab != null)
+        {
+            var globalVolume = Object.Instantiate(_gameConfig.volumePrefab);
+            if (globalVolume == null) Debug.LogError("[FeedbackService] Failed to instantiate volumePrefab");
+        }
+
+
+        // Instantiate the FeedbackPlayer Gameobject 
+        _feedbackPlayer = Object.Instantiate(_gameConfig.FeedbackPlayerPrefab);
+
         if (_feedbackPlayer == null)
-            Debug.LogError("FeedbackReceiver not found in scene");
+        {
+            Debug.LogError("[FeedbackService] Failed to instantiate FeedbackPlayerPrefab");
+            return;
+        }
+
+        _feedbackPlayer.Initialize();
     }
 
     public void PlayActionFeedback(SO_FeedbackData feedback)
@@ -38,8 +58,8 @@ public class FeedbackService : IGameSystem
         if (feedback.soundEffect != null)
             _feedbackPlayer.PlaySound(feedback.soundEffect);
 
-        if (feedback.colorTint.a > 0.01f) // éviter un Color.clear ou défaut
-            _feedbackPlayer.TintColor(feedback.colorTint);
+        if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
+            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
     }
 
     public void Tick()

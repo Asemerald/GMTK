@@ -1,21 +1,52 @@
-﻿using FMODUnity;
+﻿using System;
+using System.Collections;
+using FMODUnity;
 using UnityEngine;
 using Runtime.Enums;
 using Runtime.ScriptableObject;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class FeedbackPlayer : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private Animator playerAnimator;
 
-    [SerializeField] private Animator enemyAnimator;
-
-    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] internal Animator enemyAnimator;
 
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
 
-    [SerializeField] private Renderer postProcessHueTarget;
+    internal Volume GlobalVolume;
+    private ColorAdjustments _colorAdjustments;
+
+    [Header("DEBUG")] [SerializeField] private SO_FeedbackData _feedbackDebugData;
+
+    internal void Initialize(Volume globalVolume = null)
+    {
+        GlobalVolume = globalVolume ?? FindObjectOfType<Volume>();
+        if (GlobalVolume == null)
+        {
+            Debug.LogError("Global Volume not found in the scene. Please ensure a Volume component is present.");
+            return;
+        }
+
+        // Try to get ColorAdjustments from the Global Volume profile
+        InitializeColorAdjustments();
+    }
+
+    private void InitializeColorAdjustments()
+    {
+        if (GlobalVolume.profile.TryGet(out _colorAdjustments))
+        {
+            Debug.Log("ColorAdjustments found in Global Volume profile.");
+        }
+        else
+        {
+            Debug.LogWarning("ColorAdjustments not found in Global Volume profile. Hue shift feedback will not work.");
+            _colorAdjustments = null; // Set to null if not found
+        }
+    }
 
     public void PlayAnimation(FeedbackSide side, FeedbackTarget target, AnimationClip clip)
     {
@@ -24,6 +55,7 @@ public class FeedbackPlayer : MonoBehaviour
 
         animator.Play(clip.name);
     }
+
 
     public void PlayParticle(FeedbackSide side, FeedbackTarget target, GameObject particlePrefab)
     {
@@ -47,12 +79,20 @@ public class FeedbackPlayer : MonoBehaviour
         //TODO PlayOneShot avec FMOD
     }
 
-    public void TintColor(Color color)
+    public void PlayHueShift(HUEShiftValue data)
     {
-        if (postProcessHueTarget != null)
-            // Exemple : on modifie une propriété de material qui pilote un shader post-process custom
-            postProcessHueTarget.material.SetColor("_HueTint", color);
+        if (_colorAdjustments == null)
+            return;
+        if (data == HUEShiftValue.None)
+        {
+            Debug.LogWarning("[FeedbackPlayer] Hue shift is set to None but I was still called, skipping.");
+            return;
+        }
+
+        var targetValue = HuePresetToFloat(data);
+        _colorAdjustments.hueShift.value = targetValue;
     }
+
 
     private Animator GetAnimator(FeedbackTarget target)
     {
@@ -81,4 +121,25 @@ public class FeedbackPlayer : MonoBehaviour
         var offset = side == FeedbackSide.Left ? Vector3.left : Vector3.right;
         return baseTransform.position + offset * 0.5f;
     }
+
+    private float HuePresetToFloat(HUEShiftValue hueShiftValue)
+    {
+        return hueShiftValue switch
+        {
+            HUEShiftValue.None => 0f,
+            HUEShiftValue.Zero => 0f,
+            /*HUEShiftValue.Medium => 90f,
+            HUEShiftValue.High => 180f,*/
+            _ => throw new ArgumentOutOfRangeException(nameof(hueShiftValue), hueShiftValue, null)
+        };
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Test Tint Color")]
+    private void TestTintColor()
+    {
+        Initialize();
+        PlayHueShift(_feedbackDebugData.hueShiftData); // Juste un exemple pour tester
+    }
+#endif
 }

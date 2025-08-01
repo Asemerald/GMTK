@@ -1,5 +1,6 @@
 ﻿using FMODUnity;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Runtime.ScriptableObject
 {
@@ -9,6 +10,8 @@ namespace Runtime.ScriptableObject
         [Header("Prefabs")] public GameObject playerPrefab;
         public GameObject enemyPrefab;
         public GameObject hitEffectPrefab;
+        public FeedbackPlayer FeedbackPlayerPrefab;
+        public Volume volumePrefab;
 
         [Header("Audio")] public EventReference gameMusic;
         public float musicVolume = 1f;
