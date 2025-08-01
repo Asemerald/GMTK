@@ -128,10 +128,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dogde"",
-                    ""type"": ""PassThrough"",
+                    ""name"": ""Dogde Right"",
+                    ""type"": ""Button"",
                     ""id"": ""eca2149a-f9ba-4ede-a24d-91d168c0186c"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dogde Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""97bd267f-5d1f-45b8-8c1b-682aee63311d"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -185,11 +194,22 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9a3266f7-e160-4fc4-94e7-1b503284ee29"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Dogde"",
+                    ""action"": ""Dogde Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""323e0b3e-1802-49d3-8c39-c49038575692"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Dogde Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -305,7 +325,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Left = m_Gameplay.FindAction("Left", throwIfNotFound: true);
         m_Gameplay_Up = m_Gameplay.FindAction("Up", throwIfNotFound: true);
         m_Gameplay_Down = m_Gameplay.FindAction("Down", throwIfNotFound: true);
-        m_Gameplay_Dogde = m_Gameplay.FindAction("Dogde", throwIfNotFound: true);
+        m_Gameplay_DogdeRight = m_Gameplay.FindAction("Dogde Right", throwIfNotFound: true);
+        m_Gameplay_DogdeLeft = m_Gameplay.FindAction("Dogde Left", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_ToggleBeatDebug = m_Debug.FindAction("ToggleBeatDebug", throwIfNotFound: true);
@@ -396,7 +417,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Left;
     private readonly InputAction m_Gameplay_Up;
     private readonly InputAction m_Gameplay_Down;
-    private readonly InputAction m_Gameplay_Dogde;
+    private readonly InputAction m_Gameplay_DogdeRight;
+    private readonly InputAction m_Gameplay_DogdeLeft;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -425,9 +447,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Down => m_Wrapper.m_Gameplay_Down;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Dogde".
+        /// Provides access to the underlying input action "Gameplay/DogdeRight".
         /// </summary>
-        public InputAction @Dogde => m_Wrapper.m_Gameplay_Dogde;
+        public InputAction @DogdeRight => m_Wrapper.m_Gameplay_DogdeRight;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/DogdeLeft".
+        /// </summary>
+        public InputAction @DogdeLeft => m_Wrapper.m_Gameplay_DogdeLeft;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -466,9 +492,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Down.started += instance.OnDown;
             @Down.performed += instance.OnDown;
             @Down.canceled += instance.OnDown;
-            @Dogde.started += instance.OnDogde;
-            @Dogde.performed += instance.OnDogde;
-            @Dogde.canceled += instance.OnDogde;
+            @DogdeRight.started += instance.OnDogdeRight;
+            @DogdeRight.performed += instance.OnDogdeRight;
+            @DogdeRight.canceled += instance.OnDogdeRight;
+            @DogdeLeft.started += instance.OnDogdeLeft;
+            @DogdeLeft.performed += instance.OnDogdeLeft;
+            @DogdeLeft.canceled += instance.OnDogdeLeft;
         }
 
         /// <summary>
@@ -492,9 +521,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Down.started -= instance.OnDown;
             @Down.performed -= instance.OnDown;
             @Down.canceled -= instance.OnDown;
-            @Dogde.started -= instance.OnDogde;
-            @Dogde.performed -= instance.OnDogde;
-            @Dogde.canceled -= instance.OnDogde;
+            @DogdeRight.started -= instance.OnDogdeRight;
+            @DogdeRight.performed -= instance.OnDogdeRight;
+            @DogdeRight.canceled -= instance.OnDogdeRight;
+            @DogdeLeft.started -= instance.OnDogdeLeft;
+            @DogdeLeft.performed -= instance.OnDogdeLeft;
+            @DogdeLeft.canceled -= instance.OnDogdeLeft;
         }
 
         /// <summary>
@@ -708,12 +740,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDown(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Dogde" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Dogde Right" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDogde(InputAction.CallbackContext context);
+        void OnDogdeRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dogde Left" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDogdeLeft(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

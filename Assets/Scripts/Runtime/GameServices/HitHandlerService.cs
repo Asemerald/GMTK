@@ -38,7 +38,10 @@ public class HitHandlerService : IGameSystem
         if (currentActionData != null && !_actionHandlerService._inCombo) { //Check si le joueur a une action data de sélectionner ou n'est pas en train d'effectuer un combo
             if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action
                 //Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
-                _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
+                if(currentActionData.dodgeAction)
+                    _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
+                else    
+                    _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
                 currentActionData = null;
             }
         }
@@ -94,20 +97,19 @@ public class HitHandlerService : IGameSystem
         if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
 
         //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+        
+        
         foreach (var action in _actionDatabase.ActionDatas) {
             var breakLoop = false;
             
             if (action.Key.actionType == inputType) {
-                
-                foreach (var hit in action.Value) {
-                    
-                    if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
-                        //Ici enregistre une var l'action et sort de la loop
+                if(action.Value.Count >= 1)
+                    foreach (var hit in action.Value) {
                         currentActionData = hit;
                         breakLoop = true;
                         break;
+                        
                     }
-                }
             }
             
             if(breakLoop) 
