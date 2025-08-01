@@ -49,22 +49,33 @@ namespace Runtime.GameServices {
         
         void PerformActionOnBeat() { //S'exécute sur chaque Temps
             if (_actionQueue.Count <= 0) return;
-            
-            if(_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
+            if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
+            {
                 ExecuteAction();
-            
-            if(!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un temps
+                return;
+            }
+
+            if (!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un temps
+            {
                 ExecuteAction();
+                return;
+            }
         }
 
         void PerformActionOnHalfBeat() { //S'exécute sur chaque Demi Temps
             if (_actionQueue.Count <= 0 || _waitForNextBeat) return;
-            
-            if(_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
+
+            if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
+            {
                 ExecuteAction(true);
-            
-            if(_actionQueue.Peek().Item2)//Check s'il s'agit d'une action qui s'execute sur un demi-temps
+                return;
+            }
+
+            if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
+            {
                 ExecuteAction(true);
+                return;
+            }
         }
 
         void ExecuteAction(bool halfBeat = false) { //Se charge d'exécuter l'action
@@ -79,11 +90,9 @@ namespace Runtime.GameServices {
             }
             
             if (halfBeat) { //Pour le moment c'est juste du debug pour voir quand est jouer une action
-                Debug.Log("Half Beat Execute");
             }
             else {
                 _waitForNextBeat = false; //Permet d'attendre un temps avant de jouer sur des demis temps
-                Debug.Log("Beat Execute");
             }
         }
 

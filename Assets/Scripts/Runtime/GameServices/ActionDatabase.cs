@@ -12,7 +12,7 @@ public class ActionDatabase : IGameSystem
     
     private Dictionary<SO_ActionData, List<SO_ComboData>> comboDatas = new();
     public IReadOnlyDictionary<SO_ActionData,List<SO_ComboData>> ComboDatas => comboDatas;
-    
+
     readonly List<SO_ComboData> _comboDatas = new();
     
     public void Initialize()

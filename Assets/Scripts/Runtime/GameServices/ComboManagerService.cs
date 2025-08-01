@@ -22,19 +22,21 @@ public class ComboManagerService : IGameSystem
     public void Tick() {}
     public void Dispose() {}
 
-    public void LaunchCombo(SO_ComboData comboToLaunch) {
+    public void LaunchCombo(SO_ComboData comboToLaunch) 
+    {
         Debug.Log("ComboManagerService::LaunchCombo - Como launch");
         foreach (var action in comboToLaunch.comboActions) {
-            _actionHandlerService.RegisterActionOnBeat(action, true, true);
+            _actionHandlerService.RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
         }
+    }
+
+    void CancelCombo(SO_ComboData comboToCancel) 
+    {
         
     }
 
-    void CancelCombo(SO_ComboData comboToCancel) {
-        
-    }
-
-    public SO_ComboData FindCombo(SO_ActionData openingCombo, SO_ActionData confirmationCombo) {
+    public SO_ComboData FindCombo(SO_ActionData openingCombo, SO_ActionData confirmationCombo) 
+    {
         
         if (_actionDatabase == null) {
             Debug.LogError("ComboManagerService::FindCombo - ActionDatabase not initialized");
