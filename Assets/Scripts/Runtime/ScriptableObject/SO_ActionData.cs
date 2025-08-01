@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject
 {
+    [Header("General")]
     public string actionName;
     public ActionType actionType;
     public List<InputReference> inputsRequired;
@@ -14,6 +15,9 @@ public class SO_ActionData : ScriptableObject
     public List<SO_ActionData> counterActions;
     public AttackHoldDuration holdDuration;
     public bool CanExecuteOnHalfBeat = false;
+    public bool dodgeAction = false;
+    
+    [Header("Stats")]
     public float damageAmount;
     public int cooldown;
 
