@@ -6,6 +6,10 @@ namespace Runtime.ScriptableObject
     [CreateAssetMenu(fileName = "GameConfig", menuName = "Game/Config")]
     public class SO_GameConfig : UnityEngine.ScriptableObject
     {
+        [Header("Prefabs")] public GameObject playerPrefab;
+        public GameObject enemyPrefab;
+        public GameObject hitEffectPrefab;
+
         [Header("Audio")] public EventReference gameMusic;
         public float musicVolume = 1f;
         public int defaultBPM = 120;

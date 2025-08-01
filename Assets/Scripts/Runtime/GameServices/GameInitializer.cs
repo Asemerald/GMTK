@@ -25,6 +25,15 @@ namespace Runtime.GameServices
 
         private void Awake()
         {
+            InitializeGameSystems();
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            RegisterDebugSystems();
+#endif
+        }
+
+        private void InitializeGameSystems()
+        {
             _gameSystems = new GameSystems();
 
 
@@ -44,10 +53,6 @@ namespace Runtime.GameServices
             _gameSystems.Register(_comboManagerService);
 
             _gameSystems.Initialize();
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            RegisterDebugSystems();
-#endif
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
