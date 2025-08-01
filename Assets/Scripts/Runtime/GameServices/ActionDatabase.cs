@@ -10,8 +10,8 @@ public class ActionDatabase : IGameSystem
     readonly List<SO_ActionData> _actionDatas = new();
     
     
-    private Dictionary<SO_ActionData, SO_ComboData> comboDatas = new();
-    public IReadOnlyDictionary<SO_ActionData,SO_ComboData> ComboDatas => comboDatas;
+    private Dictionary<SO_ActionData, List<SO_ComboData>> comboDatas = new();
+    public IReadOnlyDictionary<SO_ActionData,List<SO_ComboData>> ComboDatas => comboDatas;
     
     readonly List<SO_ComboData> _comboDatas = new();
     
@@ -62,18 +62,27 @@ public class ActionDatabase : IGameSystem
         
         foreach (var combo in allCombos)
         {
-            if (combo.openingAction == null || combo.confirmationAction)
+            if (combo.openingAction == null || combo.confirmationAction == null)
             {
                 Debug.LogWarning("ActionDatabase::LoadFromResources: No OP Action or Conf Action Detected in COMBO " + combo.name);
                 continue;
             }
-
-            if (comboDatas.ContainsKey(combo.openingAction) && comboDatas[combo.openingAction]!=combo.confirmationAction)
+            
+            if (!comboDatas.TryGetValue(combo.openingAction, out var list))
             {
-                //comboDatas[combo.openingAction] = new List<SO_ComboData>();
+                list = new List<SO_ComboData>();
+                comboDatas[combo.openingAction] = list;
+            }
+            
+            bool duplicateFound = list.Exists(existing => existing.confirmationAction == combo.confirmationAction);
+
+            if (duplicateFound)
+            {
+                Debug.LogError($"[ActionDatabase] Duplicate combo with same opening ({combo.openingAction.name}) and confirmation ({combo.confirmationAction.name}) found in '{combo.name}'. This is not allowed.");
+                continue;
             }
 
-            //comboDatas[input].Add(combo);
+            list.Add(combo);
         }
 
         Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions and {comboDatas.Count} combos from Resources.");

@@ -31,11 +31,24 @@ public class ComboManagerService : IGameSystem
         
     }
 
-    public void GetCombo()
+    public SO_ComboData FindCombo(SO_ActionData openingCombo, SO_ActionData confirmationCombo)
     {
-        /*foreach (SO_ComboData comboData in _actionDatabase.ComboDatas)
+        if (openingCombo != null && confirmationCombo != null && _actionDatabase != null)
         {
-            _actionDatabase.ComboDatas.
-        }*/
+            Debug.LogError("No combo found null ref");
+            return null;
+        }
+
+        if (_actionDatabase.ComboDatas.TryGetValue(openingCombo, out var combos))
+        {
+            foreach (var combo in combos)
+            {
+                if (combo.confirmationAction == confirmationCombo)
+                {
+                    return combo;
+                }
+            }
+        }
+        return null;
     }
 }
