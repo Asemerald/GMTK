@@ -147,14 +147,21 @@ namespace Runtime.GameServices {
                 Debug.Log("ActionHandlerService::PerformActionOnQuarterBeat - Dodge");
                 ExecuteAction();
             }
-        }
-        
-        void PerformActionOnQuarterBeat() { //S'exécute sur chaque Demi Temps
-            if (_actionQueue.Count <= 0) return;
-
-            if (_actionQueue.Peek().Item1.dodgeAction) {
-                Debug.Log("ActionHandlerService::PerformActionOnQuarterBeat - Dodge");
-                ExecuteAction();
+            
+            if (fractionType is BeatFractionType.FirstQuarter) { // Quart de temps
+                if(_waitForNextBeat) return;
+            }
+            else if (fractionType is BeatFractionType.Half) { // Demi temps
+                if(_waitForNextBeat) return;
+                
+                if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
+                    ExecuteAction();
+            }
+            else { //Temps plein
+                if (!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui execute sur un temps plein
+                    ExecuteAction();
+                
+                _waitForNextBeat = false;
             }
         }
 
