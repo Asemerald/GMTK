@@ -73,18 +73,18 @@ namespace Runtime.GameServices {
 
             if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
             {
-                ExecuteAction(true);
+                ExecuteAction();
                 return;
             }
 
             if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
             {
-                ExecuteAction(true);
+                ExecuteAction();
                 return;
             }
         }
 
-        void ExecuteAction(bool halfBeat = false) { //Se charge d'exécuter l'action
+        void ExecuteAction() { //Se charge d'exécuter l'action
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
 
@@ -100,11 +100,12 @@ namespace Runtime.GameServices {
                 if (_actionQueue.Count <= 0) _inCombo = false;
             }
             
-            if (halfBeat) { //Pour le moment c'est juste du debug pour voir quand est jouer une action
+            if (action.CanExecuteOnHalfBeat) { //Pour le moment c'est juste du debug pour voir quand est jouer une action
+                _waitForNextBeat = false;
                 Debug.Log("AIService::PerformActionOnHalfBeat - " + (_isAI ? "AI" : "Player"));
             }
             else {
-                _waitForNextBeat = false; //Permet d'attendre un temps avant de jouer sur des demis temps
+                _waitForNextBeat = true; //Permet d'attendre un temps avant de jouer sur des demis temps
                 Debug.Log("AIService::PerformActionBeat - " + (_isAI ? "AI" : "Player"));
             }
         }
