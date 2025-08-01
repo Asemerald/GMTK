@@ -20,7 +20,7 @@ namespace Runtime.GameServices {
         }
 
         public void Initialize() {
-            _actionHandlerService = new ActionHandlerService(_gameSystems);
+            _actionHandlerService = new ActionHandlerService(_gameSystems, true);
             _actionDatabase = _gameSystems.Get<ActionDatabase>();
 
             _actionHandlerService.Initialize();
