@@ -21,10 +21,6 @@
     {
     }
 
-    public void DrawDebugGUI()
-    {
-    }
-
     public void Dispose()
     {
         input.Dispose();
