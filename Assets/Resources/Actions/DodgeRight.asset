@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: HalfbeatSkipCombo
+  m_Name: DodgeRight
   m_EditorClassIdentifier: 
-  actionName: Halfbeat Skip Combo
-  isComboAction: 1
+  actionName: Dodge Right
+  isComboAction: 0
   inputsRequired:
   - inputName: 
-    actionType: 0
+    actionType: 5
   counterActions: []
   holdDuration: 0
-  CanExecuteOnHalfBeat: 0
-  dodgeAction: 0
+  CanExecuteOnHalfBeat: 1
+  dodgeAction: 1
   damageAmount: 0
   cooldown: 0
   feedbackData: {fileID: 0}

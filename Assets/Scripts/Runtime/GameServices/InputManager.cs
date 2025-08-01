@@ -28,7 +28,8 @@ namespace Runtime.Inputs {
             input.Gameplay.Up.canceled += OnUpReleased;
             input.Gameplay.Down.canceled += OnDownReleased;
 
-            input.Gameplay.Dogde.performed += OnDodgePerformed;
+            input.Gameplay.DogdeRight.performed += OnDodgeRightPerformed;
+            input.Gameplay.DogdeLeft.performed += OnDodgeLeftPerformed;
         }
 
         public void Tick()
@@ -48,7 +49,8 @@ namespace Runtime.Inputs {
             input.Gameplay.Up.canceled -= OnUpReleased;
             input.Gameplay.Down.canceled -= OnDownReleased;
             
-            input.Gameplay.Dogde.performed -= OnDodgePerformed;
+            input.Gameplay.DogdeRight.performed -= OnDodgeRightPerformed;
+            input.Gameplay.DogdeLeft.performed -= OnDodgeLeftPerformed;
 
             input.Dispose();
         }
@@ -82,8 +84,10 @@ namespace Runtime.Inputs {
         
         
         //Dodge Input
-        private void OnDodgePerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) {
-            OnActionPressed?.Invoke(ctx.ReadValue<float>() > 0 ? InputType.DodgeRight : InputType.DodgeLeft);
-        }
+        private void OnDodgeRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) 
+            => OnActionPressed?.Invoke(InputType.DodgeRight);
+        
+        private void OnDodgeLeftPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) 
+            => OnActionPressed?.Invoke(InputType.DodgeLeft);
     }
 }
