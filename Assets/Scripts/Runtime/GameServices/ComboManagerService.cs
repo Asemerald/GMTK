@@ -23,10 +23,10 @@ public class ComboManagerService : IGameSystem
     public void Dispose() {}
 
     public void LaunchCombo(SO_ComboData comboToLaunch) {
-        Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
+        /*Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
         foreach (var action in comboToLaunch.comboActions) {
             _actionHandlerService.RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
-        }
+        }*/
     }
 
     void CancelCombo(SO_ComboData comboToCancel) 
