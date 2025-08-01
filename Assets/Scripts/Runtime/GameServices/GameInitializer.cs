@@ -17,6 +17,7 @@ namespace Runtime.GameServices
         private BeatSyncService _beatSyncService;
         private HitHandlerService _hitHandlerService;
         private ActionDatabase _actionDatabase;
+        private ComboManagerService _comboManagerService;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -34,11 +35,13 @@ namespace Runtime.GameServices
             _beatSyncService = new BeatSyncService(_gameConfigService.GameConfig.gameMusic);
             _hitHandlerService = new HitHandlerService(_gameSystems);
             _actionDatabase = new ActionDatabase();
+            _comboManagerService = new ComboManagerService(_gameSystems);
 
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
             _gameSystems.Register(_hitHandlerService);
             _gameSystems.Register(_actionDatabase);
+            _gameSystems.Register(_comboManagerService);
 
             _gameSystems.Initialize();
 
