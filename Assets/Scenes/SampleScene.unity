@@ -446,6 +446,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: _gameConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 36995f1335b790c45b2b50d33b11ea34, type: 2}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: musicEvent.Path
       value: event:/Music/70BPM
       objectReference: {fileID: 0}
