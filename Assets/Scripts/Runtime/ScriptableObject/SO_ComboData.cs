@@ -12,5 +12,4 @@ public class SO_ComboData : ScriptableObject
     private SO_ActionData[] comboActions = new SO_ActionData[16];
     public SO_ActionData[] ComboActions => comboActions;
     public SO_AIPattern UnlockPattern;
-    public SO_AIPattern UnlockPattern;
 }
