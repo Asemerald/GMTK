@@ -10,6 +10,7 @@ public class HitHandlerService : IGameSystem
     private InputManager _inputManager;
     private BeatSyncService _beatSyncService;
     private ActionDatabase _actionDatabase;
+    private ActionHandlerService _actionHandlerService;
     
     private SO_ActionData currentActionData;
     
@@ -26,6 +27,7 @@ public class HitHandlerService : IGameSystem
         _beatSyncService = _gameSystems.Get<BeatSyncService>();
         _actionDatabase = _gameSystems.Get<ActionDatabase>();
         _inputManager = _gameSystems.Get<InputManager>();
+        _actionHandlerService = _gameSystems.Get<ActionHandlerService>();
         
         _inputManager.OnActionPressed += HandleInputPerformed;
         _inputManager.OnActionReleased += HandleInputCanceled;
@@ -35,8 +37,8 @@ public class HitHandlerService : IGameSystem
         //Ici faire la validation de action data base
         if (currentActionData != null) {
             if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action
-                //ajoute l'action pour être joué sur le prochain temps dans le BeatSyncService
-                Debug.Log("HitHandlerService::Tick - Execute Action ");
+                //Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
+                _actionHandlerService.RegisterActionOnBeat(currentActionData);
                 currentActionData = null;
             }
         }
@@ -52,9 +54,11 @@ public class HitHandlerService : IGameSystem
     void HandleAttackInputPerformed(InputType inputType) {
         var currentFraction = GetBeatFraction();
         if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
-            Debug.LogError($"HitHandlerService::BeatFractionType - Return None ");
+            Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
             return;
         }
+        
+        if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
 
         //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
         foreach (var action in _actionDatabase.ActionDatas) {
@@ -65,8 +69,7 @@ public class HitHandlerService : IGameSystem
                 foreach (var hit in action.Value) {
                     
                     if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
-                        //Ici déclencher l'action
-                        Debug.Log($"HitHandlerService::HandleAttackInputPerformed - {inputType} - Set Action {hit.name}");
+                        //Ici enregistre une var l'action et sort de la loop
                         currentActionData = hit;
                         breakLoop = true;
                         break;
@@ -97,7 +100,7 @@ public class HitHandlerService : IGameSystem
 
         if (currentActionData.holdDuration == AttackHoldDuration.Full) { //Si l'action doit être pressé plus d'un demi temps et qu'on est en dehors du 3/4 de temps, alors on reset l'action
             currentActionData = null;
-            Debug.Log("HitHandlerService::HandleAttackInputCanceled - Attack Cancelled ");
+            Debug.Log("HitHandlerService::HandleAttackInputCanceled - Attack Cancelled");
         }
     }
     
@@ -105,15 +108,9 @@ public class HitHandlerService : IGameSystem
     #endregion
 
     AttackHoldDuration GetPossibleAttackOnBeat(BeatFractionType fractionType) {
-        if (fractionType == BeatFractionType.None)
+        if (fractionType is BeatFractionType.None or BeatFractionType.Full or BeatFractionType.FirstQuarter)
             return AttackHoldDuration.Full;
-        if (fractionType == BeatFractionType.Full)
-            return AttackHoldDuration.Full;
-        if (fractionType == BeatFractionType.FirstQuarter)
-            return AttackHoldDuration.Full;
-        if (fractionType == BeatFractionType.Half)
-            return AttackHoldDuration.Half;
-        if (fractionType == BeatFractionType.ThirdQuarter)
+        if (fractionType is BeatFractionType.Half or BeatFractionType.ThirdQuarter)
             return AttackHoldDuration.Half;
         
         return AttackHoldDuration.None;
@@ -127,7 +124,8 @@ public class HitHandlerService : IGameSystem
                 return BeatFractionType.Full;
             if (_beatSyncService.timelineInfo.currentQuarterBeat == 1)
                 return BeatFractionType.FirstQuarter;
-        }else if (_beatSyncService.timelineInfo.currentHalfBeat == 1) {
+        }
+        else if (_beatSyncService.timelineInfo.currentHalfBeat == 1) {
             if(_beatSyncService.timelineInfo.currentQuarterBeat == 0)
                 return BeatFractionType.Half;
             if (_beatSyncService.timelineInfo.currentQuarterBeat == 1)

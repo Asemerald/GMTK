@@ -11,6 +11,7 @@ public class SO_ActionData : ScriptableObject
     public List<SO_ActionData> counterActions; // Enemy actions that can counter this action
     public float inputBufferTime = 0.3f;
     public AttackHoldDuration holdDuration;
+    public bool CanExecuteOnHalfBeat = false;
     public float damageAmount;
     public int cooldown;
 
