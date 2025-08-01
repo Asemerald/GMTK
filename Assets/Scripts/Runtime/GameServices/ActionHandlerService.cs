@@ -126,6 +126,18 @@ namespace Runtime.GameServices {
                 Debug.Log("ActionHandlerService::PerformActionOnQuarterBeat - Dodge");
                 ExecuteAction();
             }
+            else if (fractionType is BeatFractionType.Half) { // Demi temps
+                if(_waitForNextBeat) return;
+                
+                if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
+                    ExecuteAction();
+            }
+            else { //Temps plein
+                if (!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui execute sur un temps plein
+                    ExecuteAction();
+                
+                _waitForNextBeat = false;
+            }
         }
 
         void ExecuteAction() { //Se charge d'exécuter l'action
