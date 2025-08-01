@@ -1,17 +1,17 @@
-﻿using UnityEngine;
+﻿using FMODUnity;
+using UnityEngine;
 
 namespace Runtime.ScriptableObject
 {
-    [CreateAssetMenu(menuName = "Game/Feedback", fileName = "Feedback_")]
+    [CreateAssetMenu(menuName = "Feedback/ActionFeedback")]
     public class SO_FeedbackData : UnityEngine.ScriptableObject
     {
-        public FeedbackTarget target;
+        [Header("Feedback Settings")] public AnimationClip animationClip;
+        public EventReference? soundEffect;
+        public GameObject particlePrefab;
         public FeedbackSide side;
-        public FeedbackType feedbackType;
-
-        [Header("Animation")] public string animationTrigger;
-
-        [Header("Particles")] public ParticleSystem particlePrefab;
+        public FeedbackTarget target;
+        public Color colorTint;
     }
 
     public enum FeedbackTarget
@@ -23,15 +23,7 @@ namespace Runtime.ScriptableObject
     public enum FeedbackSide
     {
         Left,
-        Right
-    }
-
-    public enum FeedbackType
-    {
-        // A voir si on en a vraiment besoin parce qu sah jsp quoi en faire
-        Punch,
-        Block,
-        Hit,
-        Parry
+        Right,
+        Center
     }
 }

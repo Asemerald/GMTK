@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Runtime.Enums;
+using Runtime.ScriptableObject;
 
 [CreateAssetMenu(menuName = "Action")]
 public class SO_ActionData : ScriptableObject
@@ -15,6 +16,5 @@ public class SO_ActionData : ScriptableObject
     public float damageAmount;
     public int cooldown;
 
-    [Header("Feedback")] public AnimationClip animation;
-    public AudioClip soundEffect;
+    [Header("Feedback")] public SO_FeedbackData feedbackData;
 }

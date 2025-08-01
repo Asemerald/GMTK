@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Runtime.GameServices.Interfaces;
+using UnityEngine;
 
 namespace Runtime.GameServices
 {
@@ -21,26 +22,33 @@ namespace Runtime.GameServices
 
         public void Initialize()
         {
-            foreach (var system in systems.Values)
+            try
             {
-                system.Initialize();
+                foreach (var system in systems.Values) system.Initialize();
+                Debug.Log($"[GameSystems] Initialized {systems.Count} systems.");
+            }
+            catch (Exception e)
+            {
+                // Debug wich system failed to initialize
+                Debug.LogError($"[GameSystems] Initialization failed: {e.Message}");
+                foreach (var system in systems)
+                    if (system.Value == null)
+                        Debug.LogError($"[GameSystems] System {system.Key.Name} is null.");
+                    else
+                        Debug.Log($"[GameSystems] System {system.Key.Name} initialized successfully.");
+
+                throw;
             }
         }
 
         public void Tick()
         {
-            foreach (var system in systems.Values)
-            {
-                system.Tick();
-            }
+            foreach (var system in systems.Values) system.Tick();
         }
 
         public void Dispose()
         {
-            foreach (var system in systems.Values)
-            {
-                system.Dispose();
-            }
+            foreach (var system in systems.Values) system.Dispose();
             systems.Clear();
         }
     }
