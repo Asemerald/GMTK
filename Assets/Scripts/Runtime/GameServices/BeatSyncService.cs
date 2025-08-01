@@ -5,6 +5,7 @@ using FMOD.Studio;
 using FMODUnity;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace Runtime.GameServices
@@ -24,6 +25,7 @@ namespace Runtime.GameServices
         private int lastBar = -1;
         private string lastMarker = "";
 
+        private bool firstBeatInitialized;
         
         public event Action OnBeat;
         public event Action OnHalfBeat;
@@ -65,8 +67,20 @@ namespace Runtime.GameServices
 
         public void Tick()
         {
-            if (timelineInfo == null) return;
+            if (timelineInfo == null ) return;
 
+            if (!firstBeatInitialized)
+            {
+                if (timelineInfo.currentBeat == 1)
+                {
+                    firstBeatInitialized = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            
             // Check Marker
             string currentMarker = timelineInfo.lastMarker;
             if (currentMarker != lastMarker) {
@@ -76,6 +90,7 @@ namespace Runtime.GameServices
 
             // Check Beat
             var currentBeat = timelineInfo.currentBeat;
+            
             if (currentBeat != lastBeat) {
                 lastBeat = currentBeat;
                 OnBeat?.Invoke();
