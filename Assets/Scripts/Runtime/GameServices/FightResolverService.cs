@@ -1,4 +1,4 @@
-﻿using Runtime.GameServices.Interfaces;
+using Runtime.GameServices.Interfaces;
 
 namespace Runtime.GameServices {
     public class FightResolverService : IGameSystem {
