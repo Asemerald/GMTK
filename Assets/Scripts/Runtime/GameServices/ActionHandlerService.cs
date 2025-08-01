@@ -117,11 +117,27 @@ namespace Runtime.GameServices {
                 //_comboManager.LaunchCombo(comboAction); //Envoi le combo
                 Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
                 
-                foreach (var action in comboAction.comboActions) {
+                foreach (var action in comboAction.ComboActions) {
                     RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
                 }
                 _previousActions.Clear();
             }
+            LaunchCombo(comboAction);
+        }
+
+        private void LaunchCombo(SO_ComboData comboAction)
+        {
+            if (comboAction == null)
+                return;
+            
+            //_comboManager.LaunchCombo(comboAction); //Envoi le combo
+            Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
+                
+            foreach (var action in comboAction.ComboActions) { 
+                RegisterActionOnBeat(action, false, true);
+            }
+            _previousActions.Clear();
+        }
         }
     }
 }
