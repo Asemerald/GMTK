@@ -49,8 +49,8 @@ public class FeedbackService : IGameSystem
             return;
         }
 
-        if (feedback.animationClip != null)
-            _feedbackPlayer.PlayAnimation(feedback.side, feedback.target, feedback.animationClip);
+        if (feedback.animationTriggerName != null)
+            _feedbackPlayer.PlayAnimation(feedback.side, feedback.target, feedback.animationTriggerName);
 
         if (feedback.particlePrefab != null)
             _feedbackPlayer.PlayParticle(feedback.side, feedback.target, feedback.particlePrefab);
@@ -60,6 +60,9 @@ public class FeedbackService : IGameSystem
 
         if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
             _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
+
+        if (feedback.enableLensDistortion)
+            _feedbackPlayer.PlayDistortion(feedback);
     }
 
     public void Tick()

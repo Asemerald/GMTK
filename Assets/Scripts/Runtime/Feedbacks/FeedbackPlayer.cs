@@ -17,43 +17,61 @@ public class FeedbackPlayer : MonoBehaviour
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
 
-    internal Volume GlobalVolume;
-    private ColorAdjustments _colorAdjustments;
+    private Volume globalVolume;
+    private ColorAdjustments colorAdjustments;
+    private LensDistortion lensDistortion;
 
     [Header("DEBUG")] [SerializeField] private SO_FeedbackData _feedbackDebugData;
+    [SerializeField] private Volume debugGlobalVolume;
 
     internal void Initialize(Volume globalVolume = null)
     {
-        GlobalVolume = globalVolume ?? FindObjectOfType<Volume>();
-        if (GlobalVolume == null)
+        this.globalVolume = globalVolume ?? FindObjectOfType<Volume>();
+        if (this.globalVolume == null)
         {
             Debug.LogError("Global Volume not found in the scene. Please ensure a Volume component is present.");
             return;
         }
-        
+
         InitializeColorAdjustments();
+        InitializeLensDistortion();
     }
 
     private void InitializeColorAdjustments()
     {
-        if (GlobalVolume.profile.TryGet(out _colorAdjustments))
+        if (globalVolume.profile.TryGet(out colorAdjustments))
         {
             Debug.Log("ColorAdjustments found in Global Volume profile.");
         }
         else
         {
             Debug.LogWarning("ColorAdjustments not found in Global Volume profile. Hue shift feedback will not work.");
-            _colorAdjustments = null;
+            colorAdjustments = null;
         }
     }
 
-    public void PlayAnimation(FeedbackSide side, FeedbackTarget target, AnimationClip clip)
+    private void InitializeLensDistortion()
+    {
+        if (globalVolume.profile.TryGet(out lensDistortion))
+        {
+            Debug.Log("LensDistortion found in Global Volume profile.");
+        }
+        else
+        {
+            Debug.LogWarning("LensDistortion not found in Global Volume profile. Distortion feedback will not work.");
+            lensDistortion = null;
+        }
+    }
+
+
+    public void PlayAnimation(FeedbackSide side, FeedbackTarget target, string animationTriggerName)
     {
         var animator = GetAnimator(target);
-        if (animator == null || clip == null) return;
+        if (animator == null || animationTriggerName == null) return;
 
-        animator.Play(clip.name);
+        animator.SetTrigger(animationTriggerName);
     }
+    
 
 
     public void PlayParticle(FeedbackSide side, FeedbackTarget target, GameObject particlePrefab)
@@ -79,7 +97,7 @@ public class FeedbackPlayer : MonoBehaviour
 
     public void PlayHueShift(HUEShiftValue data)
     {
-        if (_colorAdjustments == null)
+        if (colorAdjustments == null)
             return;
         if (data == HUEShiftValue.None)
         {
@@ -88,7 +106,62 @@ public class FeedbackPlayer : MonoBehaviour
         }
 
         var targetValue = HuePresetToFloat(data);
-        _colorAdjustments.hueShift.value = targetValue;
+        colorAdjustments.hueShift.value = targetValue;
+    }
+
+    public void PlayDistortion(SO_FeedbackData feedbackData)
+    {
+        if (lensDistortion == null)
+        {
+            Debug.LogWarning(
+                "[FeedbackPlayer] LensDistortion not found in Global Volume profile. Distortion feedback will not work.");
+            return;
+        }
+
+        StartCoroutine(ApplyLensDistortion(
+            feedbackData.targetIntensity,
+            feedbackData.timeToTargetIntensity,
+            feedbackData.timeAtTargetIntensity,
+            feedbackData.timeToBaseIntensity));
+    }
+
+    private IEnumerator ApplyLensDistortion(float targetIntensity, float duration, float TimeAtTarget, float timeToZero)
+    {
+        // Ensure the lens distortion effect is enabled, then go to the target intensity in duration seconds, then back to zero in timeToZero seconds.
+        if (lensDistortion == null)
+        {
+            Debug.LogWarning(
+                "[FeedbackPlayer] LensDistortion not found in Global Volume profile. Distortion feedback will not work.");
+            yield break;
+        }
+
+        //lensDistortion.intensity.Override(targetIntensity);
+        var elapsedTime = 0f;
+        var initialIntensity = lensDistortion.intensity.value;
+
+        // Increase intensity to target
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            var t = Mathf.Clamp01(elapsedTime / duration);
+            lensDistortion.intensity.value = Mathf.Lerp(initialIntensity, targetIntensity, t);
+            yield return null;
+        }
+
+        // Wait for a moment at target intensity
+        yield return new WaitForSeconds(TimeAtTarget);
+        // Decrease intensity back to zero
+        elapsedTime = 0f;
+        while (elapsedTime < timeToZero)
+        {
+            elapsedTime += Time.deltaTime;
+            var t = Mathf.Clamp01(elapsedTime / timeToZero);
+            lensDistortion.intensity.value = Mathf.Lerp(targetIntensity, 0f, t);
+            yield return null;
+        }
+
+        // Ensure intensity is set to zero at the end
+        lensDistortion.intensity.value = 0f;
     }
 
 
@@ -131,12 +204,21 @@ public class FeedbackPlayer : MonoBehaviour
         };
     }
 
+    #region Debug Methods
+
 #if UNITY_EDITOR
     [ContextMenu("Test Tint Color")]
     private void TestTintColor()
     {
-        Initialize();
         PlayHueShift(_feedbackDebugData.hueShiftData); // Juste un exemple pour tester
     }
+
+    [ContextMenu("Test Lens Distortion")]
+    private void TestLensDistortion()
+    {
+        PlayDistortion(_feedbackDebugData);
+    }
 #endif
+
+    #endregion
 }

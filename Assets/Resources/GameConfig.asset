@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184855dde03547e1877d4da4e46c9577, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 0}
+  hitEffectPrefab: {fileID: 0}
+  FeedbackPlayerPrefab: {fileID: 5271250769774440327, guid: a521f5748840c4e46a177d3a7904115e, type: 3}
+  volumePrefab: {fileID: 8421319791881344145, guid: c2b62345713e559449dfb3aa2b1b5899, type: 3}
   gameMusic:
     Guid:
       Data1: -2052988494
