@@ -30,8 +30,7 @@ public class FeedbackPlayer : MonoBehaviour
             Debug.LogError("Global Volume not found in the scene. Please ensure a Volume component is present.");
             return;
         }
-
-        // Try to get ColorAdjustments from the Global Volume profile
+        
         InitializeColorAdjustments();
     }
 
@@ -44,7 +43,7 @@ public class FeedbackPlayer : MonoBehaviour
         else
         {
             Debug.LogWarning("ColorAdjustments not found in Global Volume profile. Hue shift feedback will not work.");
-            _colorAdjustments = null; // Set to null if not found
+            _colorAdjustments = null;
         }
     }
 
@@ -59,7 +58,6 @@ public class FeedbackPlayer : MonoBehaviour
 
     public void PlayParticle(FeedbackSide side, FeedbackTarget target, GameObject particlePrefab)
     {
-        // If you use prefab instantiation
         if (particlePrefab != null)
         {
             var spawnPosition = GetImpactPosition(side, target);
@@ -116,7 +114,6 @@ public class FeedbackPlayer : MonoBehaviour
 
     private Vector3 GetImpactPosition(FeedbackSide side, FeedbackTarget target)
     {
-        // Juste un exemple générique — à adapter selon ta scène
         var baseTransform = target == FeedbackTarget.Player ? playerAnimator.transform : enemyAnimator.transform;
         var offset = side == FeedbackSide.Left ? Vector3.left : Vector3.right;
         return baseTransform.position + offset * 0.5f;
