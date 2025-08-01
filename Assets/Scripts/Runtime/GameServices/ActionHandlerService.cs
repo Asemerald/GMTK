@@ -148,6 +148,15 @@ namespace Runtime.GameServices {
                 ExecuteAction();
             }
         }
+        
+        void PerformActionOnQuarterBeat() { //S'exécute sur chaque Demi Temps
+            if (_actionQueue.Count <= 0) return;
+
+            if (_actionQueue.Peek().Item1.dodgeAction) {
+                Debug.Log("ActionHandlerService::PerformActionOnQuarterBeat - Dodge");
+                ExecuteAction();
+            }
+        }
 
         void ExecuteAction() { //Se charge d'exécuter l'action
             var item = _actionQueue.Dequeue();
