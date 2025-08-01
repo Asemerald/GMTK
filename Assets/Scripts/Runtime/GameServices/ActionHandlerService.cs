@@ -149,6 +149,5 @@ namespace Runtime.GameServices {
             }
             _previousActions.Clear();
         }
-        }
     }
 }
