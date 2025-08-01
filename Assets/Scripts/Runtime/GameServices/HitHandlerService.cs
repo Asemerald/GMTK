@@ -116,6 +116,7 @@ public class HitHandlerService : IGameSystem
         return AttackHoldDuration.None;
     }
     
+    
     //Fonction pour aller chercher la mesure
     BeatFractionType GetBeatFraction() {
         
