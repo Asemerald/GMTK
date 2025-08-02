@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
 
+/*
+ * Script qui gère le fonctionnement de l'IA - De comment les actions sont choisi
+ *
+ */
+
 namespace Runtime.GameServices {
     public class AIService : IGameSystem{
 
