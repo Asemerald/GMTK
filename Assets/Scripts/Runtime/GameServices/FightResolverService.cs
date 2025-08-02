@@ -12,11 +12,14 @@ namespace Runtime.GameServices {
         
         private GameSystems _gameSystems;
         private FeedbackService _feedbackService;
+        private BeatSyncService _beatSyncService;
         
         SO_ActionData aiAction;
         SO_ActionData playerAction;
         
         float timer = 0;
+        
+        bool compareCalled = false;
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
@@ -29,19 +32,29 @@ namespace Runtime.GameServices {
         public void Initialize() 
         {
             _feedbackService = _gameSystems.Get<FeedbackService>();
+            _beatSyncService = _gameSystems.Get<BeatSyncService>();
+
+            _beatSyncService.OnBeat += CallCompareEvent;
+            _beatSyncService.OnHalfBeat += CallCompareEvent;
+            _beatSyncService.OnQuarterBeat += CallCompareEvent;
+
         }
 
         public void Tick() {
-            /*if(aiAction && playerAction) //Modifier pour ajouter un délai d'attente pour vérifier si il va avoir une action de l'IA et du joueur ou juste d'un des deux
-                CompareAction();*/
+            if(compareCalled)
+                StartBuffer();
         }
 
+        void CallCompareEvent() {
+            compareCalled = true;
+        }
+        
         void StartBuffer() {
             if(playerAction && aiAction)
                 CompareAction();
             else if (aiAction || playerAction) {
                 timer += Time.deltaTime;
-                if (timer >= 0.15f) {
+                if (timer >= 0.1f) {
                     CompareAction();
                 }
             }
@@ -57,9 +70,11 @@ namespace Runtime.GameServices {
 
         void CompareAction() {
             //Stocker en local peut-être ?
-            
+            compareCalled = false;
             if (timer > 0)
                 timer = 0;
+            
+            Debug.Log("FightResolverService::CompareAction");
             
             var playerActionType = playerAction.actionType;
             var aiActionType = aiAction.actionType;
