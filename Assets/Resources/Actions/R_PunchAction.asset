@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: Uppercut droit
+  m_Name: R_PunchAction
   m_EditorClassIdentifier: 
-  actionName: Uppercut droit
-  inputsRequired:
-  - inputName: 
-    actionType: 1
+  actionName: 
+  actionType: 0
+  inputsRequired: []
   counterActions: []
-  inputBufferTime: 0.3
-  holdDuration: 2
+  holdDuration: 0
+  CanExecuteOnHalfBeat: 0
   damageAmount: 0
   cooldown: 0
-  animation: {fileID: 0}
-  soundEffect: {fileID: 0}
+  feedbackData: {fileID: 0}

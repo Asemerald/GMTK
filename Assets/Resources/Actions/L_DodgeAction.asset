@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: Direct gauche
+  m_Name: L_DodgeAction
   m_EditorClassIdentifier: 
-  actionName: Direct gauche
+  actionName: L_Dodge
+  actionType: 2
   inputsRequired:
-  - inputName: 
-    actionType: 2
+  - actionType: 6
   counterActions: []
-  inputBufferTime: 0.3
-  holdDuration: 1
+  holdDuration: 0
+  CanExecuteOnHalfBeat: 1
   damageAmount: 0
   cooldown: 0
-  animation: {fileID: 0}
-  soundEffect: {fileID: 0}
+  feedbackData: {fileID: 11400000, guid: f5678a44d8eda0b4aa9b74ace392495c, type: 2}

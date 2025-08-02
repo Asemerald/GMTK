@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: Direct droit
+  m_Name: _ParryAction
   m_EditorClassIdentifier: 
-  actionName: Direct droit
+  actionName: Parry
+  actionType: 1
   inputsRequired:
   - inputName: 
-    actionType: 1
+    actionType: 7
   counterActions: []
-  inputBufferTime: 0.3
-  holdDuration: 1
+  holdDuration: 0
+  CanExecuteOnHalfBeat: 1
   damageAmount: 0
   cooldown: 0
-  animation: {fileID: 0}
-  soundEffect: {fileID: 0}
+  feedbackData: {fileID: 0}

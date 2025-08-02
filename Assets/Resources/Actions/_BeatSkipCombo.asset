@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
-  m_Name: Parry
+  m_Name: _BeatSkipCombo
   m_EditorClassIdentifier: 
-  actionName: Parry
-  actionType: 1
+  actionName: BeatSkip Combo
+  actionType: 3
   inputsRequired:
   - inputName: 
-    actionType: 7
+    actionType: 0
   counterActions: []
   holdDuration: 0
-  CanExecuteOnHalfBeat: 1
+  CanExecuteOnHalfBeat: 0
   damageAmount: 0
   cooldown: 0
   feedbackData: {fileID: 0}
