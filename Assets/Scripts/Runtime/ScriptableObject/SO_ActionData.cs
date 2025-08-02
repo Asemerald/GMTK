@@ -11,7 +11,6 @@ public class SO_ActionData : ScriptableObject
     public string actionName;
     public ActionType actionType;
     public List<InputReference> inputsRequired;
-    public float inputBufferTime = 0.3f;
     public List<SO_ActionData> counterActions;
     public AttackHoldDuration holdDuration;
     public bool CanExecuteOnHalfBeat = false;
@@ -21,6 +20,5 @@ public class SO_ActionData : ScriptableObject
     public int cooldown;
 
     [Header("Feedback")] 
-    public SO_FeedbackData feedbackDataSuccess;
-    public SO_FeedbackData feedbackDataFail;
+    public SO_FeedbackData feedbackData;
 }
