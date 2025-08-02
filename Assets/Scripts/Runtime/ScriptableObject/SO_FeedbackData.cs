@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using UnityEngine;
 
 namespace Runtime.ScriptableObject
@@ -60,12 +60,6 @@ namespace Runtime.ScriptableObject
         Left,
         Right,
         Center
-    }
-
-    public enum HUEShiftValue
-    {
-        None,
-        Zero
     }
     
     public enum ActionCallbackType
