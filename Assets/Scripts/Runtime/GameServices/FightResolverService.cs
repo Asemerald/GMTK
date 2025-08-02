@@ -5,7 +5,7 @@ using UnityEngine;
 
 /*
  * Ce script se charge de récupérer les inputs de l'IA et du joeur sur un temps
- * et de les comparer pour par la suite executé / mettre a jour l'état du joueur / de l'IA
+ * et de les comparer pour par la suite executé / metre a jour l'état du joueur / de l'IAt
  */
 
 namespace Runtime.GameServices {

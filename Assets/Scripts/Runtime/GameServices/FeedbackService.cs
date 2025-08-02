@@ -94,6 +94,8 @@ public class FeedbackService : IGameSystem
         {
             _feedbackPlayer.PlaySound(feedback.soundEffect);
         }
+        
+        //TODO particles Instantiation
     }
     
     private void FeedbackToDoOnBlock(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
@@ -138,11 +140,7 @@ public class FeedbackService : IGameSystem
             return;
         }
 
-        /*if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
-            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
-
-        if (feedback.enableLensDistortion)
-            _feedbackPlayer.PlayDistortion(feedback);*/
+       
     }
 
     private void FeedbackToDoEachBar(SO_FeedbackData feedback)
@@ -152,12 +150,7 @@ public class FeedbackService : IGameSystem
             Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
-
-        /*if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
-            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
-
-        if (feedback.enableLensDistortion)
-            _feedbackPlayer.PlayDistortion(feedback);*/
+        
     }
 
 
