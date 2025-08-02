@@ -84,8 +84,10 @@ namespace Runtime.GameServices {
             }
             
             if(!canCounter && _playerActionHandler._previousActions.Count > 0) //Check si l'IA peut counter
-                if(_playerActionHandler._previousActions[^1].actionType is ActionType.Counter) //Si la dernière action joueur est un counter alors l'IA débloque le counter
+                if (_playerActionHandler._previousActions[^1].actionType is
+                    ActionType.Counter) //Si la dernière action joueur est un counter alors l'IA débloque le counter
                     canCounter = true;
+                
             
             if (_aiActionHandler._actionQueue.Count <= 0 && !_aiActionHandler._inCombo) { //Lorsque l'IA n'a aucune action de prise et n'effectue pas un combo → Prend l'action de roll une action
                 if (_beatSyncService.GetBeatFraction() is BeatFractionType.FirstQuarter) { //Prend une action sur le premier quart de temps
@@ -98,9 +100,11 @@ namespace Runtime.GameServices {
             hasRolled = true;
             if (_playerActionHandler._actionQueue.Count <= 0) { //Si le joueur n'a aucune action en queue
                 if (_aiActionHandler._previousActions.Count > 0) {//Check si l'IA a réalisé une esquive précédemment
-                    if (_aiActionHandler._previousActions[^1].actionType is ActionType.Dodge && RollAction(_aiConfig.chanceOfCounter)) {
+                    if (_aiActionHandler._previousActions[^1].actionType is ActionType.Dodge && RollAction(_aiConfig.chanceOfCounter))
                         _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Counter), false);
-                    }        
+                    else if (RollAction(_aiConfig.chanceOfAttack)) //si le roll réussi -> sort une attaque
+                        RolledAttack();
+                    
                 }
                 else if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
                     RolledAttack();

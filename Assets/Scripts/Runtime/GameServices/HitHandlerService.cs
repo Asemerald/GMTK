@@ -71,7 +71,7 @@ public class HitHandlerService : IGameSystem
         
         if(_beatSyncService.GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
 
-        if(inputType is InputType.DodgeLeft or InputType.DodgeRight or InputType.Parry) {
+        if(inputType is (InputType.DodgeLeft or InputType.DodgeRight or InputType.Parry)) {
             foreach (var action in _actionDatabase.ActionDatas) {
                 var breakLoop = false;
             
@@ -89,7 +89,7 @@ public class HitHandlerService : IGameSystem
                     break;
             }
         }
-        else { //Fonction de tri pour obtenir un counter
+        else if(inputType is InputType.Left or InputType.Right){
             if (_actionHandlerService._previousActions.Count > 0) {
                 var performCounter = false;
                 if (_actionHandlerService._previousActions[^1].actionType == ActionType.Dodge) {
@@ -141,7 +141,7 @@ public class HitHandlerService : IGameSystem
     #region ActionCanceled
 
     void HandleInputCanceled(InputType inputType) {
-        if(inputType is InputType.Right or InputType.Left or InputType.Down or InputType.Up)
+        if(inputType is InputType.Right or InputType.Left)
             HandleAttackInputCanceled();
     }
 

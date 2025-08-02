@@ -99,8 +99,6 @@ namespace Runtime.GameServices {
         }
 
         void ExecuteAction() { //Se charge d'exécuter l'action
-            Debug.Log("ActionHandlerService::ExecuteAction - " + (_isAI ? "AI" : "Player"));
-            
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
             

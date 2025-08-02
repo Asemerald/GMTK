@@ -51,7 +51,7 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += CallCompareEvent;
             _beatSyncService.OnHalfBeat += CallCompareEvent;
-            _beatSyncService.OnQuarterBeat += CallCompareEvent;
+            //_beatSyncService.OnQuarterBeat += CallCompareEvent;
 
             _beatSyncService.OnBeat += StartAiTimer;
             _beatSyncService.OnBeat += StartPlayerTimer;
@@ -66,11 +66,11 @@ namespace Runtime.GameServices {
                 StartBuffer();
 
             if (playerTimerRunning) {
-                timer -= Time.deltaTime;
+                playerTimer -= Time.deltaTime;
             }
 
             if (aiTimerRunning) {
-                timer -= Time.deltaTime;
+                aiTimer -= Time.deltaTime;
             }
         }
 
@@ -79,10 +79,11 @@ namespace Runtime.GameServices {
         }
         
         void StartBuffer() {
-            if(playerAction && aiAction)
+            timer += Time.deltaTime;
+            
+            if(playerAction != null && aiAction != null)
                 CompareAction();
-            else if (aiAction || playerAction) {
-                timer += Time.deltaTime;
+            else if (aiAction != null || playerAction != null) {
                 if (timer >= 0.1f) {
                     CompareAction();
                 }
@@ -104,6 +105,7 @@ namespace Runtime.GameServices {
                 timer = 0;
             
             Debug.Log("FightResolverService::CompareAction");
+            
             var playerActionType = ActionType.Empty;
             var aiActionType = ActionType.Empty;
 
@@ -339,7 +341,7 @@ namespace Runtime.GameServices {
                     }
                     break;                                           
                 case (ActionType.Combo, ActionType.Combo):                                              //Situation Impossible
-                    Debug.LogError("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    Debug.LogWarning("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
                     _gameSystems.TriggerComboMode(false);
                     break;                                            
                 case (ActionType.Combo, ActionType.Empty):                                              //Le joueur execute un combo et l'IA ne fait rien
@@ -433,28 +435,37 @@ namespace Runtime.GameServices {
             return aiTimer > 0;
         }
 
-        void ResolveAction(SO_ActionData playerFinalAction,bool playerSuccess, SO_ActionData iaFinalAction,bool iaSuccess )
-        {
-            ApplyAction(playerFinalAction, playerSuccess, true, iaFinalAction);
-            ApplyAction(iaFinalAction, iaSuccess, false, playerFinalAction);
+        void ResolveAction(SO_ActionData playerFinalAction,bool playerSuccess, SO_ActionData iaFinalAction,bool iaSuccess ) {
+            ActionType ia = ActionType.Empty;
+            if(iaFinalAction != null)
+                ia = iaFinalAction.actionType;
+            
+            ActionType player = ActionType.Empty;
+            if(playerFinalAction != null)
+                player = playerFinalAction.actionType;
+            
+            if(playerFinalAction != null)
+                ApplyAction(playerFinalAction, playerSuccess, true, ia);
+            if(iaFinalAction != null)
+                ApplyAction(iaFinalAction, iaSuccess, false, player);
         }
         
-        void ApplyAction(SO_ActionData action, bool success, bool isPlayer, SO_ActionData opponentAction)
+        void ApplyAction(SO_ActionData action, bool success, bool isPlayer, ActionType opponentAction)
         {
             if (success)
             {
                 switch (action.actionType)
                 {
                     case ActionType.Attack:
-                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction.actionType == ActionType.Parry,false);
-                        if (opponentAction.actionType == ActionType.Combo)
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false);
+                        if (opponentAction == ActionType.Combo)
                         {
                             ApplyDamages(action.holdDuration, !isPlayer, false,true); // stun son adversaire, ne doit pas s'activer si l'advenrsaire n'a pas raté son combo
                         }
                         break;
                     
                     case ActionType.Combo:
-                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction.actionType == ActionType.Parry,false);
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false);
                         break;
 
                     case ActionType.Parry:
