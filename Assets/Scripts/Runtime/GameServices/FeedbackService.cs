@@ -42,6 +42,8 @@ public class FeedbackService : IGameSystem
             return;
         }
         
+        Debug.LogWarning("FeedbackService: PlayFeedback");
+        
         switch (callbackType)
         {
             case ActionCallbackType.OnStart:
@@ -85,6 +87,8 @@ public class FeedbackService : IGameSystem
             return;
         }
 
+        Debug.LogWarning("FeedbackService: Feedback Success");
+        
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
@@ -105,6 +109,8 @@ public class FeedbackService : IGameSystem
             Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
+        
+        Debug.LogWarning("FeedbackService: Block Feedback");
 
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
@@ -125,6 +131,7 @@ public class FeedbackService : IGameSystem
             return;
         }
 
+        Debug.LogWarning("FeedbackService: Failed Feedback");
         if (feedback.animationFailTriggerName != string.Empty)
         {
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationFailTriggerName);
@@ -158,7 +165,7 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            //Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
 
@@ -169,7 +176,7 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            //Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
         
