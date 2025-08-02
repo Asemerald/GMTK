@@ -1,5 +1,6 @@
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
+using Runtime.ScriptableObject;
 using UnityEngine;
 
 /*
@@ -75,12 +76,23 @@ namespace Runtime.GameServices {
                 timer = 0;
             
             Debug.Log("FightResolverService::CompareAction");
+            var playerActionType = ActionType.Empty;
+            var aiActionType = ActionType.Empty;
+
+            SO_FeedbackData playerFeedback = null; // par défaut anim réussie
+            SO_FeedbackData aiFeedback = null;     // par defaut anim réussie
             
-            var playerActionType = playerAction.actionType;
-            var aiActionType = aiAction.actionType;
+            if (playerAction != null) {
+                playerActionType = playerAction.actionType;
+                playerFeedback = playerAction.feedbackDataSuccess;
+            }
+
+            if (aiAction != null) {
+                aiActionType = aiAction.actionType;
+                aiFeedback = aiAction.feedbackDataSuccess;
+            }
             
-            var playerFeedback = playerAction.feedbackDataSuccess; // par défaut anim réussie
-            var aiFeedback = aiAction.feedbackDataSuccess;          // par defaut anim réussie
+            
 
             switch (playerActionType, aiActionType)
             {
