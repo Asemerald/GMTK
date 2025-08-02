@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b65d1098a6abd646834cad858a3ef42, type: 3}
+  m_Name: ComboL3D3
+  m_EditorClassIdentifier: 
+  openingAction: {fileID: 11400000, guid: 733e6759e78d4334a97986a97b0823f0, type: 2}
+  confirmationAction: {fileID: 11400000, guid: 514a81be93c5c1948950a13e8ddf3b94, type: 2}
+  comboActions:
+  - {fileID: 11400000, guid: 4a500848b9a8ddc41afb6dd3f50ebef9, type: 2}
+  - {fileID: 11400000, guid: d1f10db86005e9f48a19db08919f807d, type: 2}
+  - {fileID: 11400000, guid: 4a500848b9a8ddc41afb6dd3f50ebef9, type: 2}
+  - {fileID: 11400000, guid: 55272a499a0d6a0449883aa53d40f480, type: 2}
+  UnlockPattern: {fileID: 0}
