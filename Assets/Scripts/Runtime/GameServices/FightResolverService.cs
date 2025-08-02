@@ -148,6 +148,7 @@ namespace Runtime.GameServices {
                         aiFeedback = aiAction.feedbackDataFail;
                         if (ActionCounters(playerAction, aiAction) )                                                        // SI le joueur effectue l'attaque miroir                 
                         {
+                            _gameSystems.TriggerComboMode(false);
                             ResolveAction(playerAction,true,aiAction,false);                // Le joueur STUN l'IA et la sort de son combo
                         }
                         else                                                                                                            // le joueur fait la mauvaise attaque
@@ -172,8 +173,16 @@ namespace Runtime.GameServices {
                 case (ActionType.Parry, ActionType.Dodge):                                              // Le joueur pare et l'IA esquive
                     ResolveAction(playerAction,true,aiAction,true);
                     break;                                           
-                case (ActionType.Parry, ActionType.Combo):
-                    aiFeedback = aiAction.feedbackDataFail;
+                case (ActionType.Parry, ActionType.Combo):                                              // Le joueur pare un coup de l'IA qui effectue un combo
+                    if (ComboInputSuccess())                                                                                    //L'IA réussit son combo
+                    {
+                        ResolveAction(playerAction,true,aiAction,true);             //Résultat : L'IA réussit son coup et le joueur le pare
+                    }
+                    else
+                    {
+                        aiFeedback = aiAction.feedbackDataFail;
+                        ResolveAction(playerAction,true,aiAction,false); 
+                    }
                     break;
                 case (ActionType.Parry, ActionType.Empty):                                              //Le joueur pare et l'IA fait rien
                     ResolveAction(playerAction,true,aiAction,true);
@@ -193,12 +202,27 @@ namespace Runtime.GameServices {
                 case (ActionType.Dodge, ActionType.Parry):                                              // Le joueur esquive et l'IA pare
                     ResolveAction(playerAction,true,aiAction,true);
                     break;
-                case (ActionType.Dodge, ActionType.Dodge):
-                    ResolveAction(playerAction,true,aiAction,true);                 // Le joueur esquive et l'IA esquive
+                case (ActionType.Dodge, ActionType.Dodge):                                              // Le joueur esquive et l'IA esquive
+                    ResolveAction(playerAction,true,aiAction,true);                
                     break;
-                case (ActionType.Dodge, ActionType.Combo):
-                    aiFeedback = aiAction.feedbackDataFail;
-                    break;
+                case (ActionType.Dodge, ActionType.Combo):                                              // Le joueur esquive un coup de l'IA qui effectue un combo
+                    if (ComboInputSuccess())                                                                                    //L'IA réussit son combo
+                    {
+                        if (ActionCounters(playerAction, aiAction))                                                 // Si c'est la bonne esquive
+                        {
+                            ResolveAction(playerAction,true,aiAction,false);        //Résultat : L'IA réussit son coup et le joueur l'esquive
+                        }
+                        else
+                        {
+                            ResolveAction(playerAction,false,aiAction,true);        //Résultat : L'IA réussit son coup et le joueur se le prend
+                        } 
+                    }
+                    else
+                    {
+                        aiFeedback = aiAction.feedbackDataFail;
+                        ResolveAction(playerAction,true,aiAction,false); 
+                    }
+                    break;                                                  
                 case (ActionType.Dodge, ActionType.Empty):                                              //Le joueur esquive et l'IA fait rien
                     ResolveAction(playerAction,true,aiAction,true);                     
                     break;
@@ -260,8 +284,16 @@ namespace Runtime.GameServices {
                 case (ActionType.Empty, ActionType.Dodge):                                              //Le joueur fait rien et l'IA esquive
                     ResolveAction(playerAction,true,aiAction,true);
                     break;
-                case (ActionType.Empty, ActionType.Combo):
-                    aiFeedback = aiAction.feedbackDataFail;
+                case (ActionType.Empty, ActionType.Combo):                                              // Le joueur fait rien et l'IA effectue un combo
+                    if (ComboInputSuccess())                                                                                    //L'IA réussit son combo
+                    {
+                        ResolveAction(playerAction,true,aiAction,true);             //Résultat : L'IA réussit son coup et le joueur se le prend
+                    }
+                    else
+                    {
+                        aiFeedback = aiAction.feedbackDataFail;
+                        ResolveAction(playerAction,true,aiAction,false);            //Résultat : L'IA rate son coup et le joueur ne fait rien
+                    }
                     break;
                 case (ActionType.Empty, ActionType.Empty):                                              // Le joueur ne fait rien et l'IA ne fait rien
                     break;
