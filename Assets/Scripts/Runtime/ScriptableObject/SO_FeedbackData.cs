@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using UnityEngine;
 
 namespace Runtime.ScriptableObject
