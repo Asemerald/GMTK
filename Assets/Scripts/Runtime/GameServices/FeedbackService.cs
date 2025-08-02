@@ -26,7 +26,7 @@ public class FeedbackService : IGameSystem
         _feedbackPlayer.Initialize();
     }
 
-    public void PlayActionFeedback(SO_FeedbackData feedback)
+    public void PlayActionFeedback(SO_FeedbackData feedback, bool playerFeedback)
     {
         if (feedback == null)
         {
