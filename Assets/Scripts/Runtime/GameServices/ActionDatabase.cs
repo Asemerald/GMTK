@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using Runtime.ScriptableObject;
 using UnityEngine;
@@ -42,7 +43,7 @@ public class ActionDatabase : IGameSystem
         
         foreach (var data in allActions)
         {
-            if (data.inputsRequired.Count == 0|| data.isComboAction) {
+            if (data.inputsRequired.Count == 0|| data.actionType==ActionType.Combo) {
                 Debug.LogWarning("ActionDatabase::LoadFromResources: No Inputs Required Detected in " + data.name);
                 continue;
             }
