@@ -119,6 +119,7 @@ namespace Runtime.GameServices {
             
         }
 
+        
         void RolledAttack() {
             if (RollAction(_aiConfig.chanceOfExecutingCombo) && _unlockedPatterns.Count > 0) {
                 var randomIndex = Random.Range(0, _unlockedPatterns.Count);
