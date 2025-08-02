@@ -12,13 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d1e783016124395947227a46b065669, type: 3}
   m_Name: TestFeedbackData
   m_EditorClassIdentifier: 
-  animationClip: {fileID: 0}
-  particlePrefab: {fileID: 0}
+  startAnimationName: 
+  animationSuccessTriggerName: 
+  animationFailTriggerName: 
   side: 0
-  target: 0
-  hueShiftData: 0
-  enableLensDistortion: 1
-  targetIntensity: 0.5
-  timeToTargetIntensity: 0.1
-  timeAtTargetIntensity: 0.3
-  timeToBaseIntensity: 0.8
+  successEnableLensDistortion: 0
+  successTargetIntensity: 0
+  successTimeToTargetIntensity: 0.5
+  successTimeAtTargetIntensity: 0.5
+  successTimeToBaseIntensity: 0.5
+  parryEnableLensDistortion: 0
+  parryTargetIntensity: 0
+  parryTimeToTargetIntensity: 0.5
+  parryTimeAtTargetIntensity: 0.5
+  parryTimeToBaseIntensity: 0.5
+  failEnableLensDistortion: 0
+  failTargetIntensity: 0
+  failTimeToTargetIntensity: 0.5
+  failTimeAtTargetIntensity: 0.5
+  failTimeToBaseIntensity: 0.5

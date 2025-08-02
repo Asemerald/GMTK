@@ -34,11 +34,11 @@ public class FeedbackService : IGameSystem
 
     }
 
-    public void PlayActionFeedback(SO_FeedbackData feedback, bool playerFeedback)
+    public void PlayActionFeedback(SO_FeedbackData feedback, bool playerFeedback, ActionCallbackType callbackType)
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            Debug.LogWarning("FeedbackService::PlayActionFeedback: Tried to play null feedback");
             return;
         }
 

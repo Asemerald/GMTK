@@ -67,4 +67,12 @@ namespace Runtime.ScriptableObject
         None,
         Zero
     }
+    
+    public enum ActionCallbackType
+    {
+        OnStart,
+        OnSuccess,
+        OnBlock,
+        OnFail
+    }
 }

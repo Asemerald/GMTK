@@ -257,8 +257,8 @@ namespace Runtime.GameServices {
                     break;
             }
             
-            _feedbackService.PlayActionFeedback(playerFeedback,true);
-            _feedbackService.PlayActionFeedback(aiFeedback,false);
+            _feedbackService.PlayActionFeedback(playerFeedback,true, ActionCallbackType.OnStart);
+            _feedbackService.PlayActionFeedback(aiFeedback,false, ActionCallbackType.OnStart);
             
             ClearActions();
             
