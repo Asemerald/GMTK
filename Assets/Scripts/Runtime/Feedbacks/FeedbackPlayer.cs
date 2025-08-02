@@ -104,7 +104,7 @@ public class FeedbackPlayer : MonoBehaviour
         colorAdjustments.hueShift.value = targetValue;
     }
 
-    public void PlayDistortion(SO_FeedbackData feedbackData)
+    public void PlayDistortion(SO_FeedbackData feedbackData, ActionCallbackType callbackType)
     {
         if (lensDistortion == null)
         {
@@ -112,12 +112,36 @@ public class FeedbackPlayer : MonoBehaviour
                 "[FeedbackPlayer] LensDistortion not found in Global Volume profile. Distortion feedback will not work.");
             return;
         }
-
-        /*StartCoroutine(ApplyLensDistortion(
-            feedbackData.targetIntensity,
-            feedbackData.timeToTargetIntensity,
-            feedbackData.timeAtTargetIntensity,
-            feedbackData.timeToBaseIntensity));*/
+        
+        switch (callbackType)
+        {
+            case ActionCallbackType.OnSuccess:
+                StartCoroutine(ApplyLensDistortion(
+                    feedbackData.successTargetIntensity,
+                    feedbackData.successTimeToTargetIntensity,
+                    feedbackData.successTimeAtTargetIntensity,
+                    feedbackData.successTimeToBaseIntensity));
+                break;
+            case ActionCallbackType.OnBlock:
+                StartCoroutine(ApplyLensDistortion(
+                    feedbackData.parryTargetIntensity,
+                    feedbackData.parryTimeToTargetIntensity,
+                    feedbackData.parryTimeAtTargetIntensity,
+                    feedbackData.parryTimeToBaseIntensity));
+                break;
+            case ActionCallbackType.OnFail:
+                StartCoroutine(ApplyLensDistortion(
+                    feedbackData.failTargetIntensity,
+                    feedbackData.failTimeToTargetIntensity,
+                    feedbackData.failTimeAtTargetIntensity,
+                    feedbackData.failTimeToBaseIntensity));
+                break;
+            default:
+                Debug.LogWarning("FeedbackPlayer: Unknown callback type for lens distortion.");
+                break;
+        }
+        
+        
     }
 
     private IEnumerator ApplyLensDistortion(float targetIntensity, float duration, float TimeAtTarget, float timeToZero)
@@ -183,7 +207,7 @@ public class FeedbackPlayer : MonoBehaviour
         }
 
         // Play sound effect if specified
-        if (feedbackData.soundEffect.HasValue)
+        if (!feedbackData.soundEffect.IsNull)
         {
             PlaySound(feedbackData.soundEffect);
         }
@@ -254,13 +278,7 @@ public class FeedbackPlayer : MonoBehaviour
     {
         //PlayHueShift(_feedbackDebugData.hueShiftData); // Juste un exemple pour tester
     }
-
-    [ContextMenu("Test Lens Distortion")]
-    private void TestLensDistortion()
-    {
-        Initialize(debugGlobalVolume);
-        PlayDistortion(_feedbackDebugData);
-    }
+    
 #endif
 
     #endregion

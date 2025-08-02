@@ -11,9 +11,9 @@ namespace Runtime.ScriptableObject
         public string animationFailTriggerName;
         
         [Header("Audio Settings")]
-        public EventReference? soundEffect;
+        [field:SerializeField]public EventReference soundEffect;
 
-        public EventReference? blockSoundEffect;
+        [field:SerializeField] public EventReference blockSoundEffect;
         
         [Header("Move Settings")]
         public FeedbackSide side;
