@@ -54,6 +54,7 @@ namespace Runtime.GameServices {
             _inCombo = inCombo;
             _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
             _waitForNextBeat = waitForNextBeat;
+            Debug.Log("ActionHandlerService::RegisterActionOnBeat called " + (_isAI ? "AI" : "Player"));
         }
         
         void PerformActionOnBeat() { //S'exécute sur chaque Temps

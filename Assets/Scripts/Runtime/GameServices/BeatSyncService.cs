@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -165,6 +166,34 @@ namespace Runtime.GameServices
             }
 
             return RESULT.OK;
+        }
+        
+        //Fonction pour obtenir la mesure actuelle
+        public BeatFractionType GetBeatFraction() {
+        
+            if (timelineInfo.currentHalfBeat == 0) {
+                if(timelineInfo.currentQuarterBeat == 0)
+                    return BeatFractionType.Full;
+                if (timelineInfo.currentQuarterBeat == 1)
+                    return BeatFractionType.FirstQuarter;
+            }
+            else if (timelineInfo.currentHalfBeat == 1) {
+                if(timelineInfo.currentQuarterBeat == 0)
+                    return BeatFractionType.Half;
+                if (timelineInfo.currentQuarterBeat == 1)
+                    return BeatFractionType.ThirdQuarter;
+            }
+        
+            return BeatFractionType.None;
+        }
+        
+        public AttackHoldDuration GetPossibleAttackOnBeat(BeatFractionType fractionType) {
+            if (fractionType is BeatFractionType.None or BeatFractionType.Full or BeatFractionType.FirstQuarter)
+                return AttackHoldDuration.Full;
+            if (fractionType is BeatFractionType.Half or BeatFractionType.ThirdQuarter)
+                return AttackHoldDuration.Half;
+        
+            return AttackHoldDuration.None;
         }
     }
 }

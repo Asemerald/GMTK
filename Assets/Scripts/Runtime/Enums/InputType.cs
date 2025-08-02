@@ -8,5 +8,6 @@
         Down,
         DodgeRight,
         DodgeLeft,
+        Parry
     }
 }

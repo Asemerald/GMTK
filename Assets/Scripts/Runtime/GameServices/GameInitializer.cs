@@ -9,6 +9,7 @@ namespace Runtime.GameServices
     {
         [Header("Game Config")] [Tooltip("Le SO de la config du jeu si c vide bah ça marchera paslol")] [SerializeField]
         private SO_GameConfig _gameConfig;
+        [SerializeField] private SO_AIConfig _aiConfig;
 
         [Header("Feedback Player")]
         [Tooltip("Le prefab du feedback player si c vide bah ça marchera paslol")]
@@ -56,7 +57,7 @@ namespace Runtime.GameServices
             _comboManagerService = new ComboManagerService(_gameSystems);
             _actionHandlerService = new ActionHandlerService(_gameSystems);
             _feedbackService = new FeedbackService(_gameSystems, _feedbackPlayer);
-            _aiService = new AIService(_gameSystems);
+            _aiService = new AIService(_gameSystems, _aiConfig);
             _fightResolverService = new FightResolverService(_gameSystems);
 
             _gameSystems.Register(_gameConfigService);
