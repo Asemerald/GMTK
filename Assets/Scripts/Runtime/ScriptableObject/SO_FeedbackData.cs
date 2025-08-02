@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using UnityEngine;
 
 namespace Runtime.ScriptableObject
@@ -70,5 +70,11 @@ namespace Runtime.ScriptableObject
         OnSuccess,
         OnBlock,
         OnFail
+    }
+    
+    public enum PunchType
+    {
+        Punch, 
+        Hook
     }
 }

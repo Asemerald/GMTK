@@ -5,7 +5,7 @@ using UnityEngine;
 
 /*
  * Ce script se charge de récupérer les inputs de l'IA et du joeur sur un temps
- * et de les comparer pour par la suite executé / mettre a jour l'état du joueur / de l'IA
+ * et de les comparer pour par la suite executé / metre a jour l'état du joueur / de l'IAt
  */
 
 namespace Runtime.GameServices {
@@ -390,8 +390,8 @@ namespace Runtime.GameServices {
                 aiFeedback = null;      //gestion du feedback de parry ne se fait pas ici
             }
             
-            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, playerFeedbackSuccess);
-            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, aiFeedbackSuccess);
+            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, ActionCallbackType.OnStart);
+            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, ActionCallbackType.OnStart);
             
             ClearActions();
             
