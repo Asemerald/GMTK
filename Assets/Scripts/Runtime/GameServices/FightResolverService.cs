@@ -337,10 +337,10 @@ namespace Runtime.GameServices {
                         playerFeedbackSuccess = ActionCallbackType.OnFail;
                         ResolveAction(playerAction,false,aiAction,true);            //Résultat : Le joueur rate son coup et l'IA l'esquive
                     }
-                    break;            
-                    break;                                          
+                    break;                                           
                 case (ActionType.Combo, ActionType.Combo):                                              //Situation Impossible
                     Debug.LogError("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    _gameSystems.TriggerComboMode(false);
                     break;                                            
                 case (ActionType.Combo, ActionType.Empty):                                              //Le joueur execute un combo et l'IA ne fait rien
                     if (PlayerSuccessInput())                                                                                    //Le joueur réussit son combo
