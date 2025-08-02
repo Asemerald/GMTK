@@ -110,6 +110,7 @@ public class HitHandlerService : IGameSystem
                 return;
             }
             
+            
             foreach (var action in _actionDatabase.ActionDatas) {
                 var breakLoop = false;
                 
