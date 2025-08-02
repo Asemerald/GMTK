@@ -168,6 +168,56 @@ public class FeedbackPlayer : MonoBehaviour
         
     }
 
+    public void PlayBlockFeedback(SO_FeedbackData feedbackData, FeedbackTarget feedbackTarget, FeedbackSide feedbackSide, GameObject blockParticlePrefab)
+    {
+        if (feedbackData == null)
+        {
+            Debug.LogWarning("FeedbackPlayer: Tried to play null feedback");
+            return;
+        }
+
+        // Play animation if specified
+        if (!string.IsNullOrEmpty(feedbackData.startAnimationName))
+        {
+            PlayAnimation(feedbackTarget, feedbackData.animationSuccessTriggerName);
+        }
+
+        // Play sound effect if specified
+        if (feedbackData.soundEffect.HasValue)
+        {
+            PlaySound(feedbackData.soundEffect);
+        }
+
+        // Play particles
+        PlayParticle(feedbackSide, feedbackTarget, blockParticlePrefab);
+
+        // Apply lens distortion effects based on the feedback type
+        if (feedbackData.successEnableLensDistortion)
+        {
+            StartCoroutine(ApplyLensDistortion(
+                feedbackData.successTargetIntensity,
+                feedbackData.successTimeToTargetIntensity,
+                feedbackData.successTimeAtTargetIntensity,
+                feedbackData.successTimeToBaseIntensity));
+        }
+        else if (feedbackData.parryEnableLensDistortion)
+        {
+            StartCoroutine(ApplyLensDistortion(
+                feedbackData.parryTargetIntensity,
+                feedbackData.parryTimeToTargetIntensity,
+                feedbackData.parryTimeAtTargetIntensity,
+                feedbackData.parryTimeToBaseIntensity));
+        }
+        else if (feedbackData.failEnableLensDistortion)
+        {
+            StartCoroutine(ApplyLensDistortion(
+                feedbackData.failTargetIntensity,
+                feedbackData.failTimeToTargetIntensity,
+                feedbackData.failTimeAtTargetIntensity,
+                feedbackData.failTimeToBaseIntensity));
+        }
+    }
+
 
     private Animator GetAnimator(FeedbackTarget target)
     {

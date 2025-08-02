@@ -10,9 +10,14 @@ namespace Runtime.ScriptableObject
         [Header("Prefabs")] public GameObject playerPrefab;
         public GameObject enemyPrefab;
         public GameObject hitEffectPrefab;
+        public GameObject blockEffectPrefab;
 
-        [Header("Header")] public SO_FeedbackData feedbackEachBeat;
+        [Header("Feedbacks")] public SO_FeedbackData feedbackEachBeat;
         public SO_FeedbackData feedbackEachBar;
+        public SO_FeedbackData blockRightPunchFeedback;
+        public SO_FeedbackData blockLeftPunchFeedback;
+        public SO_FeedbackData blockLeftHookFeedback;
+        public SO_FeedbackData blockRightHookFeedback;
 
         [Header("Audio")] public EventReference gameMusic;
         public float musicVolume = 1f;
