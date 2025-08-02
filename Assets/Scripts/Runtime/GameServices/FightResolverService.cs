@@ -280,6 +280,7 @@ namespace Runtime.GameServices {
                         playerFeedback = playerAction.feedbackDataFail;
                         if (ActionCounters(aiAction, playerAction))                                                             // SI l'IA effectue l'attaque miroir                  
                         {
+                            _gameSystems.TriggerComboMode(false);
                             ResolveAction(playerAction, false, aiAction, true);                // L'IA STUN le joueur et le sort de son combo
                         }
                         else                                                                                                    // l'IA fait la mauvaise attaque
