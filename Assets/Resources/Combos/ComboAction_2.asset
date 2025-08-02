@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b65d1098a6abd646834cad858a3ef42, type: 3}
   m_Name: ComboAction_2
   m_EditorClassIdentifier: 
-  openingAction: {fileID: 0}
-  confirmationAction: {fileID: 0}
+  openingAction: {fileID: 11400000, guid: 92883b1393f654a40b0269c9e1a1c4b4, type: 2}
+  confirmationAction: {fileID: 11400000, guid: 514a81be93c5c1948950a13e8ddf3b94, type: 2}
   comboActions:
   - {fileID: 11400000, guid: 55272a499a0d6a0449883aa53d40f480, type: 2}
   - {fileID: 11400000, guid: 4a500848b9a8ddc41afb6dd3f50ebef9, type: 2}

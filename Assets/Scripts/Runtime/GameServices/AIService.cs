@@ -162,6 +162,8 @@ namespace Runtime.GameServices {
             if (RollAction(_aiConfig.chanceOfExecutingCombo) && _unlockedPatterns.Count > 0) {
                 var randomIndex = Random.Range(0, _unlockedPatterns.Count);
             
+                if(_unlockedPatterns[randomIndex] == null) return;
+                
                 var open = _unlockedPatterns[randomIndex].pattern.openingAction;
                 var close = _unlockedPatterns[randomIndex].pattern.confirmationAction;
                 
