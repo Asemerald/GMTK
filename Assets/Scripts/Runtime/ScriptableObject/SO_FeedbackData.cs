@@ -71,4 +71,10 @@ namespace Runtime.ScriptableObject
         OnBlock,
         OnFail
     }
+    
+    public enum PunchType
+    {
+        Punch, 
+        Hook
+    }
 }

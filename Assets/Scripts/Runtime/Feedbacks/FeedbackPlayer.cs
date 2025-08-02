@@ -66,7 +66,7 @@ public class FeedbackPlayer : MonoBehaviour
 
     public void PlayAnimation(FeedbackTarget feedbackTarget, string animationTriggerName)
     {
-        var animator = GetAnimator(target);
+        var animator = GetAnimator(feedbackTarget);
         if (animator == null || animationTriggerName == null) return;
 
         animator.SetTrigger(animationTriggerName);
@@ -157,6 +157,15 @@ public class FeedbackPlayer : MonoBehaviour
 
         // Ensure intensity is set to zero at the end
         lensDistortion.intensity.value = 0f;
+    }
+    
+    private void StopAnimation(FeedbackTarget feedbackTarget)
+    {
+        // Stop the animation by making it go to the idle state
+        var animator = GetAnimator(feedbackTarget);
+        if (animator == null) return;
+        animator.SetTrigger("P_Idle"); // HARDCODER mais hassoul
+        
     }
 
 
