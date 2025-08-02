@@ -197,7 +197,8 @@ public class FeedbackPlayer : MonoBehaviour
         if (colorAdjustments == null)
             return;
         
-        var targetValue = 0f; // Default value if no hue shift is set
+        // Chose a random value between -180 and 180 and apply it to the hue shift
+        float targetValue = UnityEngine.Random.Range(-180f, 180f);
         
         colorAdjustments.hueShift.value = targetValue;
     }
@@ -350,23 +351,8 @@ public class FeedbackPlayer : MonoBehaviour
             _ => null
         };
     }
+    
 
-    private ParticleSystem GetPreplacedParticleSystem(FeedbackSide side)
-    {
-        return side switch
-        {
-            FeedbackSide.Left => leftImpactParticles,
-            FeedbackSide.Right => rightImpactParticles,
-            _ => null
-        };
-    }
-
-    private Vector3 GetImpactPosition(FeedbackSide side, FeedbackTarget target)
-    {
-        var baseTransform = target == FeedbackTarget.Player ? playerAnimator.transform : enemyAnimator.transform;
-        var offset = side == FeedbackSide.Left ? Vector3.left : Vector3.right;
-        return baseTransform.position + offset * 0.5f;
-    }
 
     #region Debug Methods
 

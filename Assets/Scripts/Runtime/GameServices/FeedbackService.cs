@@ -59,6 +59,8 @@ public class FeedbackService : IGameSystem
                 Debug.LogWarning($"FeedbackService::PlayActionFeedback: Unknown callback type {callbackType}");
                 break;
         }
+        
+        _feedbackPlayer.PlayHueShift();
     
     }
     
@@ -204,16 +206,6 @@ public class FeedbackService : IGameSystem
         _feedbackPlayer.PlayAnimation(feedback.side, FeedbackTarget.Enemy, feedback.animationSuccessTriggerName);
 
        
-    }
-
-    private void FeedbackToDoEachBar(SO_FeedbackData feedback)
-    {
-        if (feedback == null)
-        {
-            //Debug.LogWarning("FeedbackService: Tried to play null feedback");
-            return;
-        }
-        
     }
 
 
