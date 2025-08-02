@@ -75,7 +75,7 @@ namespace Runtime.GameServices {
                     }
                     
                     break;
-                case (ActionType.Attack, ActionType.Combo):                                             // L'IA effectue un coup de son combo  
+                case (ActionType.Attack, ActionType.Combo):                                             // Le joueur se défend de L'IA qui effectue un combo  
                     if (ComboInputSuccess())                                                                                    //L'IA réussit son combo
                     {
                         if (ActionCounters(playerAction, aiAction) )                                                        // SI le joueur effectue l'attaque miroir                 
@@ -110,13 +110,16 @@ namespace Runtime.GameServices {
                     }
                     
                     break;
-                case (ActionType.Attack, ActionType.Empty):
+                case (ActionType.Attack, ActionType.Empty):                                             // Le joueur attaque et l'IA fait rien
+                    aiFeedback = null;
+                    ResolveAction(playerAction,true,aiAction,false);   
                     break;
 
-                case (ActionType.Parry, ActionType.Attack):                                             //L'IA attaque et le joueur pare
+                case (ActionType.Parry, ActionType.Attack):                                             // Le joueur pare une attaque de l'IA
                     ResolveAction(playerAction,true,aiAction,true);    
                     break;
-                case (ActionType.Parry, ActionType.Parry):
+                case (ActionType.Parry, ActionType.Parry):                                              // Le joueur pare et l'IA pare
+                    ResolveAction(playerAction,true,aiAction,true);
                     break;
                 case (ActionType.Parry, ActionType.Dodge):
                     break;
@@ -126,7 +129,7 @@ namespace Runtime.GameServices {
                 case (ActionType.Parry, ActionType.Empty):
                     break;
 
-                case (ActionType.Dodge, ActionType.Attack):                                         // l'IA attaque et le joueur dodge
+                case (ActionType.Dodge, ActionType.Attack):                                              // l'IA attaque et le joueur dodge
                     if (ActionCounters(playerAction,aiAction))                                                     // Si c'est la bonne esquive
                     {
                         ResolveAction(playerAction,true,aiAction,false);            // Résultat : l'IA attaque et le joueur esquive
@@ -193,7 +196,9 @@ namespace Runtime.GameServices {
                     playerFeedback = playerAction.feedbackDataFail;
                     break;
 
-                case (ActionType.Empty, ActionType.Attack):
+                case (ActionType.Empty, ActionType.Attack):                                             // Le joueur ne fait rien et l'IA attaque
+                    playerFeedback = null;
+                    ResolveAction(playerAction,false,aiAction,true);  
                     break;
                 case (ActionType.Empty, ActionType.Parry):
                     break;
@@ -250,6 +255,10 @@ namespace Runtime.GameServices {
                 {
                     case ActionType.Attack:
                         ApplyDamages(action.holdDuration, !isPlayer, opponentAction.actionType == ActionType.Parry,false);
+                        if (opponentAction.actionType == ActionType.Combo)
+                        {
+                            ApplyDamages(action.holdDuration, !isPlayer, false,true); // stun son adversaire, ne doit pas s'activer si l'advenrsaire n'a pas raté son combo
+                        }
                         break;
                     
                     case ActionType.Combo:
@@ -257,25 +266,13 @@ namespace Runtime.GameServices {
                         break;
 
                     case ActionType.Parry:
+                        //effet géré par l'adversaire
+                        break;
                     case ActionType.Dodge:
+                        // réduit cooldown 
+                        break;
                     case ActionType.Empty:
-                        break;
-                }
-            }
-            else
-            {
-                switch (action.actionType)
-                {
-                    case ActionType.Attack:
-                        // pas d'effet juste un feedback de coup raté
-                        break;
-                    case ActionType.Combo:
-                        ApplyDamages(action.holdDuration, isPlayer, false,true); 
-                        break;
-
-                    case ActionType.Parry:
-                    case ActionType.Dodge:
-                    case ActionType.Empty:
+                        //ne fait rien 
                         break;
                 }
             }
