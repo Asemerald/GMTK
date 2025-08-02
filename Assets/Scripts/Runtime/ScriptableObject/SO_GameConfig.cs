@@ -11,6 +11,9 @@ namespace Runtime.ScriptableObject
         public GameObject enemyPrefab;
         public GameObject hitEffectPrefab;
 
+        [Header("Header")] public SO_FeedbackData feedbackEachBeat;
+        public SO_FeedbackData feedbackEachBar;
+
         [Header("Audio")] public EventReference gameMusic;
         public float musicVolume = 1f;
         public int defaultBPM = 120;

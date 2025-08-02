@@ -117,11 +117,11 @@ public class FeedbackPlayer : MonoBehaviour
             return;
         }
 
-        StartCoroutine(ApplyLensDistortion(
+        /*StartCoroutine(ApplyLensDistortion(
             feedbackData.targetIntensity,
             feedbackData.timeToTargetIntensity,
             feedbackData.timeAtTargetIntensity,
-            feedbackData.timeToBaseIntensity));
+            feedbackData.timeToBaseIntensity));*/
     }
 
     private IEnumerator ApplyLensDistortion(float targetIntensity, float duration, float TimeAtTarget, float timeToZero)
@@ -209,7 +209,7 @@ public class FeedbackPlayer : MonoBehaviour
     [ContextMenu("Test Tint Color")]
     private void TestTintColor()
     {
-        PlayHueShift(_feedbackDebugData.hueShiftData); // Juste un exemple pour tester
+        //PlayHueShift(_feedbackDebugData.hueShiftData); // Juste un exemple pour tester
     }
 
     [ContextMenu("Test Lens Distortion")]
