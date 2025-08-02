@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b65d1098a6abd646834cad858a3ef42, type: 3}
   m_Name: New SO_Combo Data
   m_EditorClassIdentifier: 
-  confirmationAction: {fileID: 0}
   openingAction: {fileID: 0}
+  confirmationAction: {fileID: 0}
   comboActions:
   - {fileID: 0}
   - {fileID: 0}
@@ -31,3 +31,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  UnlockPattern: {fileID: 0}
