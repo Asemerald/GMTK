@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4953d3affa64fe580d46670fc58a1df, type: 3}
   m_Name: AIConfig
   m_EditorClassIdentifier: 
-  attack: 0
-  tryExecuteCombo: 0
-  dodge: 0
-  parry: 0
-  counter: 0
-  executeSuccessCombo: 0
+  chanceOfAttack: 60
+  chanceOfExecutingCombo: 40
+  chanceOfDodge: 40
+  chanceOfParry: 50
+  chanceOfCounter: 20
+  chanceOfSuccessCombo: 55
