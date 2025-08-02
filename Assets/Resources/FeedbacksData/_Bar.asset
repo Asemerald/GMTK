@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d1e783016124395947227a46b065669, type: 3}
+  m_Name: _Bar
+  m_EditorClassIdentifier: 
+  animationSuccessTriggerName: 
+  animationFailTriggerName: 
+  side: 2
+  successEnableLensDistortion: 0
+  successTargetIntensity: -0.5
+  successTimeToTargetIntensity: 0.1
+  successTimeAtTargetIntensity: 0.2
+  successTimeToBaseIntensity: 0.2
+  parryEnableLensDistortion: 0
+  parryTargetIntensity: -0.1
+  parryTimeToTargetIntensity: 0.1
+  parryTimeAtTargetIntensity: 0.05
+  parryTimeToBaseIntensity: 0.1
+  failEnableLensDistortion: 0
+  failTargetIntensity: 0
+  failTimeToTargetIntensity: 0.5
+  failTimeAtTargetIntensity: 0.5
+  failTimeToBaseIntensity: 0.5

@@ -1,11 +1,18 @@
 using System.Collections.Generic;
 using Runtime.Enums;
+using Runtime.GameServices;
 using Runtime.GameServices.Interfaces;
 using Runtime.ScriptableObject;
 using UnityEngine;
 
 public class ActionDatabase : IGameSystem
 {
+    private AIService _aiService;
+    private GameSystems _gameSystems;
+    public ActionDatabase(GameSystems gameSystems) {
+        _gameSystems = gameSystems;
+    }
+    
     private Dictionary<InputReference, List<SO_ActionData>> actionDatas = new();
     public IReadOnlyDictionary<InputReference, List<SO_ActionData>> ActionDatas => actionDatas;
 
@@ -18,8 +25,9 @@ public class ActionDatabase : IGameSystem
     readonly List<SO_ComboData> _comboDatas = new();
     internal List<SO_AIPattern> _aiPatterns = new List<SO_AIPattern>();
     
-    public void Initialize()
-    {
+    public void Initialize() {
+        _aiService = _gameSystems.Get<AIService>();
+        
         LoadFromResources();
     }
 
@@ -63,8 +71,6 @@ public class ActionDatabase : IGameSystem
                 actionDatas[data.inputsRequired[0]].Add(data);
             }
         }
-
-        //Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions from Resources.");
         
         foreach (var combo in allCombos)
         {
@@ -97,11 +103,6 @@ public class ActionDatabase : IGameSystem
     
     
     public void UnlockPattern(SO_ComboData comboToUnlock) {
-        foreach (var pattern in _aiPatterns) {
-            if (pattern.pattern == comboToUnlock) {
-                pattern.isUnlock = true;
-                break;
-            }
-        }
+        _aiService._unlockedPatterns.Add(comboToUnlock.UnlockPattern);
     }
 }

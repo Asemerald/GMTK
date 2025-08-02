@@ -21,13 +21,27 @@ namespace Runtime.GameServices {
         float timer = 0;
         
         bool compareCalled = false;
+
+        bool playerTimerRunning = false;
+        bool aiTimerRunning = false;
+        
+        float aiTimer = 0;
+        float playerTimer = 0;
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
         }
         
         public void Dispose() {
+            _beatSyncService.OnBeat -= CallCompareEvent;
+            _beatSyncService.OnHalfBeat -= CallCompareEvent;
+            _beatSyncService.OnQuarterBeat -= CallCompareEvent;
+
+            _beatSyncService.OnBeat -= StartAiTimer;
+            _beatSyncService.OnBeat -= StartPlayerTimer;
             
+            _beatSyncService.OnHalfBeat -= StartAiTimer;
+            _beatSyncService.OnHalfBeat -= StartPlayerTimer;
         }
 
         public void Initialize() 
@@ -39,11 +53,25 @@ namespace Runtime.GameServices {
             _beatSyncService.OnHalfBeat += CallCompareEvent;
             _beatSyncService.OnQuarterBeat += CallCompareEvent;
 
+            _beatSyncService.OnBeat += StartAiTimer;
+            _beatSyncService.OnBeat += StartPlayerTimer;
+            
+            _beatSyncService.OnHalfBeat += StartAiTimer;
+            _beatSyncService.OnHalfBeat += StartPlayerTimer;
+
         }
 
         public void Tick() {
             if(compareCalled)
                 StartBuffer();
+
+            if (playerTimerRunning) {
+                timer -= Time.deltaTime;
+            }
+
+            if (aiTimerRunning) {
+                timer -= Time.deltaTime;
+            }
         }
 
         void CallCompareEvent() {
@@ -323,6 +351,34 @@ namespace Runtime.GameServices {
             return source != null && target != null && target.counterActions != null && target.counterActions.Contains(source);
         }
 
+        void StartPlayerTimer() {
+            playerTimerRunning = true;
+            //Set la valeur de la float au bon temps pour que lorsqu'elle atteigne 0, elle soit sur un temp ou demi temp
+            playerTimer = _beatSyncService.GetTimerBetweenHalfBeat();
+        }
+
+        public void StopPlayerTimer() {
+            playerTimerRunning = false;
+        }
+        
+        void StartAiTimer() {
+            aiTimerRunning = true;
+            //Set la valeur de la float au bon temps pour que lorsqu'elle atteigne 0, elle soit sur un temp ou demi temp
+            aiTimer = _beatSyncService.GetTimerBetweenHalfBeat();
+        }
+
+        public void StopAiTimer() {
+            playerTimerRunning = false;
+        }
+
+        bool PlayerSuccessInput() {
+            return playerTimer > 0;
+        }
+        
+        bool AISuccessInput() {
+            return aiTimer > 0;
+        }
+        
         private bool ComboInputSuccess()
         {
             Debug.LogError("Ajouter ici la logique de si l'attaquant a réussi son action de combo, pour l'insatnt réussite auto");

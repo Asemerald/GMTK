@@ -15,7 +15,6 @@ public class SO_ActionData : ScriptableObject
     public List<SO_ActionData> counterActions;
     public AttackHoldDuration holdDuration;
     public bool CanExecuteOnHalfBeat = false;
-    public bool dodgeAction = false;
     
     [Header("Stats")]
     public float damageAmount;
