@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using UnityEngine;
 
 namespace Runtime.ScriptableObject
@@ -12,6 +12,8 @@ namespace Runtime.ScriptableObject
         
         [Header("Audio Settings")]
         public EventReference? soundEffect;
+
+        public EventReference? blockSoundEffect;
         
         [Header("Move Settings")]
         public FeedbackSide side;
@@ -60,12 +62,6 @@ namespace Runtime.ScriptableObject
         Left,
         Right,
         Center
-    }
-
-    public enum HUEShiftValue
-    {
-        None,
-        Zero
     }
     
     public enum ActionCallbackType
