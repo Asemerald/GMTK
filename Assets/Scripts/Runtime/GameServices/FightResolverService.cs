@@ -278,8 +278,8 @@ namespace Runtime.GameServices {
                 aiFeedback = null;      //gestion du feedback de parry ne se fait pas ici
             }
             
-            _feedbackService.PlayActionFeedback(playerFeedback,true, ActionCallbackType.OnStart);
-            _feedbackService.PlayActionFeedback(aiFeedback,false, ActionCallbackType.OnStart);
+            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, ActionCallbackType.OnStart);
+            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, ActionCallbackType.OnStart);
             
             ClearActions();
             
