@@ -10,25 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b65d1098a6abd646834cad858a3ef42, type: 3}
-  m_Name: New SO_Combo Data
+  m_Name: ComboAction_1
   m_EditorClassIdentifier: 
   openingAction: {fileID: 0}
   confirmationAction: {fileID: 0}
   comboActions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: ed5d9ea0aecc46d42a7861631b3f188a, type: 2}
+  - {fileID: 11400000, guid: 4a500848b9a8ddc41afb6dd3f50ebef9, type: 2}
+  - {fileID: 11400000, guid: ed5d9ea0aecc46d42a7861631b3f188a, type: 2}
   UnlockPattern: {fileID: 0}
