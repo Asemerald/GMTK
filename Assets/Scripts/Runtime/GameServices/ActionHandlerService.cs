@@ -1,10 +1,12 @@
-﻿using System.Collections;
 using System.Collections.Generic;
-using FMOD;
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
+
+/*
+ * Ce script se charge de récupérer les actions et de les stocker dans une liste pour ensuite les jouer sur le tempo
+ * Le script est utilisé par le joueur et l'IA
+ */
 
 namespace Runtime.GameServices {
     public class ActionHandlerService : IGameSystem {
@@ -41,6 +43,7 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
+            _beatSyncService.OnQuarterBeat += PerformActionOnQuarterBeat;
         }
 
         public void Tick() {
@@ -51,62 +54,63 @@ namespace Runtime.GameServices {
             _inCombo = inCombo;
             _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
             _waitForNextBeat = waitForNextBeat;
+            Debug.Log("ActionHandlerService::RegisterActionOnBeat called " + (_isAI ? "AI" : "Player"));
         }
         
         void PerformActionOnBeat() { //S'exécute sur chaque Temps
-            if (_actionQueue.Count <= 0) return;
-            if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
-            {
-                ExecuteAction();
-                return;
-            }
-
-            if (!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un temps
-            {
-                ExecuteAction();
-                return;
-            }
+            CheckToExecuteAction(BeatFractionType.Full);
         }
 
         void PerformActionOnHalfBeat() { //S'exécute sur chaque Demi Temps
-            if (_actionQueue.Count <= 0 || _waitForNextBeat) return;
+            CheckToExecuteAction(BeatFractionType.Half);
+        }
+        
+        void PerformActionOnQuarterBeat() { //S'exécute sur chaque Quart Temps
+            CheckToExecuteAction(BeatFractionType.FirstQuarter);
+        }
 
-            if (_inCombo) //Execute sans prendre en compte sur quel temps se joue l'action durant un combo
-            {
+        void CheckToExecuteAction(BeatFractionType fractionType) {
+            if(_actionQueue.Count <= 0) return;
+            
+            if (_actionQueue.Peek().Item1.dodgeAction) { //Pouvoir réaliser le dodge independent du temps
                 ExecuteAction();
                 return;
             }
-
-            if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
-            {
+            
+            if (_inCombo && fractionType is not BeatFractionType.FirstQuarter) { //Execute le combo sur le temps plein et le demi temps
                 ExecuteAction();
                 return;
+            }
+            
+            if (fractionType is BeatFractionType.FirstQuarter) { // Quart de temps
+                if(_waitForNextBeat) return;
+            }
+            else if (fractionType is BeatFractionType.Half) { // Demi temps
+                if(_waitForNextBeat) return;
+                
+                if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps
+                    ExecuteAction();
+            }
+            else { //Temps plein
+                if (!_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui execute sur un temps plein
+                    ExecuteAction();
+                
+                _waitForNextBeat = false;
             }
         }
 
         void ExecuteAction() { //Se charge d'exécuter l'action
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
-
-            /*if(_isAI)
-                _fightResolverService.GetAIAction(item.Item1);
-            else
-                _fightResolverService.GetPlayerAction(item.Item1);*/
+            
+            if(_isAI) _fightResolverService.GetAIAction(action);
+            else _fightResolverService.GetPlayerAction(action);
             
             if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
-                RegisterPreviousAction(item.Item1);
+                RegisterPreviousAction(action);
             }
-            else {
+            else { //Lorsqu'il est en combo, si la queue devient vide, alors il sort de l'état combo
                 if (_actionQueue.Count <= 0) _inCombo = false;
-            }
-            
-            if (action.CanExecuteOnHalfBeat) { //Pour le moment c'est juste du debug pour voir quand est jouer une action
-                _waitForNextBeat = false;
-                Debug.Log("AIService::PerformActionOnHalfBeat - " + (_isAI ? "AI" : "Player"));
-            }
-            else {
-                _waitForNextBeat = true; //Permet d'attendre un temps avant de jouer sur des demis temps
-                Debug.Log("AIService::PerformActionBeat - " + (_isAI ? "AI" : "Player"));
             }
         }
 
@@ -123,8 +127,6 @@ namespace Runtime.GameServices {
                 comboAction = _comboManager.FindCombo(_previousActions[0], _previousActions[1]);
 
             if (comboAction) {
-                //_comboManager.LaunchCombo(comboAction); //Envoi le combo
-                Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
 
                 _actionDatabase.UnlockPattern(comboAction);
                 
@@ -141,8 +143,7 @@ namespace Runtime.GameServices {
             if (comboAction == null)
                 return;
             
-            //_comboManager.LaunchCombo(comboAction); //Envoi le combo
-            Debug.Log("ComboManagerService::LaunchCombo - Combo launch");
+            Debug.Log("ActionHandlerService::LaunchCombo - Combo launch");
                 
             foreach (var action in comboAction.ComboActions) { 
                 RegisterActionOnBeat(action, false, true);

@@ -1,6 +1,11 @@
-﻿using Runtime.Enums;
+using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
+
+/*
+ * Ce script se charge de récupérer les inputs de l'IA et du joeur sur un temps
+ * et de les comparer pour par la suite executé / mettre a jour l'état du joueur / de l'IA
+ */
 
 namespace Runtime.GameServices {
     public class FightResolverService : IGameSystem {
@@ -10,6 +15,8 @@ namespace Runtime.GameServices {
         
         SO_ActionData aiAction;
         SO_ActionData playerAction;
+        
+        float timer = 0;
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
@@ -25,8 +32,19 @@ namespace Runtime.GameServices {
         }
 
         public void Tick() {
-            if(aiAction && playerAction) 
+            /*if(aiAction && playerAction) //Modifier pour ajouter un délai d'attente pour vérifier si il va avoir une action de l'IA et du joueur ou juste d'un des deux
+                CompareAction();*/
+        }
+
+        void StartBuffer() {
+            if(playerAction && aiAction)
                 CompareAction();
+            else if (aiAction || playerAction) {
+                timer += Time.deltaTime;
+                if (timer >= 0.15f) {
+                    CompareAction();
+                }
+            }
         }
 
         public void GetAIAction(SO_ActionData action) {
@@ -39,6 +57,8 @@ namespace Runtime.GameServices {
 
         void CompareAction() {
             //Stocker en local peut-être ?
+            if (timer > 0)
+                timer = 0;
             
             var playerActionType = playerAction.actionType;
             var aiActionType = aiAction.actionType;

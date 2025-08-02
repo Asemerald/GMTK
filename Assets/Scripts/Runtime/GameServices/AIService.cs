@@ -1,20 +1,34 @@
 using System.Collections.Generic;
+using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
+using Runtime.ScriptableObject;
 using UnityEngine;
+
+/*
+ * Script qui gère le fonctionnement de l'IA - De comment les actions sont choisi
+ *
+ */
 
 namespace Runtime.GameServices {
     public class AIService : IGameSystem{
 
         private GameSystems _gameSystems;
-        private ActionHandlerService _actionHandlerService;
+        private ActionHandlerService _aiActionHandler;
+        private ActionHandlerService _playerActionHandler;
         private ActionDatabase _actionDatabase;
+        private BeatSyncService _beatSyncService;
         
         private List<SO_ActionData> _actionList;
-
-        bool doingPattern = false;
+        private List<SO_AIPattern> _unlockedPatterns;
         
-        public AIService(GameSystems gameSystems) {
+        private SO_AIConfig _aiConfig;
+        
+        private SO_ActionData _currentPlayerAction;
+        bool canCounter = false; //Bool qui passe en true dès que le joueur a réaliser un contre - L'IA va roll un % de chance d'en réaliser un après une esquive réussi
+        
+        public AIService(GameSystems gameSystems, SO_AIConfig config) {
             _gameSystems = gameSystems;
+            _aiConfig = config;
         }
         
         public void Dispose() {
@@ -22,29 +36,141 @@ namespace Runtime.GameServices {
         }
 
         public void Initialize() {
-            _actionHandlerService = new ActionHandlerService(_gameSystems, true);
+            _aiActionHandler = new ActionHandlerService(_gameSystems, true);
             _actionDatabase = _gameSystems.Get<ActionDatabase>();
+            _playerActionHandler = _gameSystems.Get<ActionHandlerService>();
+            _beatSyncService = _gameSystems.Get<BeatSyncService>();
 
-            _actionHandlerService.Initialize();
+            _aiActionHandler.Initialize();
             _actionList = SetActionDataList();
         }
 
         public void Tick() {
-            _actionHandlerService.Tick();
-            
-            if(_actionHandlerService._actionQueue.Count <= 0 && !_actionHandlerService._inCombo)
-                CallAction();
+            _aiActionHandler.Tick();
+
+            if (_aiActionHandler._actionQueue.Count <= 0 && !_aiActionHandler._inCombo) { //Lorsque l'IA n'a aucune action de prise et n'effectue pas un combo -> Prend l'action de roll une action
+                if (_beatSyncService.GetBeatFraction() is BeatFractionType.FirstQuarter or BeatFractionType.Half or BeatFractionType.ThirdQuarter) { //Prend une action sur le premier quart de temps
+                    CallAllPossibleAction();
+                }
+            }
         }
 
-        void CallAction() {
-            Debug.Log("AIService::CallAction");
+        void CallAllPossibleAction() {
+            if (_playerActionHandler._actionQueue.Count <= 0) { //Si le joueur n'a aucune action en queue
+                        
+                if (RollAction(_aiConfig.attack)) { //si le roll réussi -> sort une attaque
+                    RolledAttack();
+                }
+                //sinon il ne fait rien
+            }
+            else { //Roll une action en fonction de l'action choisis par le joueur
+                    
+                var GetActionType = _playerActionHandler._actionQueue.Peek().Item1.actionType;
+               
+                if (GetActionType is ActionType.Attack) {
+                    
+                    if (RollAction(_aiConfig.attack)) { //si le roll réussi -> sort une attaque
+                        RolledAttack();
+                    }
+                    else if (RollAction(_aiConfig.parry)) { //si le roll réussi -> sort une parade
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Parry), false);
+                    }
+                    else if (RollAction(_aiConfig.dodge)) {//si le roll réussi -> sort une esquive
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Dodge), false);
+                    }
+                    //Si aucun ne réussi alors l'IA reste passive
+                }
+                else if (GetActionType is ActionType.Combo) {
+                    
+                    if (RollAction(_aiConfig.executeSuccessCombo)) { //si le roll réussi -> sort une attaque
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Combo), false);
+                    }
+                    else if (RollAction(_aiConfig.parry)) { //si le roll réussi -> sort une parade
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Parry), false);
+                    }
+                    else if (RollAction(_aiConfig.dodge)) {//si le roll réussi -> sort une esquive
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Dodge), false);
+                    }
+                    //Si aucun ne réussi alors l'IA reste passive
+                }
+                else if (GetActionType is ActionType.Parry) {
+                    
+                    if (RollAction(_aiConfig.attack)) { //si le roll réussi -> sort une attaque
+                        RolledAttack();
+                    }
+                    //Si aucun ne réussi alors l'IA reste passive
+                }
+                /*else if (GetActionType is ActionType.Dodge) {
+                    
+                }
+                else if (GetActionType is ActionType.Empty) {
+                    
+                }*/
+            }
             
-            var random = Random.Range(0,101); //Random pour déterminer le % de chance de déclencher un combo
+        }
 
-            if (random > 69) //30% de chance de faire un combo
-                DoPatternAction();
+        void RolledAttack() {
+            if (RollAction(_aiConfig.tryExecuteCombo) && _unlockedPatterns.Count > 0) {
+                var randomIndex = Random.Range(0, _unlockedPatterns.Count);
+            
+                var open = _unlockedPatterns[randomIndex].pattern.openingAction;
+                var close = _unlockedPatterns[randomIndex].pattern.confirmationAction;
+                
+                _aiActionHandler.RegisterActionOnBeat(open, true);
+                _aiActionHandler.RegisterActionOnBeat(close, true);
+            }
             else
-                _actionHandlerService.RegisterActionOnBeat(GetActionData(), true);
+                _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Attack), true);
+        }
+        
+        SO_ActionData GetActionData(ActionType actionType) { //Changer la fonction pour être similaire a celle de hithandler et tiré l'action par rapport au type
+            
+            if(actionType is ActionType.Dodge) { //Obtenir action de dodge
+                foreach (var action in _actionList) {
+                    if (action.actionType is not ActionType.Dodge) continue;
+
+                    return action;
+                }
+            }
+            else if(actionType is ActionType.Attack) { //Fonction de tri pour savoir quelle action va être lancé en fonction du BeatFractionType
+                var possibleActions = new List<SO_ActionData>();
+                var currentFraction = _beatSyncService.GetBeatFraction();
+                
+                foreach (var action in _actionList) {
+                    if (action.actionType is not ActionType.Attack) continue;
+                    
+                    if(action.holdDuration == _beatSyncService.GetPossibleAttackOnBeat(currentFraction))
+                        possibleActions.Add(action);
+                }
+                
+                return possibleActions[Random.Range(0, possibleActions.Count)];
+            }
+            else if (actionType is ActionType.Parry) {
+                foreach (var action in _actionList) {
+                    if (action.actionType is not ActionType.Parry) continue;
+
+                    return action;
+                }
+            }
+            else if (actionType is ActionType.Combo) {
+                var possibleActions = new List<SO_ActionData>();
+                
+                foreach (var action in _actionList) {
+                    if (action.actionType is not ActionType.Combo) continue;
+                    
+                    possibleActions.Add(action);
+                }
+                
+                return possibleActions[Random.Range(0, possibleActions.Count)];
+            }
+
+            return null;
+        }
+        
+        bool RollAction(int successPercent) { //Fonction de roll
+            var roll = Random.Range(0, 100);
+            return roll <= successPercent;
         }
 
         List<SO_ActionData> SetActionDataList() {
@@ -60,22 +186,19 @@ namespace Runtime.GameServices {
             return localList;
         }
         
-        SO_ActionData GetActionData() {
-            var randomIndex = Random.Range(0, _actionList.Count);
-            
-            return _actionList[randomIndex];
-        }
-
         void DoPatternAction() {
-            var randomIndex = Random.Range(0, _actionDatabase._aiPatterns.Count);
+            /*var randomIndex = Random.Range(0, _actionDatabase._aiPatterns.Count);
 
-            if (!_actionDatabase._aiPatterns[randomIndex].isUnlock) return;
+            if (!_actionDatabase._aiPatterns[randomIndex].isUnlock) {//Enelvé le is unlock au SO pour juste remplacer le tout par la liste de AI_Pattern unlocked
+                _aiActionHandler.RegisterActionOnBeat(GetActionData(), true);
+                return;
+            }
             
             var open = _actionDatabase._aiPatterns[randomIndex].pattern.openingAction;
             var close = _actionDatabase._aiPatterns[randomIndex].pattern.confirmationAction;
                 
-            _actionHandlerService.RegisterActionOnBeat(open, true);
-            _actionHandlerService.RegisterActionOnBeat(close, true);
+            _aiActionHandler.RegisterActionOnBeat(open, true);
+            _aiActionHandler.RegisterActionOnBeat(close, true);*/
         }
     }
 }

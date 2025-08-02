@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionName: Halfbeat Skip Combo
   isComboAction: 1
-  inputsRequired: []
+  inputsRequired:
+  - inputName: 
+    actionType: 0
   counterActions: []
-  inputBufferTime: 0.3
   holdDuration: 0
   CanExecuteOnHalfBeat: 0
+  dodgeAction: 0
   damageAmount: 0
   cooldown: 0
   feedbackData: {fileID: 0}

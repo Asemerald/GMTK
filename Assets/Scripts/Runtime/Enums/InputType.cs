@@ -4,7 +4,10 @@
         None,
         Right,
         Left,
-        BlockLeft,
-        BlockRight
+        Up,
+        Down,
+        DodgeRight,
+        DodgeLeft,
+        Parry
     }
 }

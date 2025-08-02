@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BlockLeft",
+                    "name": "Up",
                     "type": "Button",
                     "id": "9315758d-0b1b-4ae9-a2bf-646b4ae757f1",
                     "expectedControlType": "",
@@ -33,9 +33,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BlockRight",
+                    "name": "Down",
                     "type": "Button",
                     "id": "492dc73c-cb61-4836-bcb2-7c8843500b4e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dogde Right",
+                    "type": "Button",
+                    "id": "eca2149a-f9ba-4ede-a24d-91d168c0186c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dogde Left",
+                    "type": "Button",
+                    "id": "97bd267f-5d1f-45b8-8c1b-682aee63311d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -68,22 +86,44 @@
                 {
                     "name": "",
                     "id": "388bf031-dead-4bd8-8998-80a4cea3ce73",
-                    "path": "",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "BlockLeft",
+                    "groups": ";Gamepad",
+                    "action": "Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "65871a22-195c-40d1-a915-1c013fe0a286",
-                    "path": "",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "BlockRight",
+                    "groups": ";Gamepad",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a3266f7-e160-4fc4-94e7-1b503284ee29",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dogde Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "323e0b3e-1802-49d3-8c39-c49038575692",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dogde Left",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
