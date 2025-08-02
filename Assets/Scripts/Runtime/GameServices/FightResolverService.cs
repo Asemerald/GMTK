@@ -376,6 +376,8 @@ namespace Runtime.GameServices {
                     }
                     break;
                 case (ActionType.Empty, ActionType.Empty):                                              // Le joueur ne fait rien et l'IA ne fait rien
+                    playerFeedback = null;
+                    aiFeedback = null;
                     break;
 
                 default:
@@ -390,8 +392,8 @@ namespace Runtime.GameServices {
                 aiFeedback = null;      //gestion du feedback de parry ne se fait pas ici
             }
             
-            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, ActionCallbackType.OnStart);
-            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, ActionCallbackType.OnStart);
+            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, ActionCallbackType.OnSuccess);
+            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, ActionCallbackType.OnSuccess);
             
             ClearActions();
             
