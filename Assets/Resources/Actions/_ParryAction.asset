@@ -15,8 +15,7 @@ MonoBehaviour:
   actionName: Parry
   actionType: 1
   inputsRequired:
-  - inputName: 
-    actionType: 7
+  - actionType: 7
   counterActions: []
   holdDuration: 0
   CanExecuteOnHalfBeat: 1
