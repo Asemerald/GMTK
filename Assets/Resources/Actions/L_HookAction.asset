@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
   m_Name: L_HookAction
   m_EditorClassIdentifier: 
-  actionName: 
+  actionName: L_Hook
   actionType: 0
-  inputsRequired: []
-  counterActions: []
-  holdDuration: 0
+  inputsRequired:
+  - actionType: 2
+  counterActions:
+  - {fileID: 11400000, guid: 258ed6c4e975de843ab5f5b570b865cf, type: 2}
+  - {fileID: 11400000, guid: 19b3c578154ddbf4eba9f59265d2165c, type: 2}
+  holdDuration: 2
   CanExecuteOnHalfBeat: 0
   damageAmount: 0
   cooldown: 0
-  feedbackData: {fileID: 0}
+  feedbackData: {fileID: 11400000, guid: fec2d71e834ed0e4d9b2b20a2286372e, type: 2}
