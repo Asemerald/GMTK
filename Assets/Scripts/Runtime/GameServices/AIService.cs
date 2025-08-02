@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
 
+/*
+ * Script qui gère le fonctionnement de l'IA - De comment les actions sont choisi
+ *
+ */
+
 namespace Runtime.GameServices {
     public class AIService : IGameSystem{
 
@@ -31,7 +36,6 @@ namespace Runtime.GameServices {
 
         public void Tick() {
             _actionHandlerService.Tick();
-            
             if(_actionHandlerService._actionQueue.Count <= 0 && !_actionHandlerService._inCombo)
                 CallAction();
         }
@@ -69,7 +73,10 @@ namespace Runtime.GameServices {
         void DoPatternAction() {
             var randomIndex = Random.Range(0, _actionDatabase._aiPatterns.Count);
 
-            if (!_actionDatabase._aiPatterns[randomIndex].isUnlock) return;
+            if (!_actionDatabase._aiPatterns[randomIndex].isUnlock) {
+                _actionHandlerService.RegisterActionOnBeat(GetActionData(), true);
+                return;
+            }
             
             var open = _actionDatabase._aiPatterns[randomIndex].pattern.openingAction;
             var close = _actionDatabase._aiPatterns[randomIndex].pattern.confirmationAction;

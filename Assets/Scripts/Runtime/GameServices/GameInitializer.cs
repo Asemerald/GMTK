@@ -26,6 +26,7 @@ namespace Runtime.GameServices
         private ActionHandlerService _actionHandlerService;
         private AIService _aiService;
         private FeedbackService _feedbackService;
+        private FightResolverService _fightResolverService;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -56,8 +57,9 @@ namespace Runtime.GameServices
             _actionHandlerService = new ActionHandlerService(_gameSystems);
             _feedbackService = new FeedbackService(_gameSystems, _feedbackPlayer);
             _aiService = new AIService(_gameSystems);
-            _gameSystems.Register(_gameConfigService);
+            _fightResolverService = new FightResolverService(_gameSystems);
 
+            _gameSystems.Register(_gameConfigService);
             _gameSystems.Register(_inputManager);
             _gameSystems.Register(_beatSyncService);
             _gameSystems.Register(_hitHandlerService);
@@ -66,6 +68,7 @@ namespace Runtime.GameServices
             _gameSystems.Register(_actionHandlerService);
             _gameSystems.Register(_aiService);
             _gameSystems.Register(_feedbackService);
+            _gameSystems.Register(_fightResolverService);
 
             _gameSystems.Initialize();
         }
