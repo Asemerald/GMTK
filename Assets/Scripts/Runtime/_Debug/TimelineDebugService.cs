@@ -30,7 +30,6 @@ namespace Runtime._Debug
         {
             if (_beatSync == null)
             {
-                //TODO add custom logger
                 Debug.LogError(
                     "BeatSyncService is not set. Please initialize TimelineDebugService with a BeatSyncService instance.");
                 return;

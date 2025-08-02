@@ -26,7 +26,7 @@ public class FeedbackPlayer : MonoBehaviour
 
     internal void Initialize(Volume globalVolume = null)
     {
-        this.globalVolume = globalVolume ?? FindObjectOfType<Volume>();
+        this.globalVolume = globalVolume ?? FindFirstObjectByType<Volume>();
         if (this.globalVolume == null)
         {
             Debug.LogError("Global Volume not found in the scene. Please ensure a Volume component is present.");

@@ -88,10 +88,10 @@ namespace Runtime.GameServices {
             var item = _actionQueue.Dequeue();
             var action = item.Item1;
 
-            if(_isAI)
+            /*if(_isAI)
                 _fightResolverService.GetAIAction(item.Item1);
             else
-                _fightResolverService.GetPlayerAction(item.Item1);
+                _fightResolverService.GetPlayerAction(item.Item1);*/
             
             if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
                 RegisterPreviousAction(item.Item1);
