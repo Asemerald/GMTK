@@ -57,6 +57,7 @@ namespace Runtime.GameServices {
 
         void CompareAction() {
             //Stocker en local peut-être ?
+            
             if (timer > 0)
                 timer = 0;
             
