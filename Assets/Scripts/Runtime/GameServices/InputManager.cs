@@ -20,13 +20,15 @@ namespace Runtime.Inputs {
 
             input.Gameplay.Right.performed += OnRightPerformed;
             input.Gameplay.Left.performed += OnLeftPerformed;
-            input.Gameplay.Up.performed += OnUpPerformed;
-            input.Gameplay.Down.performed += OnDownPerformed;
+            input.Gameplay.Parry.performed += OnParryPerformed;
+            //input.Gameplay.Up.performed += OnUpPerformed;
+            //input.Gameplay.Down.performed += OnDownPerformed;
 
             input.Gameplay.Right.canceled += OnRightReleased;
             input.Gameplay.Left.canceled += OnLeftReleased;
-            input.Gameplay.Up.canceled += OnUpReleased;
-            input.Gameplay.Down.canceled += OnDownReleased;
+            input.Gameplay.Parry.canceled += OnParryReleased;
+            //input.Gameplay.Up.canceled += OnUpReleased;
+            //input.Gameplay.Down.canceled += OnDownReleased;
 
             input.Gameplay.DogdeRight.performed += OnDodgeRightPerformed;
             input.Gameplay.DogdeLeft.performed += OnDodgeLeftPerformed;
@@ -41,13 +43,13 @@ namespace Runtime.Inputs {
         {
             input.Gameplay.Right.performed -= OnRightPerformed;
             input.Gameplay.Left.performed -= OnLeftPerformed;
-            input.Gameplay.Up.performed -= OnUpPerformed;
-            input.Gameplay.Down.performed -= OnDownPerformed;
+            //input.Gameplay.Up.performed -= OnUpPerformed;
+            //input.Gameplay.Down.performed -= OnDownPerformed;
             
             input.Gameplay.Right.canceled -= OnRightReleased;
             input.Gameplay.Left.canceled -= OnLeftReleased;
-            input.Gameplay.Up.canceled -= OnUpReleased;
-            input.Gameplay.Down.canceled -= OnDownReleased;
+            //input.Gameplay.Up.canceled -= OnUpReleased;
+            //input.Gameplay.Down.canceled -= OnDownReleased;
             
             input.Gameplay.DogdeRight.performed -= OnDodgeRightPerformed;
             input.Gameplay.DogdeLeft.performed -= OnDodgeLeftPerformed;
@@ -68,6 +70,8 @@ namespace Runtime.Inputs {
         private void OnDownPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
             => OnActionPressed?.Invoke(InputType.Down);
         
+        private void OnParryPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionPressed?.Invoke(InputType.Parry);
         
         //Released Input
         private void OnRightReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
@@ -82,6 +86,8 @@ namespace Runtime.Inputs {
         private void OnDownReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
             => OnActionReleased?.Invoke(InputType.Down);
         
+        private void OnParryReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+            => OnActionPressed?.Invoke(InputType.Parry);
         
         //Dodge Input
         private void OnDodgeRightPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx) 
