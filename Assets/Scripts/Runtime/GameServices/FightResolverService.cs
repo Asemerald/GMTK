@@ -293,13 +293,13 @@ namespace Runtime.GameServices {
 
         private bool ComboInputSuccess()
         {
-            Debug.LogError("Ajouter ici la logique de si le défenseur a réussi son action de combo, pour l'insatnt réussite auto");
+            Debug.LogError("Ajouter ici la logique de si l'attaquant a réussi son action de combo, pour l'insatnt réussite auto");
             return true;
         }
         
         private bool ComboTimingSuccess()
         {
-            Debug.LogError("Ajouter ici la logique de si l'attaquant a eu un meilleur timing que le defenseur, pour l'instant réussite automatique ");
+            Debug.LogError("Ajouter ici la logique de si le défenseur a eu un meilleur timing que l'attaquant, pour l'instant réussite automatique ");
             return true;
         }
 
