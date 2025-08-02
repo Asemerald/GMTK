@@ -45,7 +45,7 @@ public class HitHandlerService : IGameSystem
     public void Tick() { //Ici faire la validation d'action data base
         if (currentActionData != null && !_actionHandlerService._inCombo) { //Check si le joueur a une action data de sélectionner ou n'est pas en train d'effectuer un combo
             if (_beatSyncService.GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action - Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
-                if(currentActionData.dodgeAction || _inComboInputMode) _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
+                if(currentActionData.actionType is ActionType.Dodge || _inComboInputMode) _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
                 else _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
                 
                 currentActionData = null;

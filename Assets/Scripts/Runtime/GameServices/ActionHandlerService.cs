@@ -71,7 +71,7 @@ namespace Runtime.GameServices {
         void CheckToExecuteAction(BeatFractionType fractionType) {
             if(_actionQueue.Count <= 0) return;
             
-            if (_actionQueue.Peek().Item1.dodgeAction) { //Pouvoir réaliser le dodge independent du temps
+            if (_actionQueue.Peek().Item1.actionType is ActionType.Dodge) { //Pouvoir réaliser le dodge independent du temps
                 ExecuteAction();
                 return;
             }
