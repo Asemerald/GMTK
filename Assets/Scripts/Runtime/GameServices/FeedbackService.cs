@@ -141,7 +141,24 @@ public class FeedbackService : IGameSystem
 
     public void PlayBlockFeedback(PunchType punchType, FeedbackSide punchSide)
     {
-        
+        switch (punchType, punchSide)
+        {
+            case (PunchType.Punch, FeedbackSide.Left):
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftPunchFeedback, FeedbackTarget.Player, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
+                break;
+            case (PunchType.Punch, FeedbackSide.Right):
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightPunchFeedback, FeedbackTarget.Player, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
+                break;
+            case (PunchType.Hook, FeedbackSide.Left):
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftHookFeedback, FeedbackTarget.Player, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
+                break;
+            case (PunchType.Hook, FeedbackSide.Right):
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightHookFeedback, FeedbackTarget.Player, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
+                break;
+            default:
+                Debug.LogWarning($"FeedbackService: Unknown punch type {punchType} or side {punchSide}");
+                break;
+        }
     }
 
     private void FeedbackToDoEachBeat(SO_FeedbackData feedback)
