@@ -53,7 +53,7 @@ namespace Runtime.GameServices
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(_gameConfigService.GameConfig.gameMusic);
             _hitHandlerService = new HitHandlerService(_gameSystems);
-            _actionDatabase = new ActionDatabase();
+            _actionDatabase = new ActionDatabase(_gameSystems);
             _comboManagerService = new ComboManagerService(_gameSystems);
             _actionHandlerService = new ActionHandlerService(_gameSystems);
             _feedbackService = new FeedbackService(_gameSystems, _feedbackPlayer);

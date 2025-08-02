@@ -17,9 +17,10 @@ namespace Runtime.GameServices {
         private ActionHandlerService _playerActionHandler;
         private ActionDatabase _actionDatabase;
         private BeatSyncService _beatSyncService;
+        private FightResolverService _fightResolverService;
         
         private List<SO_ActionData> _actionList = new List<SO_ActionData>();
-        private List<SO_AIPattern> _unlockedPatterns = new List<SO_AIPattern>();
+        internal List<SO_AIPattern> _unlockedPatterns = new List<SO_AIPattern>();
         
         private SO_AIConfig _aiConfig;
         
@@ -27,6 +28,8 @@ namespace Runtime.GameServices {
         bool canCounter = false; //Bool qui passe en true dès que le joueur a réaliser un contre - L'IA va roll un % de chance d'en réaliser un après une esquive réussi
         
         bool hasRolled = false;
+        
+        internal bool _inComboInputMode = false;
         
         public AIService(GameSystems gameSystems, SO_AIConfig config) {
             _gameSystems = gameSystems;
@@ -42,6 +45,7 @@ namespace Runtime.GameServices {
             _actionDatabase = _gameSystems.Get<ActionDatabase>();
             _playerActionHandler = _gameSystems.Get<ActionHandlerService>();
             _beatSyncService = _gameSystems.Get<BeatSyncService>();
+            _fightResolverService = _gameSystems.Get<FightResolverService>();
 
             _aiActionHandler.Initialize();
             _actionList = SetActionDataList();
@@ -56,7 +60,34 @@ namespace Runtime.GameServices {
 
             if(hasRolled) return;
             
-            if (_aiActionHandler._actionQueue.Count <= 0 && !_aiActionHandler._inCombo) { //Lorsque l'IA n'a aucune action de prise et n'effectue pas un combo -> Prend l'action de roll une action
+            //Check ici pour le mode combo
+            if (_inComboInputMode) { //Ajouter une notion de timing au if et else
+                if (_beatSyncService.GetBeatFraction() is BeatFractionType.FirstQuarter) { //Prend une action sur le premier quart de temps
+                    hasRolled = true;
+                    
+                    _fightResolverService.StopAiTimer();
+                    
+                    if (_aiActionHandler._actionQueue.Count <= 0) {
+                        if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
+                            _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Attack), false);
+                        }
+                        else if (RollAction(_aiConfig.chanceOfParry)) { //si le roll réussi -> sort une parade
+                            _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Parry), false);
+                        }
+                        else if (RollAction(_aiConfig.chanceOfDodge)) {//si le roll réussi -> sort une esquive
+                            _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Dodge), false);
+                        }
+                    }
+                }
+                
+                return;
+            }
+            
+            if(!canCounter && _playerActionHandler._previousActions.Count > 0) //Check si l'IA peut counter
+                if(_playerActionHandler._previousActions[^1].actionType is ActionType.Counter) //Si la dernière action joueur est un counter alors l'IA débloque le counter
+                    canCounter = true;
+            
+            if (_aiActionHandler._actionQueue.Count <= 0 && !_aiActionHandler._inCombo) { //Lorsque l'IA n'a aucune action de prise et n'effectue pas un combo → Prend l'action de roll une action
                 if (_beatSyncService.GetBeatFraction() is BeatFractionType.FirstQuarter) { //Prend une action sur le premier quart de temps
                     CallAllPossibleAction();
                 }
@@ -66,8 +97,12 @@ namespace Runtime.GameServices {
         void CallAllPossibleAction() {
             hasRolled = true;
             if (_playerActionHandler._actionQueue.Count <= 0) { //Si le joueur n'a aucune action en queue
-                        
-                if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
+                if (_aiActionHandler._previousActions.Count > 0) {//Check si l'IA a réalisé une esquive précédemment
+                    if (_aiActionHandler._previousActions[^1].actionType is ActionType.Dodge && RollAction(_aiConfig.chanceOfCounter)) {
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Counter), false);
+                    }        
+                }
+                else if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
                     RolledAttack();
                 }
                 //sinon il ne fait rien
@@ -76,7 +111,10 @@ namespace Runtime.GameServices {
                     
                 var GetActionType = _playerActionHandler._actionQueue.Peek().Item1.actionType;
                
-                if (GetActionType is ActionType.Attack) {
+                if (_aiActionHandler._previousActions[^1].actionType is ActionType.Dodge && RollAction(_aiConfig.chanceOfCounter)) {
+                    _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Counter), false);
+                }  
+                else if (GetActionType is ActionType.Attack) {
                     
                     if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
                         RolledAttack();
@@ -91,8 +129,8 @@ namespace Runtime.GameServices {
                 }
                 else if (GetActionType is ActionType.Combo) {
                     
-                    if (RollAction(_aiConfig.chanceOfSuccessCombo)) { //si le roll réussi -> sort une attaque
-                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Combo), false);
+                    if (RollAction(_aiConfig.chanceOfAttack)) { //si le roll réussi -> sort une attaque
+                        _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Attack), false);
                     }
                     else if (RollAction(_aiConfig.chanceOfParry)) { //si le roll réussi -> sort une parade
                         _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Parry), false);
@@ -173,6 +211,13 @@ namespace Runtime.GameServices {
                 }
                 
                 return possibleActions[Random.Range(0, possibleActions.Count)];
+            }
+            else if (actionType is ActionType.Counter) {
+                foreach (var action in _actionList) {
+                    if (action.actionType is not ActionType.Counter) continue;
+
+                    return action;
+                }
             }
 
             return null;

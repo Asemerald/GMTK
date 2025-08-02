@@ -109,7 +109,10 @@ namespace Runtime.GameServices {
                 RegisterPreviousAction(action);
             }
             else { //Lorsqu'il est en combo, si la queue devient vide, alors il sort de l'état combo
-                if (_actionQueue.Count <= 0) _inCombo = false;
+                if (_actionQueue.Count <= 0) {
+                    _inCombo = false;
+                    _gameSystems.TriggerComboMode(false);
+                }
             }
         }
 
@@ -127,7 +130,8 @@ namespace Runtime.GameServices {
 
             if (comboAction) {
 
-                _actionDatabase.UnlockPattern(comboAction);
+                if(!_isAI)
+                    _actionDatabase.UnlockPattern(comboAction);
                 
                 foreach (var action in comboAction.ComboActions) {
                     RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
@@ -147,6 +151,9 @@ namespace Runtime.GameServices {
             foreach (var action in comboAction.ComboActions) { 
                 RegisterActionOnBeat(action, false, true);
             }
+            
+            _gameSystems.TriggerComboMode(true);
+            
             _previousActions.Clear();
         }
     }

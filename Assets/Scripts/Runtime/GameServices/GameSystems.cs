@@ -51,5 +51,10 @@ namespace Runtime.GameServices
             foreach (var system in systems.Values) system.Dispose();
             systems.Clear();
         }
+
+        public void TriggerComboMode(bool inCombo) {
+            Get<HitHandlerService>()._inComboInputMode = inCombo;
+            Get<AIService>()._inComboInputMode = inCombo;
+        }
     }
 }
