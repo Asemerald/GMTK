@@ -1,4 +1,6 @@
-﻿using Runtime.GameServices.Interfaces;
+﻿using Runtime.Enums;
+using Runtime.GameServices.Interfaces;
+using UnityEngine;
 
 namespace Runtime.GameServices {
     public class FightResolverService : IGameSystem {
@@ -36,11 +38,177 @@ namespace Runtime.GameServices {
         void CompareAction() {
             //Stocker en local peut-être ?
             
-            var ai = aiAction;
-            var player = playerAction;
+            var playerActionType = playerAction.actionType;
+            var aiActionType = aiAction.actionType;
+
+            switch (playerActionType, aiActionType)
+            {
+                case (ActionType.Attack, ActionType.Attack):                                            // Les deux joueurs s'entre-attaquent
+                    if (ActionCounters(playerAction, aiAction) || ActionCounters(aiAction, playerAction)) // Si l'un des joueurs réussit à attaquer miroir
+                    {
+                        ResolveAction(playerAction,false,aiAction,false);            // Résultat : les deux coups s'annulent
+                    }
+                    else
+                    {
+                        ResolveAction(playerAction,true,aiAction,true);             // Résultat : les deux se prennent un coup
+                    }
+                    
+                    break;
+                case (ActionType.Attack, ActionType.Parry):                                             // Le joueur attaque et l'IA pare
+                    
+                    ResolveAction(playerAction,true,aiAction,true);                 // Résultat : l'IA perd de l'endurance/hp
+                    
+                    break;
+                case (ActionType.Attack, ActionType.Dodge):
+                    
+                    ResolveAction(playerAction,false,aiAction,true);
+                    
+                    break;
+                case (ActionType.Attack, ActionType.Combo):
+                    break;
+                case (ActionType.Attack, ActionType.Empty):
+                    break;
+
+                case (ActionType.Parry, ActionType.Attack):
+                    break;
+                case (ActionType.Parry, ActionType.Parry):
+                    break;
+                case (ActionType.Parry, ActionType.Dodge):
+                    break;
+                case (ActionType.Parry, ActionType.Combo):
+                    break;
+                case (ActionType.Parry, ActionType.Empty):
+                    break;
+
+                case (ActionType.Dodge, ActionType.Attack):
+                    break;
+                case (ActionType.Dodge, ActionType.Parry):
+                    break;
+                case (ActionType.Dodge, ActionType.Dodge):
+                    break;
+                case (ActionType.Dodge, ActionType.Combo):
+                    break;
+                case (ActionType.Dodge, ActionType.Empty):
+                    break;
+
+                case (ActionType.Combo, ActionType.Attack):
+                    
+                    break;
+                case (ActionType.Combo, ActionType.Parry):
+                    break;
+                case (ActionType.Combo, ActionType.Dodge):
+                    break;
+                case (ActionType.Combo, ActionType.Combo):
+                    break;
+                case (ActionType.Combo, ActionType.Empty):
+                    break;
+
+                case (ActionType.Empty, ActionType.Attack):
+                    break;
+                case (ActionType.Empty, ActionType.Parry):
+                    break;
+                case (ActionType.Empty, ActionType.Dodge):
+                    break;
+                case (ActionType.Empty, ActionType.Combo):
+                    break;
+                case (ActionType.Empty, ActionType.Empty):
+                    break;
+
+                default:
+                    break;
+            }
+            
             ClearActions();
             
             //Faire la comparaison et qu'est-ce qui se passe
+        }
+        
+        private bool ActionCounters(SO_ActionData source, SO_ActionData target)
+        {
+            return source != null && target != null && source.counterActions != null && source.counterActions.Contains(target);
+        }
+
+        private bool ComboInputSuccess()
+        {
+            Debug.LogError("Ajouter ici la logique de savoir si l'attaquant du combo a fait le bon input, pour l'instant réussite auto");
+            return true;
+        }
+
+        void ResolveAction(SO_ActionData playerFinalAction,bool playerSuccess, SO_ActionData iaFinalAction,bool iaSuccess )
+        {
+            Debug.LogError("Ajouter ici le déclenchement des 1/2 actions simultanées, feedback associés et enregsitrer dans un historique");
+
+            ApplyAction(playerFinalAction, playerSuccess, true, iaFinalAction);
+            ApplyAction(iaFinalAction, iaSuccess, false, playerFinalAction);
+        }
+        
+        void ApplyAction(SO_ActionData action, bool success, bool isPlayer, SO_ActionData opponentAction)
+        {
+            
+            switch (action.actionType)
+            {
+                case ActionType.Attack:
+                    if (success)
+                    {
+                        ApplyDamages(action.holdDuration, isPlayer, opponentAction.actionType == ActionType.Parry);
+                    }
+                    else
+                    {
+                        // lancer une atatque ratée
+                    }
+                    break;
+                case ActionType.Combo :
+                    if (success)
+                    {
+                        ApplyDamages(action.holdDuration,isPlayer, opponentAction.actionType == ActionType.Parry);
+                    }
+                    else
+                    {
+                        // lancer une atatque ratée
+                    }
+                    break;
+                case ActionType.Parry:
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+                    }
+                    break;
+                case ActionType.Dodge:
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+                    }
+                    break;
+                case ActionType.Empty:
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+                    }
+                    break;
+            }
+        }
+
+        void ApplyDamages(AttackHoldDuration holdDuration, bool toPlayer, bool opponentParry)
+        {
+            switch (holdDuration)
+            {
+                case AttackHoldDuration.None:
+                    // que pour les esquives donc osef ?
+                    break;
+                case AttackHoldDuration.Half:
+                    //retirer un peu d'endurance
+                    break;
+                case AttackHoldDuration.Full:
+                    //retirer bcp d'endurance
+                    break;
+            }
+            //réduire selon opponentParry
         }
 
         void ClearActions() {
