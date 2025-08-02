@@ -90,24 +90,30 @@ public class HitHandlerService : IGameSystem
             }
         }
         else { //Fonction de tri pour obtenir un counter
-            if (_actionHandlerService._previousActions[^1].actionType == ActionType.Dodge) {
-                foreach (var action in _actionDatabase.ActionDatas) {
-                    var breakLoop = false;
-                
-                    if (action.Key.actionType == inputType) {
-                        foreach (var hit in action.Value) {
-                            if (hit.actionType is ActionType.Counter) { //Ici enregistre une var l'action et sort de la loop
-                                currentActionData = hit;
-                                breakLoop = true;
-                                break;
+            if (_actionHandlerService._previousActions.Count > 0) {
+                var performCounter = false;
+                if (_actionHandlerService._previousActions[^1].actionType == ActionType.Dodge) {
+                    foreach (var action in _actionDatabase.ActionDatas) {
+                        var breakLoop = false;
+                    
+                        if (action.Key.actionType == inputType) {
+                            foreach (var hit in action.Value) {
+                                if (hit.actionType is ActionType.Counter) { //Ici enregistre une var l'action et sort de la loop
+                                    currentActionData = hit;
+                                    performCounter = true;
+                                    breakLoop = true;
+                                    break;
+                                }
                             }
                         }
+                    
+                        if(breakLoop) 
+                            break;
                     }
-                
-                    if(breakLoop) 
-                        break;
                 }
-                return;
+                
+                if(performCounter) return;
+                
             }
             
             
