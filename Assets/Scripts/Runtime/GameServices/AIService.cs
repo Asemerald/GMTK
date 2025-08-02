@@ -244,5 +244,12 @@ namespace Runtime.GameServices {
         void ResetRolled() {
             hasRolled = false;
         }
+
+        public void EmptyQueue() {
+            if(_playerActionHandler._actionQueue.Count > 0)
+                _playerActionHandler._actionQueue.Clear();
+            if(_aiActionHandler._actionQueue.Count > 0)
+                _aiActionHandler._actionQueue.Clear();
+        }
     }
 }
