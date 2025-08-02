@@ -94,17 +94,13 @@ public class FeedbackPlayer : MonoBehaviour
         //TODO PlayOneShot avec FMOD
     }
 
-    public void PlayHueShift(HUEShiftValue data)
+    public void PlayHueShift()
     {
         if (colorAdjustments == null)
             return;
-        if (data == HUEShiftValue.None)
-        {
-            Debug.LogWarning("[FeedbackPlayer] Hue shift is set to None but I was still called, skipping.");
-            return;
-        }
-
-        var targetValue = HuePresetToFloat(data);
+        
+        var targetValue = 0f; // Default value if no hue shift is set
+        
         colorAdjustments.hueShift.value = targetValue;
     }
 
@@ -189,18 +185,6 @@ public class FeedbackPlayer : MonoBehaviour
         var baseTransform = target == FeedbackTarget.Player ? playerAnimator.transform : enemyAnimator.transform;
         var offset = side == FeedbackSide.Left ? Vector3.left : Vector3.right;
         return baseTransform.position + offset * 0.5f;
-    }
-
-    private float HuePresetToFloat(HUEShiftValue hueShiftValue)
-    {
-        return hueShiftValue switch
-        {
-            HUEShiftValue.None => 0f,
-            HUEShiftValue.Zero => 0f,
-            /*HUEShiftValue.Medium => 90f,
-            HUEShiftValue.High => 180f,*/
-            _ => throw new ArgumentOutOfRangeException(nameof(hueShiftValue), hueShiftValue, null)
-        };
     }
 
     #region Debug Methods
