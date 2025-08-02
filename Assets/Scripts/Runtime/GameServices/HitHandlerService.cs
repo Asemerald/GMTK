@@ -153,40 +153,29 @@ public class HitHandlerService : IGameSystem
                         break;
                     }
                 }
+            
+                if(breakLoop) 
+                    break;
             }
-            
-            if(breakLoop) 
-                break;
         }
-    }
-
-    void HandleDodgeInputPerformed(InputType inputType) {
-        var currentFraction = GetBeatFraction();
-        if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
-            Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
-            return;
-        }
-        
-        if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
-
-        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
-        
-        
-        foreach (var action in _actionDatabase.ActionDatas) {
-            var breakLoop = false;
-            
-            if (action.Key.actionType == inputType) {
-                if(action.Value.Count >= 1)
+        else
+        { //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+            foreach (var action in _actionDatabase.ActionDatas) {
+                var breakLoop = false;
+                
+                if (action.Key.actionType == inputType) {
                     foreach (var hit in action.Value) {
-                        currentActionData = hit;
-                        breakLoop = true;
-                        break;
-                        
+                        if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) { //Ici enregistre une var l'action et sort de la loop
+                            currentActionData = hit;
+                            breakLoop = true;
+                            break;
+                        }
                     }
+                }
+                
+                if(breakLoop) 
+                    break;
             }
-            
-            if(breakLoop) 
-                break;
         }
     }
     
