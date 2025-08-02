@@ -2,6 +2,11 @@ using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using UnityEngine;
 
+/*
+ * Ce script se charge de récupérer les inputs de l'IA et du joeur sur un temps
+ * et de les comparer pour par la suite executé / mettre a jour l'état du joueur / de l'IA
+ */
+
 namespace Runtime.GameServices {
     public class FightResolverService : IGameSystem {
         

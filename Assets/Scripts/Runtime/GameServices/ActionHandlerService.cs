@@ -1,11 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using FMOD;
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
+
+/*
+ * Ce script se charge de récupérer les actions et de les stocker dans une liste pour ensuite les jouer sur le tempo
+ * Le script est utilisé par le joueur et l'IA
+ */
 
 namespace Runtime.GameServices {
     public class ActionHandlerService : IGameSystem {

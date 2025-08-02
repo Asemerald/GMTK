@@ -4,6 +4,11 @@ using Runtime.GameServices.Interfaces;
 using Runtime.Inputs;
 using UnityEngine;
 
+/*
+ * HitHandlerService s'occupe d'enregistrer les inputs du joueur pour les convertir en actions
+ * Ce script est unique au joueur
+ */
+
 public class HitHandlerService : IGameSystem
 {
     private readonly GameSystems _gameSystems;
@@ -33,15 +38,12 @@ public class HitHandlerService : IGameSystem
         _inputManager.OnActionReleased += HandleInputCanceled;
     }
 
-    public void Tick() {
-        //Ici faire la validation de action data base
+    public void Tick() { //Ici faire la validation de action data base
         if (currentActionData != null && !_actionHandlerService._inCombo) { //Check si le joueur a une action data de sélectionner ou n'est pas en train d'effectuer un combo
-            if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action
-                //Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
-                if(currentActionData.dodgeAction)
-                    _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
-                else    
-                    _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
+            if (GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action - Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
+                if(currentActionData.dodgeAction) _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
+                else _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
+                
                 currentActionData = null;
             }
         }
@@ -50,13 +52,6 @@ public class HitHandlerService : IGameSystem
     #region ActionPerformed
     
     void HandleInputPerformed(InputType inputType) {
-        if(inputType is InputType.Right or InputType.Left or InputType.Down or InputType.Up)
-            HandleAttackInputPerformed(inputType);
-        else if (inputType is InputType.DodgeRight or InputType.DodgeLeft)
-            HandleDodgeInputPerformed(inputType);
-    }
-    
-    void HandleAttackInputPerformed(InputType inputType) {
         var currentFraction = GetBeatFraction();
         if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
             Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
@@ -65,58 +60,44 @@ public class HitHandlerService : IGameSystem
         
         if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
 
-        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
-        foreach (var action in _actionDatabase.ActionDatas) {
-            var breakLoop = false;
+        if(inputType is InputType.DodgeLeft or InputType.DodgeRight) {
+            foreach (var action in _actionDatabase.ActionDatas) {
+                var breakLoop = false;
             
-            if (action.Key.actionType == inputType) {
+                if (action.Key.actionType == inputType) {
+                    if(action.Value.Count >= 1)
+                        foreach (var hit in action.Value) {
+                            currentActionData = hit;
+                            breakLoop = true;
+                            break;
+                        
+                        }
+                }
+            
+                if(breakLoop) 
+                    break;
+            }
+        }
+        else
+        { //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+            foreach (var action in _actionDatabase.ActionDatas) {
+                var breakLoop = false;
                 
-                foreach (var hit in action.Value) {
-                    
-                    if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) {
-                        //Ici enregistre une var l'action et sort de la loop
-                        currentActionData = hit;
-                        breakLoop = true;
-                        break;
+                if (action.Key.actionType == inputType) {
+                    foreach (var hit in action.Value) {
+                        if (hit.holdDuration == GetPossibleAttackOnBeat(currentFraction)) { //Ici enregistre une var l'action et sort de la loop
+                            currentActionData = hit;
+                            breakLoop = true;
+                            break;
+                        }
                     }
                 }
+                
+                if(breakLoop) 
+                    break;
             }
-            
-            if(breakLoop) 
-                break;
         }
     }
-
-    void HandleDodgeInputPerformed(InputType inputType) {
-        var currentFraction = GetBeatFraction();
-        if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
-            Debug.LogError($"HitHandlerService::BeatFractionType - Return None");
-            return;
-        }
-        
-        if(GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
-
-        //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
-        
-        
-        foreach (var action in _actionDatabase.ActionDatas) {
-            var breakLoop = false;
-            
-            if (action.Key.actionType == inputType) {
-                if(action.Value.Count >= 1)
-                    foreach (var hit in action.Value) {
-                        currentActionData = hit;
-                        breakLoop = true;
-                        break;
-                        
-                    }
-            }
-            
-            if(breakLoop) 
-                break;
-        }
-    }
-    
     
     #endregion
     
@@ -135,7 +116,6 @@ public class HitHandlerService : IGameSystem
 
         if (currentActionData.holdDuration == AttackHoldDuration.Full) { //Si l'action doit être pressé plus d'un demi temps et qu'on est en dehors du 3/4 de temps, alors on reset l'action
             currentActionData = null;
-            Debug.Log("HitHandlerService::HandleAttackInputCanceled - Attack Cancelled");
         }
     }
     
