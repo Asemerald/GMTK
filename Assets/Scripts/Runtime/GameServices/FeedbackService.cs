@@ -72,7 +72,7 @@ public class FeedbackService : IGameSystem
 
         if (feedback.startAnimationName != string.Empty)
         {
-            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.startAnimationName);
+            _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.startAnimationName);
         }
         
         
@@ -90,7 +90,7 @@ public class FeedbackService : IGameSystem
         
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
-            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
+            _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationSuccessTriggerName);
         }
 
         if (!feedback.soundEffect.IsNull)
@@ -121,7 +121,7 @@ public class FeedbackService : IGameSystem
 
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
-            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
+            _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationSuccessTriggerName);
         }
 
         if (!feedback.blockSoundEffect.IsNull)
@@ -151,7 +151,7 @@ public class FeedbackService : IGameSystem
         Debug.LogWarning("FeedbackService: Failed Feedback");
         if (feedback.animationFailTriggerName != string.Empty)
         {
-            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationFailTriggerName);
+            _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationFailTriggerName);
         }
         
         if (!feedback.soundEffect.IsNull)
@@ -200,8 +200,8 @@ public class FeedbackService : IGameSystem
             return;
         }
         
-        _feedbackPlayer.PlayAnimation(FeedbackTarget.Player, feedback.animationSuccessTriggerName);
-        _feedbackPlayer.PlayAnimation(FeedbackTarget.Enemy, feedback.animationSuccessTriggerName);
+        _feedbackPlayer.PlayAnimation(feedback.side, FeedbackTarget.Player, feedback.animationSuccessTriggerName);
+        _feedbackPlayer.PlayAnimation(feedback.side, FeedbackTarget.Enemy, feedback.animationSuccessTriggerName);
 
        
     }
