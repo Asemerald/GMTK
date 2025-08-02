@@ -51,7 +51,7 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += CallCompareEvent;
             _beatSyncService.OnHalfBeat += CallCompareEvent;
-            _beatSyncService.OnQuarterBeat += CallCompareEvent;
+            //_beatSyncService.OnQuarterBeat += CallCompareEvent;
 
             _beatSyncService.OnBeat += StartAiTimer;
             _beatSyncService.OnBeat += StartPlayerTimer;
@@ -105,6 +105,7 @@ namespace Runtime.GameServices {
                 timer = 0;
             
             Debug.Log("FightResolverService::CompareAction");
+            
             var playerActionType = ActionType.Empty;
             var aiActionType = ActionType.Empty;
 
@@ -340,7 +341,7 @@ namespace Runtime.GameServices {
                     }
                     break;                                           
                 case (ActionType.Combo, ActionType.Combo):                                              //Situation Impossible
-                    Debug.LogError("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    Debug.LogWarning("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
                     _gameSystems.TriggerComboMode(false);
                     break;                                            
                 case (ActionType.Combo, ActionType.Empty):                                              //Le joueur execute un combo et l'IA ne fait rien
