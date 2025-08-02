@@ -11,32 +11,17 @@ public class FeedbackService : IGameSystem
     private SO_GameConfig _gameConfig;
 
 
-    public FeedbackService(GameSystems gameSystems)
+    public FeedbackService(GameSystems gameSystems, FeedbackPlayer feedbackPlayer)
     {
         _gameSystems = gameSystems ?? throw new System.ArgumentNullException(nameof(gameSystems));
+
+        _feedbackPlayer = feedbackPlayer ?? throw new System.ArgumentNullException(nameof(feedbackPlayer));
     }
 
     public void Initialize()
     {
         _gameConfig = _gameSystems.Get<GameConfigService>()?.GameConfig ??
                       throw new System.NullReferenceException("GameConfigService is not registered in GameSystems");
-
-        // Spawn Global Volume if it exists in the config
-        if (_gameConfig.volumePrefab != null)
-        {
-            var globalVolume = Object.Instantiate(_gameConfig.volumePrefab);
-            if (globalVolume == null) Debug.LogError("[FeedbackService] Failed to instantiate volumePrefab");
-        }
-
-
-        // Instantiate the FeedbackPlayer Gameobject 
-        _feedbackPlayer = Object.Instantiate(_gameConfig.FeedbackPlayerPrefab);
-
-        if (_feedbackPlayer == null)
-        {
-            Debug.LogError("[FeedbackService] Failed to instantiate FeedbackPlayerPrefab");
-            return;
-        }
 
         _feedbackPlayer.Initialize();
     }
