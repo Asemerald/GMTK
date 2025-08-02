@@ -12,21 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d1e783016124395947227a46b065669, type: 3}
   m_Name: R_Punch
   m_EditorClassIdentifier: 
+  startAnimationName: 
   animationSuccessTriggerName: R_Punch_S
   animationFailTriggerName: R_Punch_F
-  side: 0
+  side: 1
   successEnableLensDistortion: 1
-  successTargetIntensity: -0.6
+  successTargetIntensity: -0.5
   successTimeToTargetIntensity: 0.1
   successTimeAtTargetIntensity: 0.2
   successTimeToBaseIntensity: 0.2
   parryEnableLensDistortion: 1
-  parryTargetIntensity: -0.4
+  parryTargetIntensity: -0.35
   parryTimeToTargetIntensity: 0.1
   parryTimeAtTargetIntensity: 0.05
   parryTimeToBaseIntensity: 0.1
-  failEnableLensDistortion: 0
-  failTargetIntensity: 0
-  failTimeToTargetIntensity: 0.5
-  failTimeAtTargetIntensity: 0.5
-  failTimeToBaseIntensity: 0.5
+  failEnableLensDistortion: 1
+  failTargetIntensity: -0.2
+  failTimeToTargetIntensity: 0.03
+  failTimeAtTargetIntensity: 0.02
+  failTimeToBaseIntensity: 0.1

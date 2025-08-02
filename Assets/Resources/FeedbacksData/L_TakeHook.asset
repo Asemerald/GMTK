@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d1e783016124395947227a46b065669, type: 3}
-  m_Name: L_Punch
+  m_Name: L_TakeHook
   m_EditorClassIdentifier: 
   startAnimationName: 
-  animationSuccessTriggerName: L_Punch_S
-  animationFailTriggerName: L_Punch_F
+  animationSuccessTriggerName: L_TakeHit
+  animationFailTriggerName: 
   side: 0
   successEnableLensDistortion: 1
-  successTargetIntensity: -0.5
+  successTargetIntensity: -0.8
   successTimeToTargetIntensity: 0.1
   successTimeAtTargetIntensity: 0.2
   successTimeToBaseIntensity: 0.2
-  parryEnableLensDistortion: 1
+  parryEnableLensDistortion: 0
   parryTargetIntensity: -0.35
   parryTimeToTargetIntensity: 0.1
   parryTimeAtTargetIntensity: 0.05
   parryTimeToBaseIntensity: 0.1
-  failEnableLensDistortion: 1
+  failEnableLensDistortion: 0
   failTargetIntensity: -0.2
   failTimeToTargetIntensity: 0.03
   failTimeAtTargetIntensity: 0.02
