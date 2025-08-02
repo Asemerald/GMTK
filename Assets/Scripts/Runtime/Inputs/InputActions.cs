@@ -144,6 +144,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Parry"",
+                    ""type"": ""Button"",
+                    ""id"": ""8b7c10c5-efc1-430e-984b-6cf786d82e17"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -210,6 +219,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Dogde Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed115919-f545-4c18-8aa8-f94a936b6cd4"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -327,6 +347,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Down = m_Gameplay.FindAction("Down", throwIfNotFound: true);
         m_Gameplay_DogdeRight = m_Gameplay.FindAction("Dogde Right", throwIfNotFound: true);
         m_Gameplay_DogdeLeft = m_Gameplay.FindAction("Dogde Left", throwIfNotFound: true);
+        m_Gameplay_Parry = m_Gameplay.FindAction("Parry", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_ToggleBeatDebug = m_Debug.FindAction("ToggleBeatDebug", throwIfNotFound: true);
@@ -419,6 +440,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Down;
     private readonly InputAction m_Gameplay_DogdeRight;
     private readonly InputAction m_Gameplay_DogdeLeft;
+    private readonly InputAction m_Gameplay_Parry;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -454,6 +476,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/DogdeLeft".
         /// </summary>
         public InputAction @DogdeLeft => m_Wrapper.m_Gameplay_DogdeLeft;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Parry".
+        /// </summary>
+        public InputAction @Parry => m_Wrapper.m_Gameplay_Parry;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -498,6 +524,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @DogdeLeft.started += instance.OnDogdeLeft;
             @DogdeLeft.performed += instance.OnDogdeLeft;
             @DogdeLeft.canceled += instance.OnDogdeLeft;
+            @Parry.started += instance.OnParry;
+            @Parry.performed += instance.OnParry;
+            @Parry.canceled += instance.OnParry;
         }
 
         /// <summary>
@@ -527,6 +556,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @DogdeLeft.started -= instance.OnDogdeLeft;
             @DogdeLeft.performed -= instance.OnDogdeLeft;
             @DogdeLeft.canceled -= instance.OnDogdeLeft;
+            @Parry.started -= instance.OnParry;
+            @Parry.performed -= instance.OnParry;
+            @Parry.canceled -= instance.OnParry;
         }
 
         /// <summary>
@@ -753,6 +785,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDogdeLeft(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Parry" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnParry(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.
