@@ -5,6 +5,7 @@
         Parry,
         Dodge,
         Empty,
-        Combo
+        Combo,
+        Counter
     }
 }

@@ -16,8 +16,11 @@ public class HitHandlerService : IGameSystem
     private BeatSyncService _beatSyncService;
     private ActionDatabase _actionDatabase;
     private ActionHandlerService _actionHandlerService;
+    private FightResolverService _fightResolverService;
     
     private SO_ActionData currentActionData;
+    
+    internal bool _inComboInputMode = false;
     
     public HitHandlerService(GameSystems gameSystems) {
         _gameSystems = gameSystems;
@@ -33,15 +36,16 @@ public class HitHandlerService : IGameSystem
         _actionDatabase = _gameSystems.Get<ActionDatabase>();
         _inputManager = _gameSystems.Get<InputManager>();
         _actionHandlerService = _gameSystems.Get<ActionHandlerService>();
+        _fightResolverService = _gameSystems.Get<FightResolverService>();
         
         _inputManager.OnActionPressed += HandleInputPerformed;
         _inputManager.OnActionReleased += HandleInputCanceled;
     }
 
-    public void Tick() { //Ici faire la validation de action data base
+    public void Tick() { //Ici faire la validation d'action data base
         if (currentActionData != null && !_actionHandlerService._inCombo) { //Check si le joueur a une action data de sélectionner ou n'est pas en train d'effectuer un combo
             if (_beatSyncService.GetBeatFraction() == BeatFractionType.ThirdQuarter) { //Valide l'action - Register l'action dans ActionHandlerService qui s'occupe de jouer les actions sur le beat
-                if(currentActionData.dodgeAction) _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
+                if(currentActionData.dodgeAction || _inComboInputMode) _actionHandlerService.RegisterActionOnBeat(currentActionData, false);
                 else _actionHandlerService.RegisterActionOnBeat(currentActionData, true);
                 
                 currentActionData = null;
@@ -52,6 +56,13 @@ public class HitHandlerService : IGameSystem
     #region ActionPerformed
     
     void HandleInputPerformed(InputType inputType) {
+        if (_inComboInputMode) { //Si en mode combo, alors lors d'un input le timer s'arrete et se valide
+            _fightResolverService.StopPlayerTimer();
+            
+            if (_actionHandlerService._actionQueue.Count > 0) return; //Si le joueur a une action en queue cela veut dire qu'il est en combo et donc return
+            //Sinon, il envoie une action
+        }
+        
         var currentFraction = _beatSyncService.GetBeatFraction();
         if (currentFraction == BeatFractionType.None) { //Check pour vérifier qu'il retourne bien une fraction existante
             Debug.LogError($"HitHandlerService::BeatFractionType - Return None");

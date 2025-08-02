@@ -195,5 +195,9 @@ namespace Runtime.GameServices
         
             return AttackHoldDuration.None;
         }
+
+        public float GetTimerBetweenHalfBeat() {
+            return 60000f / timelineInfo.currentTempo / 2;
+        }
     }
 }
