@@ -1,5 +1,6 @@
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
+using Runtime.ScriptableObject;
 using UnityEngine;
 
 /*
@@ -12,11 +13,14 @@ namespace Runtime.GameServices {
         
         private GameSystems _gameSystems;
         private FeedbackService _feedbackService;
+        private BeatSyncService _beatSyncService;
         
         SO_ActionData aiAction;
         SO_ActionData playerAction;
         
         float timer = 0;
+        
+        bool compareCalled = false;
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
@@ -29,19 +33,29 @@ namespace Runtime.GameServices {
         public void Initialize() 
         {
             _feedbackService = _gameSystems.Get<FeedbackService>();
+            _beatSyncService = _gameSystems.Get<BeatSyncService>();
+
+            _beatSyncService.OnBeat += CallCompareEvent;
+            _beatSyncService.OnHalfBeat += CallCompareEvent;
+            _beatSyncService.OnQuarterBeat += CallCompareEvent;
+
         }
 
         public void Tick() {
-            /*if(aiAction && playerAction) //Modifier pour ajouter un délai d'attente pour vérifier si il va avoir une action de l'IA et du joueur ou juste d'un des deux
-                CompareAction();*/
+            if(compareCalled)
+                StartBuffer();
         }
 
+        void CallCompareEvent() {
+            compareCalled = true;
+        }
+        
         void StartBuffer() {
             if(playerAction && aiAction)
                 CompareAction();
             else if (aiAction || playerAction) {
                 timer += Time.deltaTime;
-                if (timer >= 0.15f) {
+                if (timer >= 0.1f) {
                     CompareAction();
                 }
             }
@@ -57,14 +71,28 @@ namespace Runtime.GameServices {
 
         void CompareAction() {
             //Stocker en local peut-être ?
+            compareCalled = false;
             if (timer > 0)
                 timer = 0;
             
-            var playerActionType = playerAction.actionType;
-            var aiActionType = aiAction.actionType;
+            Debug.Log("FightResolverService::CompareAction");
+            var playerActionType = ActionType.Empty;
+            var aiActionType = ActionType.Empty;
+
+            SO_FeedbackData playerFeedback = null; // par défaut anim réussie
+            SO_FeedbackData aiFeedback = null;     // par defaut anim réussie
             
-            var playerFeedback = playerAction.feedbackDataSuccess; // par défaut anim réussie
-            var aiFeedback = aiAction.feedbackDataSuccess;          // par defaut anim réussie
+            if (playerAction != null) {
+                playerActionType = playerAction.actionType;
+                playerFeedback = playerAction.feedbackDataSuccess;
+            }
+
+            if (aiAction != null) {
+                aiActionType = aiAction.actionType;
+                aiFeedback = aiAction.feedbackDataSuccess;
+            }
+            
+            
 
             switch (playerActionType, aiActionType)
             {

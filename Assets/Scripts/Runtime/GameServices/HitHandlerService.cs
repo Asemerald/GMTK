@@ -60,7 +60,7 @@ public class HitHandlerService : IGameSystem
         
         if(_beatSyncService.GetBeatFraction() is BeatFractionType.ThirdQuarter && currentActionData != null) return; //Évite de pouvoir reset ou changer l'action en cours lorsqu'une action est déjà assigné et qu'on est dans le temps d'envoi de l'action
 
-        if(inputType is InputType.DodgeLeft or InputType.DodgeRight) {
+        if(inputType is InputType.DodgeLeft or InputType.DodgeRight or InputType.Parry) {
             foreach (var action in _actionDatabase.ActionDatas) {
                 var breakLoop = false;
             
