@@ -2,7 +2,7 @@
 using UnityEngine.Serialization;
 
 namespace Runtime.ScriptableObject {
-    [CreateAssetMenu(menuName = "Runtime Scriptable Object/AI Config")]
+    [CreateAssetMenu(menuName = "Game/AI Config", fileName = "AI Config")]
     public class SO_AIConfig : UnityEngine.ScriptableObject {
 
         [Header("Roll Action Chance")] 

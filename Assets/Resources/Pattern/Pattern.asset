@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7e97c1aded476cb3d112bb31edf192, type: 3}
   m_Name: Pattern
   m_EditorClassIdentifier: 
-  actionDataListToCombo: []
+  pattern: {fileID: 11400000, guid: fd4283504f9c72642a8ac76dd88bb50b, type: 2}
+  isUnlock: 0
