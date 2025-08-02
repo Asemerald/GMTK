@@ -12,6 +12,8 @@ namespace Runtime.ScriptableObject
         
         [Header("Audio Settings")]
         public EventReference? soundEffect;
+
+        public EventReference? blockSoundEffect;
         
         [Header("Move Settings")]
         public FeedbackSide side;

@@ -34,28 +34,100 @@ public class FeedbackService : IGameSystem
 
     }
 
-    public void PlayActionFeedback(SO_FeedbackData feedback, bool playerFeedback, ActionCallbackType callbackType)
+    public void PlayActionFeedback(SO_FeedbackData feedback, FeedbackTarget feedbackTarget, ActionCallbackType callbackType)
     {
         if (feedback == null)
         {
             Debug.LogWarning("FeedbackService::PlayActionFeedback: Tried to play null feedback");
             return;
         }
+        
+        switch (callbackType)
+        {
+            case ActionCallbackType.OnStart:
+                FeedbackToDoOnStart(feedback, feedbackTarget);
+                break;
+            case ActionCallbackType.OnSuccess:
+                FeedbackToDoOnSuccess(feedback, feedbackTarget);
+                break;
+            case ActionCallbackType.OnBlock:
+                FeedbackToDoOnBlock(feedback, feedbackTarget);
+                break;
+            case ActionCallbackType.OnFail:
+                FeedbackToDoOnFail(feedback, feedbackTarget);
+                break;
+            default:
+                Debug.LogWarning($"FeedbackService::PlayActionFeedback: Unknown callback type {callbackType}");
+                break;
+        }
+    
+    }
+    
+    private void FeedbackToDoOnStart(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
 
-        /*if (feedback.animationTriggerName != null)
-            _feedbackPlayer.PlayAnimation(feedback.side, feedback.target, feedback.animationTriggerName);
+        if (feedback.startAnimationName != string.Empty)
+        {
+            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.startAnimationName);
+        }
+    }
+    
+    private void FeedbackToDoOnSuccess(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
 
-        if (feedback.particlePrefab != null)
-            _feedbackPlayer.PlayParticle(feedback.side, feedback.target, feedback.particlePrefab);
+        if (feedback.animationSuccessTriggerName != string.Empty)
+        {
+            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
+        }
 
         if (feedback.soundEffect != null)
+        {
             _feedbackPlayer.PlaySound(feedback.soundEffect);
+        }
+    }
+    
+    private void FeedbackToDoOnBlock(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
 
-        if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
-            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
+        if (feedback.animationSuccessTriggerName != string.Empty)
+        {
+            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
+        }
 
-        if (feedback.enableLensDistortion)
-            _feedbackPlayer.PlayDistortion(feedback);*/
+        if (feedback.soundEffect != null)
+        {
+            _feedbackPlayer.PlaySound(feedback.soundEffect);
+        }
+    }
+    
+    private void FeedbackToDoOnFail(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
+
+        if (feedback.animationFailTriggerName != string.Empty)
+        {
+            _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationFailTriggerName);
+        }
+        
     }
 
     private void FeedbackToDoEachBeat(SO_FeedbackData feedback)
