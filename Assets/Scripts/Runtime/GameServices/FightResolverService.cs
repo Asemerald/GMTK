@@ -48,6 +48,8 @@ namespace Runtime.GameServices {
                 case (ActionType.Attack, ActionType.Attack):                                            // Les deux joueurs s'entre-attaquent
                     if (ActionCounters(playerAction, aiAction) || ActionCounters(aiAction, playerAction)) // Si l'un des joueurs réussit à attaquer miroir
                     {
+                        _feedbackService.PlayActionFeedback(playerAction.feedbackDataSuccess,true);
+                        _feedbackService.PlayActionFeedback(aiAction.feedbackDataSuccess,false);
                         ResolveAction(playerAction,false,aiAction,false);            // Résultat : les deux coups s'annulent
                     }
                     else
@@ -148,8 +150,6 @@ namespace Runtime.GameServices {
         {
             if (success)
             {
-                _feedbackService.PlayActionFeedback(action.feedbackDataSuccess);
-
                 switch (action.actionType)
                 {
                     case ActionType.Attack:
@@ -168,8 +168,6 @@ namespace Runtime.GameServices {
             }
             else
             {
-                _feedbackService.PlayActionFeedback(action.feedbackDataFail); 
-                
                 switch (action.actionType)
                 {
                     case ActionType.Attack:
