@@ -27,10 +27,8 @@ public class FeedbackService : IGameSystem
         _beatSyncService = _gameSystems.Get<BeatSyncService>() ??
                            throw new System.NullReferenceException("BeatSyncService is not registered in GameSystems");
         _feedbackPlayer.Initialize();
-
-        _beatSyncService.OnBeat += () => FeedbackToDoEachBeat(_gameConfig.feedbackEachBeat);
         
-        _beatSyncService.OnBar += () => FeedbackToDoEachBar(_gameConfig.feedbackEachBar);
+        
 
     }
 
@@ -38,8 +36,7 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService::PlayActionFeedback: Tried to play null feedback");
-            return;
+           FeedbackToDoEachBeat(_gameConfig.feedbackEachBeat);
         }
         
         Debug.LogWarning("FeedbackService: PlayFeedback");
@@ -77,6 +74,8 @@ public class FeedbackService : IGameSystem
         {
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.startAnimationName);
         }
+        
+        
     }
     
     private void FeedbackToDoOnSuccess(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
@@ -94,12 +93,20 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
         }
 
-        if (feedback.soundEffect != null)
+        if (!feedback.soundEffect.IsNull)
         {
             _feedbackPlayer.PlaySound(feedback.soundEffect);
         }
         
-        //TODO particles Instantiation
+        if (feedback.successEnableLensDistortion)
+        {
+            _feedbackPlayer.PlayDistortion(feedback, ActionCallbackType.OnSuccess);
+        }
+        
+        if (_gameConfig.hitEffectPrefab != null)
+        {
+            _feedbackPlayer.PlayParticle(feedback.side, feedbackTarget, _gameConfig.hitEffectPrefab);
+        }
     }
     
     private void FeedbackToDoOnBlock(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
@@ -117,9 +124,19 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationSuccessTriggerName);
         }
 
-        if (feedback.soundEffect != null)
+        if (!feedback.blockSoundEffect.IsNull)
         {
-            _feedbackPlayer.PlaySound(feedback.soundEffect);
+            _feedbackPlayer.PlaySound(feedback.blockSoundEffect);
+        }
+        
+        if (feedback.parryEnableLensDistortion)
+        {
+            _feedbackPlayer.PlayDistortion(feedback, ActionCallbackType.OnBlock);
+        }
+        
+        if (_gameConfig.blockEffectPrefab != null)
+        {
+            _feedbackPlayer.PlayParticle(feedback.side, feedbackTarget, _gameConfig.blockEffectPrefab);
         }
     }
     
@@ -137,8 +154,22 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayAnimation(feedbackTarget, feedback.animationFailTriggerName);
         }
         
+        if (!feedback.soundEffect.IsNull)
+        {
+            _feedbackPlayer.PlaySound(feedback.soundEffect);
+        }
+        
+        if (feedback.failEnableLensDistortion)
+        {
+            _feedbackPlayer.PlayDistortion(feedback, ActionCallbackType.OnFail);
+        }
     }
 
+    /// <summary>
+    /// Plays block feedback based on the punch type and side.
+    /// </summary>
+    /// <param name="punchType">The type of punch (Punch or Hook).</param>
+    /// <param name="punchSide">The side of the punch (Left or Right).</param>
     public void PlayBlockFeedback(PunchType punchType, FeedbackSide punchSide)
     {
         switch (punchType, punchSide)
@@ -168,6 +199,9 @@ public class FeedbackService : IGameSystem
             //Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
+        
+        _feedbackPlayer.PlayAnimation(FeedbackTarget.Player, feedback.animationSuccessTriggerName);
+        _feedbackPlayer.PlayAnimation(FeedbackTarget.Enemy, feedback.animationSuccessTriggerName);
 
        
     }
