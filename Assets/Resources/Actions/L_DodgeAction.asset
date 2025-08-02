@@ -16,7 +16,13 @@ MonoBehaviour:
   actionType: 2
   inputsRequired:
   - actionType: 6
-  counterActions: []
+  counterActions:
+  - {fileID: 11400000, guid: d710bd92fba47d34ca9f11e30a34bf58, type: 2}
+  - {fileID: 11400000, guid: 92883b1393f654a40b0269c9e1a1c4b4, type: 2}
+  - {fileID: 11400000, guid: 4bf341673f899534ebd9f705a0d81250, type: 2}
+  - {fileID: 11400000, guid: 68ee3e9357864fc48a5ade027d495435, type: 2}
+  - {fileID: 11400000, guid: 4a500848b9a8ddc41afb6dd3f50ebef9, type: 2}
+  - {fileID: 11400000, guid: 5fc309ebefdf7e848aea233306f7cdcc, type: 2}
   holdDuration: 0
   CanExecuteOnHalfBeat: 1
   damageAmount: 0
