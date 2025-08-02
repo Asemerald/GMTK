@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Input Condition")]
+[CreateAssetMenu(menuName = "Input Condition", fileName = "Input Condition")]
 public class SO_InputCondition : ScriptableObject
 {
     public List<InputReference> inputsRequired;

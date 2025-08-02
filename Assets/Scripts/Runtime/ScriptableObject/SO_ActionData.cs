@@ -4,7 +4,7 @@ using Runtime.Enums;
 using Runtime.ScriptableObject;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(menuName = "Action")]
+[CreateAssetMenu(menuName = "Actions/Action Data", fileName = "Action Data")]
 public class SO_ActionData : ScriptableObject
 {
     [Header("General")]

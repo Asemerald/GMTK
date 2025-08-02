@@ -89,8 +89,27 @@ public class HitHandlerService : IGameSystem
                     break;
             }
         }
-        else
-        { //Fonction de tri pour savoir qu'elle action va être lancé en fonction du BeatFractionType
+        else { //Fonction de tri pour obtenir un counter
+            if (_actionHandlerService._previousActions[^1].actionType == ActionType.Dodge) {
+                foreach (var action in _actionDatabase.ActionDatas) {
+                    var breakLoop = false;
+                
+                    if (action.Key.actionType == inputType) {
+                        foreach (var hit in action.Value) {
+                            if (hit.actionType is ActionType.Counter) { //Ici enregistre une var l'action et sort de la loop
+                                currentActionData = hit;
+                                breakLoop = true;
+                                break;
+                            }
+                        }
+                    }
+                
+                    if(breakLoop) 
+                        break;
+                }
+                return;
+            }
+            
             foreach (var action in _actionDatabase.ActionDatas) {
                 var breakLoop = false;
                 
