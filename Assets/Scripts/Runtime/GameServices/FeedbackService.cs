@@ -9,6 +9,7 @@ public class FeedbackService : IGameSystem
     private FeedbackPlayer _feedbackPlayer;
     private readonly GameSystems _gameSystems;
     private SO_GameConfig _gameConfig;
+    private BeatSyncService _beatSyncService;
 
 
     public FeedbackService(GameSystems gameSystems, FeedbackPlayer feedbackPlayer)
@@ -23,7 +24,14 @@ public class FeedbackService : IGameSystem
         _gameConfig = _gameSystems.Get<GameConfigService>()?.GameConfig ??
                       throw new System.NullReferenceException("GameConfigService is not registered in GameSystems");
 
+        _beatSyncService = _gameSystems.Get<BeatSyncService>() ??
+                           throw new System.NullReferenceException("BeatSyncService is not registered in GameSystems");
         _feedbackPlayer.Initialize();
+
+        _beatSyncService.OnBeat += () => FeedbackToDoEachBeat(_gameConfig.feedbackEachBeat);
+        
+        _beatSyncService.OnBar += () => FeedbackToDoEachBar(_gameConfig.feedbackEachBar);
+
     }
 
     public void PlayActionFeedback(SO_FeedbackData feedback, bool playerFeedback)
@@ -34,7 +42,7 @@ public class FeedbackService : IGameSystem
             return;
         }
 
-        if (feedback.animationTriggerName != null)
+        /*if (feedback.animationTriggerName != null)
             _feedbackPlayer.PlayAnimation(feedback.side, feedback.target, feedback.animationTriggerName);
 
         if (feedback.particlePrefab != null)
@@ -47,8 +55,39 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
 
         if (feedback.enableLensDistortion)
-            _feedbackPlayer.PlayDistortion(feedback);
+            _feedbackPlayer.PlayDistortion(feedback);*/
     }
+
+    private void FeedbackToDoEachBeat(SO_FeedbackData feedback)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
+
+        /*if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
+            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
+
+        if (feedback.enableLensDistortion)
+            _feedbackPlayer.PlayDistortion(feedback);*/
+    }
+
+    private void FeedbackToDoEachBar(SO_FeedbackData feedback)
+    {
+        if (feedback == null)
+        {
+            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            return;
+        }
+
+        /*if (feedback.hueShiftData != HUEShiftValue.None) // éviter un Color.clear ou défaut
+            _feedbackPlayer.PlayHueShift(feedback.hueShiftData);
+
+        if (feedback.enableLensDistortion)
+            _feedbackPlayer.PlayDistortion(feedback);*/
+    }
+
 
     public void Tick()
     {
