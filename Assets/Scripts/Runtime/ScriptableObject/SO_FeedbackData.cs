@@ -6,7 +6,8 @@ namespace Runtime.ScriptableObject
     [CreateAssetMenu(menuName = "Feedback/ActionFeedback")]
     public class SO_FeedbackData : UnityEngine.ScriptableObject
     {
-        [Header("Animation Settings")] public string animationSuccessTriggerName;
+        [Header("Animation Settings")] public string startAnimationName;
+        public string animationSuccessTriggerName;
         public string animationFailTriggerName;
         
         [Header("Audio Settings")]
