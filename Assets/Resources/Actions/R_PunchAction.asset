@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
   m_Name: R_PunchAction
   m_EditorClassIdentifier: 
-  actionName: 
+  actionName: L_Punch
   actionType: 0
-  inputsRequired: []
-  counterActions: []
-  holdDuration: 0
-  CanExecuteOnHalfBeat: 0
+  inputsRequired:
+  - actionType: 2
+  counterActions:
+  - {fileID: 11400000, guid: 92883b1393f654a40b0269c9e1a1c4b4, type: 2}
+  - {fileID: 11400000, guid: 733e6759e78d4334a97986a97b0823f0, type: 2}
+  holdDuration: 1
+  CanExecuteOnHalfBeat: 1
   damageAmount: 0
   cooldown: 0
-  feedbackData: {fileID: 0}
+  feedbackData: {fileID: 11400000, guid: 3c600b39eef662e4b8e759bda073a6e0, type: 2}
