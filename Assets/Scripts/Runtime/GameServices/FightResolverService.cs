@@ -6,6 +6,7 @@ namespace Runtime.GameServices {
     public class FightResolverService : IGameSystem {
         
         private GameSystems _gameSystems;
+        private FeedbackService _feedbackService;
         
         SO_ActionData aiAction;
         SO_ActionData playerAction;
@@ -18,8 +19,9 @@ namespace Runtime.GameServices {
             
         }
 
-        public void Initialize() {
-            
+        public void Initialize() 
+        {
+            _feedbackService = _gameSystems.Get<FeedbackService>();
         }
 
         public void Tick() {
@@ -56,7 +58,7 @@ namespace Runtime.GameServices {
                     break;
                 case (ActionType.Attack, ActionType.Parry):                                             // Le joueur attaque et l'IA pare
                     
-                    ResolveAction(playerAction,true,aiAction,true);                 // Résultat : l'IA perd de l'endurance/hp
+                    ResolveAction(playerAction,true,aiAction,true);                 // Résultat : joueur attaque et l'IA perd de l'endurance/hp
                     
                     break;
                 case (ActionType.Attack, ActionType.Dodge):
@@ -144,53 +146,44 @@ namespace Runtime.GameServices {
         
         void ApplyAction(SO_ActionData action, bool success, bool isPlayer, SO_ActionData opponentAction)
         {
-            
-            switch (action.actionType)
+            if (success)
             {
-                case ActionType.Attack:
-                    if (success)
-                    {
+                _feedbackService.PlayActionFeedback(action.feedbackDataSuccess);
+
+                switch (action.actionType)
+                {
+                    case ActionType.Attack:
                         ApplyDamages(action.holdDuration, isPlayer, opponentAction.actionType == ActionType.Parry);
-                    }
-                    else
-                    {
-                        // lancer une atatque ratée
-                    }
-                    break;
-                case ActionType.Combo :
-                    if (success)
-                    {
-                        ApplyDamages(action.holdDuration,isPlayer, opponentAction.actionType == ActionType.Parry);
-                    }
-                    else
-                    {
-                        // lancer une atatque ratée
-                    }
-                    break;
-                case ActionType.Parry:
-                    if (success)
-                    {
-                    }
-                    else
-                    {
-                    }
-                    break;
-                case ActionType.Dodge:
-                    if (success)
-                    {
-                    }
-                    else
-                    {
-                    }
-                    break;
-                case ActionType.Empty:
-                    if (success)
-                    {
-                    }
-                    else
-                    {
-                    }
-                    break;
+                        break;
+                    
+                    case ActionType.Combo:
+                        ApplyDamages(action.holdDuration, isPlayer, opponentAction.actionType == ActionType.Parry);
+                        break;
+
+                    case ActionType.Parry:
+                    case ActionType.Dodge:
+                    case ActionType.Empty:
+                        break;
+                }
+            }
+            else
+            {
+                _feedbackService.PlayActionFeedback(action.feedbackDataFail); 
+                
+                switch (action.actionType)
+                {
+                    case ActionType.Attack:
+                        // pas d'effet juste un feedback de coup raté
+                        break;
+                    case ActionType.Combo:
+                        // pas d'effet juste un feedback de coup raté
+                        break;
+
+                    case ActionType.Parry:
+                    case ActionType.Dodge:
+                    case ActionType.Empty:
+                        break;
+                }
             }
         }
 

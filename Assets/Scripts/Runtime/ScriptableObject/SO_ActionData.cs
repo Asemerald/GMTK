@@ -17,5 +17,7 @@ public class SO_ActionData : ScriptableObject
     public float damageAmount;
     public int cooldown;
 
-    [Header("Feedback")] public SO_FeedbackData feedbackData;
+    [Header("Feedback")] 
+    public SO_FeedbackData feedbackDataSuccess;
+    public SO_FeedbackData feedbackDataFail;
 }
