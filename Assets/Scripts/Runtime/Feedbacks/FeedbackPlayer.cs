@@ -66,7 +66,7 @@ public class FeedbackPlayer : MonoBehaviour
 
     public void PlayAnimation(FeedbackTarget feedbackTarget, string animationTriggerName)
     {
-        var animator = GetAnimator(target);
+        var animator = GetAnimator(feedbackTarget);
         if (animator == null || animationTriggerName == null) return;
 
         animator.SetTrigger(animationTriggerName);
