@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
   m_Name: R_HookFull_Combo
   m_EditorClassIdentifier: 
-  actionName: 
+  actionName: R_HookFull
   actionType: 4
   inputsRequired:
-  - inputName: 
-    actionType: 1
-  counterActions: []
+  - actionType: 1
+  counterActions:
+  - {fileID: 11400000, guid: 4bf341673f899534ebd9f705a0d81250, type: 2}
+  - {fileID: 11400000, guid: 733e6759e78d4334a97986a97b0823f0, type: 2}
   holdDuration: 0
   CanExecuteOnHalfBeat: 0
   damageAmount: 0

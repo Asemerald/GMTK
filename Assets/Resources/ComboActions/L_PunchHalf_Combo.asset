@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040ad9920d0932148903fcc4b14b40f3, type: 3}
   m_Name: L_PunchHalf_Combo
   m_EditorClassIdentifier: 
-  actionName: 
+  actionName: L_PunchHalf
   actionType: 4
   inputsRequired:
-  - inputName: 
-    actionType: 2
-  counterActions: []
+  - actionType: 2
+  counterActions:
+  - {fileID: 11400000, guid: 514a81be93c5c1948950a13e8ddf3b94, type: 2}
+  - {fileID: 11400000, guid: 19b3c578154ddbf4eba9f59265d2165c, type: 2}
   holdDuration: 0
   CanExecuteOnHalfBeat: 1
   damageAmount: 0
