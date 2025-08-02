@@ -3,7 +3,7 @@ using UnityEngine;
 using Runtime.Enums;
 using Runtime.ScriptableObject;
 
-[CreateAssetMenu(menuName = "Combo")]
+[CreateAssetMenu(menuName = "Actions/Combo Data")]
 public class SO_ComboData : ScriptableObject
 {
     public SO_ActionData openingAction;

@@ -1,9 +1,9 @@
-using FMODUnity;
+﻿using FMODUnity;
 using UnityEngine;
 
 namespace Runtime.ScriptableObject
 {
-    [CreateAssetMenu(menuName = "Feedback/ActionFeedback")]
+    [CreateAssetMenu(menuName = "Feedback/ActionFeedback", fileName = "ActionFeedback")]
     public class SO_FeedbackData : UnityEngine.ScriptableObject
     {
         [Header("Animation Settings")] public string startAnimationName;
