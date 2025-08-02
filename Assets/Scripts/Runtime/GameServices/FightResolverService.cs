@@ -42,14 +42,15 @@ namespace Runtime.GameServices {
             
             var playerActionType = playerAction.actionType;
             var aiActionType = aiAction.actionType;
+            
+            var playerFeedback = playerAction.feedbackDataSuccess; // par défaut anim réussie
+            var aiFeedback = aiAction.feedbackDataSuccess;          // par defaut anim réussie
 
             switch (playerActionType, aiActionType)
             {
                 case (ActionType.Attack, ActionType.Attack):                                            // Les deux joueurs s'entre-attaquent
                     if (ActionCounters(playerAction, aiAction) || ActionCounters(aiAction, playerAction)) // Si l'un des joueurs réussit à attaquer miroir
                     {
-                        _feedbackService.PlayActionFeedback(playerAction.feedbackDataSuccess,true);
-                        _feedbackService.PlayActionFeedback(aiAction.feedbackDataSuccess,false);
                         ResolveAction(playerAction,false,aiAction,false);            // Résultat : les deux coups s'annulent
                     }
                     else
@@ -59,52 +60,137 @@ namespace Runtime.GameServices {
                     
                     break;
                 case (ActionType.Attack, ActionType.Parry):                                             // Le joueur attaque et l'IA pare
-                    
-                    ResolveAction(playerAction,true,aiAction,true);                 // Résultat : joueur attaque et l'IA perd de l'endurance/hp
-                    
-                    break;
-                case (ActionType.Attack, ActionType.Dodge):
-                    
-                    ResolveAction(playerAction,false,aiAction,true);
+                    ResolveAction(playerAction,true,aiAction,true);                 // Résultat : joueur attaque et l'IA pare le coup
                     
                     break;
-                case (ActionType.Attack, ActionType.Combo):
+                case (ActionType.Attack, ActionType.Dodge):                                             // Le joueur attaque et l'IA pare
+                    if (ActionCounters(aiAction, playerAction))                                                     // Si c'est la bonne esquive
+                    {
+                        ResolveAction(playerAction,false,aiAction,true);            // Résultat : joueur attaque et l'IA esquive
+                    }
+                    else
+                    {
+                        aiFeedback = aiAction.feedbackDataFail;
+                        ResolveAction(playerAction,true,aiAction,false);            // Résultat : joueur attaque et l'IA prend le coup
+                    }
+                    
+                    break;
+                case (ActionType.Attack, ActionType.Combo):                                             // L'IA effectue un coup de son combo  
+                    if (ComboInputSuccess())                                                                                    //L'IA réussit son combo
+                    {
+                        if (ActionCounters(playerAction, aiAction) )                                                        // SI le joueur effectue l'attaque miroir                 
+                        {
+                            if (ComboTimingSuccess())                                                                                   // Si il a un meilleur timing
+                            {
+                                ResolveAction(playerAction,false,aiAction,false);           
+                            }
+                            else                                                                                                       // Si il a un moins bon timing
+                            {
+                                ResolveAction(playerAction,false,aiAction,true);    
+                            }
+                        }
+                        else                                                                                                            // le joueur fait la mauvaise attaque
+                        {
+                            playerFeedback = playerAction.feedbackDataFail;
+                            ResolveAction(playerAction,false,aiAction,true);                // le joueur rate et se prend le coup de l'IA
+                        }
+                    }
+                    else                                                                                                        //L'IA rate son combo
+                    {
+                        aiFeedback = aiAction.feedbackDataFail;
+                        if (ActionCounters(playerAction, aiAction) )                                                        // SI le joueur effectue l'attaque miroir                 
+                        {
+                            ResolveAction(playerAction,true,aiAction,false);                // Le joueur STUN l'IA et la sort de son combo
+                        }
+                        else                                                                                                            // le joueur fait la mauvaise attaque
+                        {
+                            playerFeedback = playerAction.feedbackDataFail;
+                            ResolveAction(playerAction,false,aiAction,true);                // le joueur rate et l'IA rate aussi
+                        }
+                    }
+                    
                     break;
                 case (ActionType.Attack, ActionType.Empty):
                     break;
 
-                case (ActionType.Parry, ActionType.Attack):
+                case (ActionType.Parry, ActionType.Attack):                                             //L'IA attaque et le joueur pare
+                    ResolveAction(playerAction,true,aiAction,true);    
                     break;
                 case (ActionType.Parry, ActionType.Parry):
                     break;
                 case (ActionType.Parry, ActionType.Dodge):
                     break;
                 case (ActionType.Parry, ActionType.Combo):
+                    aiFeedback = aiAction.feedbackDataFail;
                     break;
                 case (ActionType.Parry, ActionType.Empty):
                     break;
 
-                case (ActionType.Dodge, ActionType.Attack):
+                case (ActionType.Dodge, ActionType.Attack):                                         // l'IA attaque et le joueur dodge
+                    if (ActionCounters(playerAction,aiAction))                                                     // Si c'est la bonne esquive
+                    {
+                        ResolveAction(playerAction,true,aiAction,false);            // Résultat : l'IA attaque et le joueur esquive
+                    }
+                    else
+                    {
+                        playerFeedback = playerAction.feedbackDataFail;
+                        ResolveAction(playerAction,false,aiAction,true);            // Résultat : l'IA attaque et joueur prend le coup
+                    }
                     break;
                 case (ActionType.Dodge, ActionType.Parry):
                     break;
                 case (ActionType.Dodge, ActionType.Dodge):
                     break;
                 case (ActionType.Dodge, ActionType.Combo):
+                    aiFeedback = aiAction.feedbackDataFail;
                     break;
                 case (ActionType.Dodge, ActionType.Empty):
                     break;
 
                 case (ActionType.Combo, ActionType.Attack):
-                    
+                    if (ComboInputSuccess())                                                                                    //Le joueur réussit son combo
+                    {
+                        if (ActionCounters(aiAction, playerAction))                                                             // SI l'IA effectue l'attaque miroir                  
+                        {
+                            if (ComboTimingSuccess())                                                                           // Si l'IA a un meilleur timing
+                            {
+                                ResolveAction(playerAction, false, aiAction, false);           
+                            }
+                            else                                                                                                 // Si l'IA a un moins bon timing
+                            {
+                                ResolveAction(playerAction, true, aiAction, false);    
+                            }
+                        }
+                        else                                                                                                    // l'IA fait la mauvaise attaque
+                        {
+                            aiFeedback = aiAction.feedbackDataFail;
+                            ResolveAction(playerAction, true, aiAction, false);                // l'IA rate et se prend le coup du joueur
+                        }
+                    }
+                    else                                                                                                        //Le joueur rate son combo
+                    {
+                        playerFeedback = playerAction.feedbackDataFail;
+                        if (ActionCounters(aiAction, playerAction))                                                             // SI l'IA effectue l'attaque miroir                  
+                        {
+                            ResolveAction(playerAction, false, aiAction, true);                // L'IA STUN le joueur et le sort de son combo
+                        }
+                        else                                                                                                    // l'IA fait la mauvaise attaque
+                        {
+                            aiFeedback = aiAction.feedbackDataFail;
+                            ResolveAction(playerAction, false, aiAction, false);                // l'IA rate et le joueur rate aussi
+                        }
+                    }
                     break;
                 case (ActionType.Combo, ActionType.Parry):
+                    playerFeedback = playerAction.feedbackDataFail;
                     break;
                 case (ActionType.Combo, ActionType.Dodge):
+                    playerFeedback = playerAction.feedbackDataFail;
                     break;
-                case (ActionType.Combo, ActionType.Combo):
+                case (ActionType.Combo, ActionType.Combo): // situation surement impossible ?
                     break;
                 case (ActionType.Combo, ActionType.Empty):
+                    playerFeedback = playerAction.feedbackDataFail;
                     break;
 
                 case (ActionType.Empty, ActionType.Attack):
@@ -114,6 +200,7 @@ namespace Runtime.GameServices {
                 case (ActionType.Empty, ActionType.Dodge):
                     break;
                 case (ActionType.Empty, ActionType.Combo):
+                    aiFeedback = aiAction.feedbackDataFail;
                     break;
                 case (ActionType.Empty, ActionType.Empty):
                     break;
@@ -122,6 +209,9 @@ namespace Runtime.GameServices {
                     break;
             }
             
+            _feedbackService.PlayActionFeedback(playerFeedback,true);
+            _feedbackService.PlayActionFeedback(aiFeedback,false);
+            
             ClearActions();
             
             //Faire la comparaison et qu'est-ce qui se passe
@@ -129,12 +219,18 @@ namespace Runtime.GameServices {
         
         private bool ActionCounters(SO_ActionData source, SO_ActionData target)
         {
-            return source != null && target != null && source.counterActions != null && source.counterActions.Contains(target);
+            return source != null && target != null && target.counterActions != null && target.counterActions.Contains(source);
         }
 
         private bool ComboInputSuccess()
         {
-            Debug.LogError("Ajouter ici la logique de savoir si l'attaquant du combo a fait le bon input, pour l'instant réussite auto");
+            Debug.LogError("Ajouter ici la logique de si le défenseur a réussi son action de combo, pour l'insatnt réussite auto");
+            return true;
+        }
+        
+        private bool ComboTimingSuccess()
+        {
+            Debug.LogError("Ajouter ici la logique de si l'attaquant a eu un meilleur timing que le defenseur, pour l'instant réussite automatique ");
             return true;
         }
 
@@ -153,11 +249,11 @@ namespace Runtime.GameServices {
                 switch (action.actionType)
                 {
                     case ActionType.Attack:
-                        ApplyDamages(action.holdDuration, isPlayer, opponentAction.actionType == ActionType.Parry);
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction.actionType == ActionType.Parry,false);
                         break;
                     
                     case ActionType.Combo:
-                        ApplyDamages(action.holdDuration, isPlayer, opponentAction.actionType == ActionType.Parry);
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction.actionType == ActionType.Parry,false);
                         break;
 
                     case ActionType.Parry:
@@ -174,7 +270,7 @@ namespace Runtime.GameServices {
                         // pas d'effet juste un feedback de coup raté
                         break;
                     case ActionType.Combo:
-                        // pas d'effet juste un feedback de coup raté
+                        ApplyDamages(action.holdDuration, isPlayer, false,true); 
                         break;
 
                     case ActionType.Parry:
@@ -185,8 +281,14 @@ namespace Runtime.GameServices {
             }
         }
 
-        void ApplyDamages(AttackHoldDuration holdDuration, bool toPlayer, bool opponentParry)
+        void ApplyDamages(AttackHoldDuration holdDuration, bool toPlayer, bool opponentParry,bool shouldStun)
         {
+            if (shouldStun)
+            {
+                //stun
+                return;
+            }
+
             switch (holdDuration)
             {
                 case AttackHoldDuration.None:
