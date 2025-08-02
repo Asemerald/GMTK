@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
 using FMODUnity;
 using UnityEngine;
 using Runtime.Enums;
 using Runtime.ScriptableObject;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class FeedbackPlayer : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private Animator playerAnimator;
-
     [SerializeField] internal Animator enemyAnimator;
+    [SerializeField] public ArmColliderLogic leftPlayerArmColliderLogic;
+    [SerializeField] public ArmColliderLogic rightPlayerArmColliderLogic;
+    [SerializeField] public ArmColliderLogic leftEnemyArmColliderLogic;
+    [SerializeField] public ArmColliderLogic rightEnemyArmColliderLogic;
 
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
@@ -64,29 +70,121 @@ public class FeedbackPlayer : MonoBehaviour
     }
 
 
-    public void PlayAnimation(FeedbackTarget feedbackTarget, string animationTriggerName)
+    public void PlayAnimation(FeedbackSide side, FeedbackTarget feedbackTarget, string animationTriggerName)
     {
         var animator = GetAnimator(feedbackTarget);
-        if (animator == null || animationTriggerName == null) return;
+        if (animator == null || string.IsNullOrEmpty(animationTriggerName))
+            return;
 
         animator.SetTrigger(animationTriggerName);
+
+        // Sélection du bon ArmColliderLogic selon la main et la cible
+        ArmColliderLogic colliderLogic = side switch
+        {
+            FeedbackSide.Left when feedbackTarget == FeedbackTarget.Player => leftPlayerArmColliderLogic,
+            FeedbackSide.Right when feedbackTarget == FeedbackTarget.Player => rightPlayerArmColliderLogic,
+            FeedbackSide.Left when feedbackTarget == FeedbackTarget.Enemy => leftEnemyArmColliderLogic,
+            FeedbackSide.Right when feedbackTarget == FeedbackTarget.Enemy => rightEnemyArmColliderLogic,
+            _ => null
+        };
+
+        if (colliderLogic == null)
+        {
+            Debug.LogWarning($"[FeedbackPlayer] Aucun collider trouvé pour {side} {feedbackTarget}");
+            return;
+        }
+
+        // Handlers pour stop animation après un seul hit
+        Action<Vector3> armHitHandler = null;
+        Action<Vector3> headHitHandler = null;
+
+        armHitHandler = (Vector3 hitPos) =>
+        {
+            StopAnimation(feedbackTarget);
+            colliderLogic.OnArmHit -= armHitHandler;
+            colliderLogic.OnHeadHit -= headHitHandler;
+        };
+
+        headHitHandler = (Vector3 hitPos) =>
+        {
+            StopAnimation(feedbackTarget);
+            colliderLogic.OnArmHit -= armHitHandler;
+            colliderLogic.OnHeadHit -= headHitHandler;
+        };
+
+        colliderLogic.OnArmHit += armHitHandler;
+        colliderLogic.OnHeadHit += headHitHandler;
     }
+
+
 
 
     public void PlayParticle(FeedbackSide side, FeedbackTarget target, GameObject particlePrefab)
     {
-        if (particlePrefab != null)
+        ArmColliderLogic colliderLogic = side switch
         {
-            var spawnPosition = GetImpactPosition(side, target);
-            Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
+            FeedbackSide.Left when target == FeedbackTarget.Player => leftPlayerArmColliderLogic,
+            FeedbackSide.Right when target == FeedbackTarget.Player => rightPlayerArmColliderLogic,
+            FeedbackSide.Left when target == FeedbackTarget.Enemy => leftEnemyArmColliderLogic,
+            FeedbackSide.Right when target == FeedbackTarget.Enemy => rightEnemyArmColliderLogic,
+            _ => null
+        };
+
+        if (colliderLogic == null)
+        {
+            Debug.LogWarning($"[FeedbackPlayer] Aucun collider trouvé pour {side} {target}");
+            return;
+        }
+
+        // On garde la référence du handler pour pouvoir l’unsub après appel
+        Action<Vector3> armHitHandler = null;
+        Action<Vector3> headHitHandler = null;
+        armHitHandler = (Vector3 hitPos) =>
+        {
+            // Jouer la particule
+            PlayParticleAtPosition(particlePrefab, hitPos);
+
+            // Désabonnement pour que ça ne se joue qu'une fois
+            colliderLogic.OnArmHit -= armHitHandler;
+            colliderLogic.OnHeadHit -= headHitHandler;
+        };
+        
+        headHitHandler = (Vector3 hitPos) =>
+        {
+            // Jouer la particule
+            PlayParticleAtPosition(particlePrefab, hitPos);
+
+            // Désabonnement pour que ça ne se joue qu'une fois
+            colliderLogic.OnHeadHit -= headHitHandler;
+            colliderLogic.OnArmHit += armHitHandler;
+        };
+        
+        // On s’abonne aux événements de collision
+        colliderLogic.OnHeadHit += headHitHandler;
+        colliderLogic.OnArmHit += armHitHandler;
+    }
+
+    private void PlayParticleAtPosition(GameObject particlePrefab, Vector3 position)
+    {
+        if (particlePrefab == null)
+        {
+            Debug.LogWarning("[FeedbackPlayer] Aucun prefab de particule fourni.");
+            return;
+        }
+
+        GameObject particle = Instantiate(particlePrefab, position, Quaternion.identity);
+        if (particle.TryGetComponent<ParticleSystem>(out var ps))
+        {
+            ps.Play();
+            Destroy(particle, ps.main.duration);
         }
         else
         {
-            // Or if you're using pooled particles or preplaced ones
-            var particles = GetPreplacedParticleSystem(side);
-            if (particles != null) particles.Play();
+            Destroy(particle, 2f);
         }
     }
+
+
 
     public void PlaySound(EventReference? clip)
     {
@@ -99,7 +197,8 @@ public class FeedbackPlayer : MonoBehaviour
         if (colorAdjustments == null)
             return;
         
-        var targetValue = 0f; // Default value if no hue shift is set
+        // Chose a random value between -180 and 180 and apply it to the hue shift
+        float targetValue = UnityEngine.Random.Range(-180f, 180f);
         
         colorAdjustments.hueShift.value = targetValue;
     }
@@ -203,7 +302,7 @@ public class FeedbackPlayer : MonoBehaviour
         // Play animation if specified
         if (!string.IsNullOrEmpty(feedbackData.startAnimationName))
         {
-            PlayAnimation(feedbackTarget, feedbackData.animationSuccessTriggerName);
+            PlayAnimation(feedbackSide, feedbackTarget, feedbackData.animationSuccessTriggerName);
         }
 
         // Play sound effect if specified
@@ -252,23 +351,8 @@ public class FeedbackPlayer : MonoBehaviour
             _ => null
         };
     }
+    
 
-    private ParticleSystem GetPreplacedParticleSystem(FeedbackSide side)
-    {
-        return side switch
-        {
-            FeedbackSide.Left => leftImpactParticles,
-            FeedbackSide.Right => rightImpactParticles,
-            _ => null
-        };
-    }
-
-    private Vector3 GetImpactPosition(FeedbackSide side, FeedbackTarget target)
-    {
-        var baseTransform = target == FeedbackTarget.Player ? playerAnimator.transform : enemyAnimator.transform;
-        var offset = side == FeedbackSide.Left ? Vector3.left : Vector3.right;
-        return baseTransform.position + offset * 0.5f;
-    }
 
     #region Debug Methods
 
