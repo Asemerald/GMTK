@@ -15,15 +15,20 @@ MonoBehaviour:
   playerPrefab: {fileID: 0}
   enemyPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 0}
+  blockEffectPrefab: {fileID: 0}
   feedbackEachBeat: {fileID: 0}
   feedbackEachBar: {fileID: 0}
+  blockRightPunchFeedback: {fileID: 0}
+  blockLeftPunchFeedback: {fileID: 0}
+  blockLeftHookFeedback: {fileID: 0}
+  blockRightHookFeedback: {fileID: 0}
   gameMusic:
     Guid:
-      Data1: -591868122
-      Data2: 1285283530
-      Data3: 541594535
-      Data4: 1028296954
-    Path: event:/Music/60BPM
+      Data1: 1508263547
+      Data2: 1187698933
+      Data3: 902637228
+      Data4: 634862997
+    Path: event:/MainMusic120BPM
   musicVolume: 1
   defaultBPM: 120
   beatsPerBar: 4
