@@ -85,6 +85,8 @@ public class FeedbackPlayer : MonoBehaviour
             FeedbackSide.Right when feedbackTarget == FeedbackTarget.Player => rightPlayerArmColliderLogic,
             FeedbackSide.Left when feedbackTarget == FeedbackTarget.Enemy => leftEnemyArmColliderLogic,
             FeedbackSide.Right when feedbackTarget == FeedbackTarget.Enemy => rightEnemyArmColliderLogic,
+            FeedbackSide.Center when feedbackTarget == FeedbackTarget.Player => leftPlayerArmColliderLogic, // Center peut être Left pour le player
+            FeedbackSide.Center when feedbackTarget == FeedbackTarget.Enemy => leftEnemyArmColliderLogic,
             _ => null
         };
 
