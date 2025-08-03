@@ -62,8 +62,6 @@ public class FeedbackService : IGameSystem
                 Debug.LogWarning($"FeedbackService::PlayActionFeedback: Unknown callback type {callbackType}");
                 break;
         }
-        
-        _feedbackPlayer.PlayHueShift();
     
     }
     
@@ -98,9 +96,9 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationSuccessTriggerName);
         }
 
-        if (!feedback.soundEffect.IsNull)
+        if (!feedback.successSoundEffect.IsNull)
         {
-            _feedbackPlayer.PlaySound(feedback.soundEffect);
+            _feedbackPlayer.PlaySound(feedback.successSoundEffect);
         }
         
         if (feedback.successEnableLensDistortion)
@@ -112,6 +110,8 @@ public class FeedbackService : IGameSystem
         {
             _feedbackPlayer.PlayParticle(feedback.side, feedbackTarget, _gameConfig.hitEffectPrefab);
         }
+        
+        _feedbackPlayer.PlayHueShift();
     }
     
     private void FeedbackToDoOnBlock(SO_FeedbackData feedback, FeedbackTarget feedbackTarget)
@@ -159,9 +159,9 @@ public class FeedbackService : IGameSystem
             _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationFailTriggerName);
         }
         
-        if (!feedback.soundEffect.IsNull)
+        if (!feedback.successSoundEffect.IsNull)
         {
-            _feedbackPlayer.PlaySound(feedback.soundEffect);
+            _feedbackPlayer.PlaySound(feedback.successSoundEffect);
         }
         
         if (feedback.failEnableLensDistortion)

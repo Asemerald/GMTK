@@ -186,10 +186,15 @@ public class FeedbackPlayer : MonoBehaviour
 
 
 
-    public void PlaySound(EventReference? clip)
+    public void PlaySound(EventReference clip)
     {
-        Debug.Log($"Playing sound: {clip}");
-        //TODO PlayOneShot avec FMOD
+        if (clip.IsNull)
+        {
+            Debug.LogWarning("[FeedbackPlayer] Aucun clip audio fourni.");
+            return;
+        }
+        
+        RuntimeManager.PlayOneShot(clip);
     }
 
     public void PlayHueShift()
@@ -306,9 +311,9 @@ public class FeedbackPlayer : MonoBehaviour
         }
 
         // Play sound effect if specified
-        if (!feedbackData.soundEffect.IsNull)
+        if (!feedbackData.successSoundEffect.IsNull)
         {
-            PlaySound(feedbackData.soundEffect);
+            PlaySound(feedbackData.successSoundEffect);
         }
 
         // Play particles
