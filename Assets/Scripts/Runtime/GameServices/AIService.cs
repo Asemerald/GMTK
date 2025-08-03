@@ -52,7 +52,6 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += ResetRolled;
             _beatSyncService.OnHalfBeat += ResetRolled;
-            _beatSyncService.OnQuarterBeat += ResetRolled;
         }
 
         public void Tick() {
@@ -164,6 +163,7 @@ namespace Runtime.GameServices {
         
         void RolledAttack() {
             if (RollAction(_aiConfig.chanceOfExecutingCombo) && _unlockedPatterns.Count > 0) {
+                _aiActionHandler.launchCombo = true;
                 var randomIndex = Random.Range(0, _unlockedPatterns.Count);
             
                 if(_unlockedPatterns[randomIndex] == null) return;

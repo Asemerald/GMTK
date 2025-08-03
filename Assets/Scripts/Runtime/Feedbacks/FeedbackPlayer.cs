@@ -114,6 +114,10 @@ public class FeedbackPlayer : MonoBehaviour
         if (playerWon) winScreenAnimator.SetTrigger("UI_Win");
         else winScreenAnimator.SetTrigger("UI_Lose");
     }
+
+    public void UnlockCombo() {
+        winScreenAnimator.SetTrigger("UI_Unlock");
+    }
     
     private void InitializeColorAdjustments()
     {
