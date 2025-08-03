@@ -34,7 +34,7 @@ namespace Runtime.GameServices {
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
-            _structureService = _gameSystems.Get<StructureService>();
+            
         }
         
         public void Dispose() {
@@ -53,6 +53,7 @@ namespace Runtime.GameServices {
         {
             _feedbackService = _gameSystems.Get<FeedbackService>();
             _beatSyncService = _gameSystems.Get<BeatSyncService>();
+            _structureService = _gameSystems.Get<StructureService>();
 
             _beatSyncService.OnBeat += CallCompareEvent;
             _beatSyncService.OnHalfBeat += CallCompareEvent;
