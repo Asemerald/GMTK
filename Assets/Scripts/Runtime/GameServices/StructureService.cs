@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections;
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using Runtime.ScriptableObject;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Runtime.GameServices
 {
     public class StructureService : IGameSystem
     {
+        private FeedbackService _feedbackService;
+        
         public int PlayerHP { get; private set; }
         public int EnemyHP { get; private set; }
 
@@ -26,9 +31,13 @@ namespace Runtime.GameServices
         {
             _gameConfig = _gameSystems.Get<GameConfigService>()?.GameConfig ??
                           throw new NullReferenceException("GameConfigService is not registered in GameSystems");
+            _feedbackService = _gameSystems.Get<FeedbackService>();
 
             PlayerHP = _gameConfig.maxHealth;
             EnemyHP = _gameConfig.maxHealth;
+
+            OnEnemyDeath += EnemyDied;
+            OnPlayerDeath += PlayerDied;
         }
 
         /// <summary>
@@ -54,6 +63,31 @@ namespace Runtime.GameServices
             }
         }
 
+        void EnemyDied() {
+            _feedbackService.FeedbackDeath(false);
+            _feedbackService.EndScreen(true);
+        }
+
+        void PlayerDied() {
+            _feedbackService.FeedbackDeath(true);
+            _feedbackService.EndScreen(false);
+        }
+
+        IEnumerator RestartGame() {
+            Time.timeScale = .5f;
+            
+            
+            
+            yield return new WaitForSeconds(4f);
+            
+            Time.timeScale = 1f;
+            ReloadScene();
+        }
+        
+        void ReloadScene() {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        
         public void Dispose()
         {
             // Nettoyage si nécessaire
