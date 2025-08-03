@@ -21,6 +21,9 @@ namespace Runtime.GameServices
         private SO_GameConfig _gameConfig;
         private readonly GameSystems _gameSystems;
 
+        float timer = 0;
+        bool timerStart = false;
+
         public StructureService(GameSystems gameSystems)
         {
             _gameSystems = gameSystems ?? 
@@ -66,25 +69,25 @@ namespace Runtime.GameServices
         void EnemyDied() {
             _feedbackService.FeedbackDeath(false);
             _feedbackService.EndScreen(true);
+            StartTimer();
         }
 
         void PlayerDied() {
             _feedbackService.FeedbackDeath(true);
             _feedbackService.EndScreen(false);
+            StartTimer();
+            
         }
 
-        IEnumerator RestartGame() {
+        void StartTimer() {
+            timerStart = true;
+            timer = 0;
             Time.timeScale = .5f;
-            
-            
-            
-            yield return new WaitForSeconds(4f);
-            
-            Time.timeScale = 1f;
-            ReloadScene();
         }
         
+        
         void ReloadScene() {
+            Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         
@@ -98,6 +101,11 @@ namespace Runtime.GameServices
         public void Tick()
         {
             // Update du service si nécessaire
+            if(timerStart)
+                timer += Time.unscaledDeltaTime;
+            
+            if(timer >= 4f)
+                ReloadScene();
         }
     }
 }
