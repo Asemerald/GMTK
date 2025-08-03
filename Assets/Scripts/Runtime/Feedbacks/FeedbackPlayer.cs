@@ -38,6 +38,7 @@ public class FeedbackPlayer : MonoBehaviour
     private Material ringMat;
 
     [Header("Win/Loose Canva")]
+    [SerializeField] private Animator winScreenAnimator;
     [SerializeField] private GameObject winCanvas;
     [SerializeField] private GameObject looseCanvas;
     
@@ -110,8 +111,8 @@ public class FeedbackPlayer : MonoBehaviour
     }
 
     public void DisplayWinCanvas(bool playerWon) {
-        if (playerWon) winCanvas.SetActive(true);
-        else looseCanvas.SetActive(true);
+        if (playerWon) winScreenAnimator.SetTrigger("UI_Win");
+        else winScreenAnimator.SetTrigger("UI_Lose");
     }
     
     private void InitializeColorAdjustments()
