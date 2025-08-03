@@ -67,12 +67,14 @@ namespace Runtime.GameServices
         }
 
         void EnemyDied() {
+            if(timerStart) return;
             _feedbackService.FeedbackDeath(false);
             _feedbackService.EndScreen(true);
             StartTimer();
         }
 
         void PlayerDied() {
+            if(timerStart) return;
             _feedbackService.FeedbackDeath(true);
             _feedbackService.EndScreen(false);
             StartTimer();

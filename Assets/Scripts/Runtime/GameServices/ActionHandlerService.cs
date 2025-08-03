@@ -18,6 +18,7 @@ namespace Runtime.GameServices {
         private ActionDatabase _actionDatabase;
         private FightResolverService _fightResolverService;
         public ActionDebugService _actionDebugService;
+        private FeedbackService _feedbackService;
         
         internal Queue<(SO_ActionData, bool)> _actionQueue = new();
         
@@ -26,6 +27,7 @@ namespace Runtime.GameServices {
         private bool _waitForNextBeat = false;
         internal bool _inCombo = false;
         internal bool _isAI;
+        internal bool launchCombo = false;
         
         internal List<SO_ActionData> _previousActions = new();
         
@@ -44,6 +46,7 @@ namespace Runtime.GameServices {
             _comboManager = _gameSystems.Get<ComboManagerService>();
             _actionDatabase = _gameSystems.Get<ActionDatabase>();
             _fightResolverService = _gameSystems.Get<FightResolverService>();
+            _feedbackService = _gameSystems.Get<FeedbackService>();
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
@@ -152,8 +155,10 @@ namespace Runtime.GameServices {
 
             if (comboAction) {
 
-                if(!_isAI)
+                if (!_isAI) {
                     _actionDatabase.UnlockPattern(comboAction);
+                    _feedbackService.UnlockCombo();
+                }
                 
                 foreach (var action in comboAction.ComboActions) {
                     RegisterActionOnBeat(action, !action.CanExecuteOnHalfBeat, true);
@@ -168,6 +173,8 @@ namespace Runtime.GameServices {
             if (comboAction == null)
                 return;
             
+            if(_isAI && !launchCombo) return;
+            
             Debug.Log("ActionHandlerService::LaunchCombo - Combo launch");
                 
             foreach (var action in comboAction.ComboActions) { 
@@ -177,6 +184,7 @@ namespace Runtime.GameServices {
             _gameSystems.TriggerComboMode(true);
             
             _previousActions.Clear();
+            launchCombo = false;
         }
     }
 }

@@ -237,6 +237,10 @@ public class FeedbackService : IGameSystem
         _feedbackPlayer.DisplayWinCanvas(player);
     }
 
+    public void UnlockCombo() {
+        _feedbackPlayer.UnlockCombo();
+    }
+
     public void Tick()
     {
         _feedbackPlayer.ChangeEnemyHpAmount(_structureService.EnemyHP);
