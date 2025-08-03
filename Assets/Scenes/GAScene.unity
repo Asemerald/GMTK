@@ -1028,6 +1028,10 @@ PrefabInstance:
       value: event:/Music/70BPM
       objectReference: {fileID: 0}
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: debugFeedbackService
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: musicEvent.Guid.Data1
       value: -2052988494
       objectReference: {fileID: 0}
@@ -1047,6 +1051,10 @@ PrefabInstance:
       propertyPath: debugSystemInitializer
       value: 
       objectReference: {fileID: 1933986186}
+    - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
+      propertyPath: debugFightResolverService
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5871342324690398060, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 221.63435

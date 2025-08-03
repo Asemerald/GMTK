@@ -33,6 +33,10 @@ namespace Runtime.GameServices
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
 #endif
 
+        [Header("Debug Script")] 
+        [SerializeField] private bool debugFeedbackService;
+        [SerializeField] private bool debugFightResolverService;
+
         private void Awake()
         {
             InitializeGameSystems();
@@ -59,6 +63,9 @@ namespace Runtime.GameServices
             _feedbackService = new FeedbackService(_gameSystems, _feedbackPlayer);
             _aiService = new AIService(_gameSystems, _aiConfig);
             _fightResolverService = new FightResolverService(_gameSystems);
+            
+            _feedbackService.SetDebug(debugFeedbackService); //pas la meilleure façon pour faire ça mais pas le temps
+            _fightResolverService.SetDebug(debugFightResolverService);
 
             _gameSystems.Register(_gameConfigService);
             _gameSystems.Register(_inputManager);
@@ -91,6 +98,9 @@ namespace Runtime.GameServices
 
             var fpsDebugService = new FPSDebugService(debugUIState);
             debugSystem.Register(fpsDebugService);
+            
+            var actionDebugService = new ActionDebugService(debugUIState,_actionHandlerService);
+            debugSystem.Register(actionDebugService);
 
             debugSystemInitializer.DebugSystem = debugSystem;
         }

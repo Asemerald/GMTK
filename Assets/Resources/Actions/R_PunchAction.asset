@@ -15,7 +15,7 @@ MonoBehaviour:
   actionName: L_Punch
   actionType: 0
   inputsRequired:
-  - actionType: 2
+  - actionType: 1
   counterActions:
   - {fileID: 11400000, guid: 92883b1393f654a40b0269c9e1a1c4b4, type: 2}
   - {fileID: 11400000, guid: 733e6759e78d4334a97986a97b0823f0, type: 2}

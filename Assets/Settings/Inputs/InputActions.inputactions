@@ -163,6 +163,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ToggleTimelineDebug",
+                    "type": "Button",
+                    "id": "e6e56ad2-b5a2-4528-8a57-26ab4872dbad",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ToggleFPSDebug",
                     "type": "Button",
                     "id": "d5d38da5-b38c-477d-bd73-fe802d76eeeb",
@@ -172,9 +181,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleTimelineDebug",
+                    "name": "ToggleActionDebug",
                     "type": "Button",
-                    "id": "e6e56ad2-b5a2-4528-8a57-26ab4872dbad",
+                    "id": "fccda2ba-005b-43bd-a3d6-b8075f57997a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -212,6 +221,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleTimelineDebug",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "881702ef-eb1a-46c9-9de7-3539f54af38c",
+                    "path": "<Keyboard>/f4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleActionDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

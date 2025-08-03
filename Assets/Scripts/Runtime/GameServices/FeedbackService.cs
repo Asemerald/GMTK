@@ -10,7 +10,8 @@ public class FeedbackService : IGameSystem
     private readonly GameSystems _gameSystems;
     private SO_GameConfig _gameConfig;
     private BeatSyncService _beatSyncService;
-
+    
+    bool debug;
 
     public FeedbackService(GameSystems gameSystems, FeedbackPlayer feedbackPlayer)
     {
@@ -37,11 +38,13 @@ public class FeedbackService : IGameSystem
         if (feedback == null)
         {
            FeedbackToDoEachBeat(_gameConfig.feedbackEachBeat);
-           Debug.LogWarning("FeedbackService: PlayFeedback NULL by " + feedbackTarget);
+           if(debug) 
+               Debug.LogWarning("FeedbackService: PlayFeedback NULL by " + feedbackTarget);
         }
         else
         {
-            Debug.Log("FeedbackService: PlayFeedback "+ feedback.name + " by " + feedbackTarget);
+            if(debug) 
+                Debug.Log("FeedbackService: PlayFeedback "+ feedback.name + " by " + feedbackTarget);
         }
         
         switch (callbackType)
@@ -59,7 +62,8 @@ public class FeedbackService : IGameSystem
                 FeedbackToDoOnFail(feedback, feedbackTarget);
                 break;
             default:
-                Debug.LogWarning($"FeedbackService::PlayActionFeedback: Unknown callback type {callbackType}");
+                if(debug)
+                    Debug.LogWarning($"FeedbackService::PlayActionFeedback: Unknown callback type {callbackType}");
                 break;
         }
     
@@ -69,7 +73,8 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            if(debug)
+                Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
 
@@ -85,11 +90,13 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            if(debug)
+                Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
 
-        Debug.LogWarning("FeedbackService: Feedback Success");
+        if(debug)
+            Debug.LogWarning("FeedbackService: Feedback Success");
         
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
@@ -118,11 +125,13 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            if(debug)
+                Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
         
-        Debug.LogWarning("FeedbackService: Block Feedback");
+        if(debug)
+            Debug.LogWarning("FeedbackService: Block Feedback");
 
         if (feedback.animationSuccessTriggerName != string.Empty)
         {
@@ -149,11 +158,13 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            if(debug)
+                Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
 
-        Debug.LogWarning("FeedbackService: Failed Feedback");
+        if(debug)
+            Debug.LogWarning("FeedbackService: Failed Feedback");
         if (feedback.animationFailTriggerName != string.Empty)
         {
             _feedbackPlayer.PlayAnimation(feedback.side, feedbackTarget, feedback.animationFailTriggerName);
@@ -192,7 +203,8 @@ public class FeedbackService : IGameSystem
                 _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightHookFeedback, FeedbackTarget.Player, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
                 break;
             default:
-                Debug.LogWarning($"FeedbackService: Unknown punch type {punchType} or side {punchSide}");
+                if(debug)
+                    Debug.LogWarning($"FeedbackService: Unknown punch type {punchType} or side {punchSide}");
                 break;
         }
     }
@@ -201,7 +213,8 @@ public class FeedbackService : IGameSystem
     {
         if (feedback == null)
         {
-            //Debug.LogWarning("FeedbackService: Tried to play null feedback");
+            if(debug)
+                Debug.LogWarning("FeedbackService: Tried to play null feedback");
             return;
         }
         
@@ -218,5 +231,10 @@ public class FeedbackService : IGameSystem
 
     public void Dispose()
     {
+    }
+    
+    public void SetDebug(bool state)
+    {
+        debug = state;
     }
 }

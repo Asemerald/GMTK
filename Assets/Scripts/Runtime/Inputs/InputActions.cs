@@ -249,6 +249,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ToggleTimelineDebug"",
+                    ""type"": ""Button"",
+                    ""id"": ""e6e56ad2-b5a2-4528-8a57-26ab4872dbad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ToggleFPSDebug"",
                     ""type"": ""Button"",
                     ""id"": ""d5d38da5-b38c-477d-bd73-fe802d76eeeb"",
@@ -258,9 +267,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleTimelineDebug"",
+                    ""name"": ""ToggleActionDebug"",
                     ""type"": ""Button"",
-                    ""id"": ""e6e56ad2-b5a2-4528-8a57-26ab4872dbad"",
+                    ""id"": ""fccda2ba-005b-43bd-a3d6-b8075f57997a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -298,6 +307,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ToggleTimelineDebug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""881702ef-eb1a-46c9-9de7-3539f54af38c"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleActionDebug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -351,8 +371,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_ToggleBeatDebug = m_Debug.FindAction("ToggleBeatDebug", throwIfNotFound: true);
-        m_Debug_ToggleFPSDebug = m_Debug.FindAction("ToggleFPSDebug", throwIfNotFound: true);
         m_Debug_ToggleTimelineDebug = m_Debug.FindAction("ToggleTimelineDebug", throwIfNotFound: true);
+        m_Debug_ToggleFPSDebug = m_Debug.FindAction("ToggleFPSDebug", throwIfNotFound: true);
+        m_Debug_ToggleActionDebug = m_Debug.FindAction("ToggleActionDebug", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -597,8 +618,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Debug;
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_ToggleBeatDebug;
-    private readonly InputAction m_Debug_ToggleFPSDebug;
     private readonly InputAction m_Debug_ToggleTimelineDebug;
+    private readonly InputAction m_Debug_ToggleFPSDebug;
+    private readonly InputAction m_Debug_ToggleActionDebug;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -615,13 +637,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleBeatDebug => m_Wrapper.m_Debug_ToggleBeatDebug;
         /// <summary>
+        /// Provides access to the underlying input action "Debug/ToggleTimelineDebug".
+        /// </summary>
+        public InputAction @ToggleTimelineDebug => m_Wrapper.m_Debug_ToggleTimelineDebug;
+        /// <summary>
         /// Provides access to the underlying input action "Debug/ToggleFPSDebug".
         /// </summary>
         public InputAction @ToggleFPSDebug => m_Wrapper.m_Debug_ToggleFPSDebug;
         /// <summary>
-        /// Provides access to the underlying input action "Debug/ToggleTimelineDebug".
+        /// Provides access to the underlying input action "Debug/ToggleActionDebug".
         /// </summary>
-        public InputAction @ToggleTimelineDebug => m_Wrapper.m_Debug_ToggleTimelineDebug;
+        public InputAction @ToggleActionDebug => m_Wrapper.m_Debug_ToggleActionDebug;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -651,12 +677,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleBeatDebug.started += instance.OnToggleBeatDebug;
             @ToggleBeatDebug.performed += instance.OnToggleBeatDebug;
             @ToggleBeatDebug.canceled += instance.OnToggleBeatDebug;
-            @ToggleFPSDebug.started += instance.OnToggleFPSDebug;
-            @ToggleFPSDebug.performed += instance.OnToggleFPSDebug;
-            @ToggleFPSDebug.canceled += instance.OnToggleFPSDebug;
             @ToggleTimelineDebug.started += instance.OnToggleTimelineDebug;
             @ToggleTimelineDebug.performed += instance.OnToggleTimelineDebug;
             @ToggleTimelineDebug.canceled += instance.OnToggleTimelineDebug;
+            @ToggleFPSDebug.started += instance.OnToggleFPSDebug;
+            @ToggleFPSDebug.performed += instance.OnToggleFPSDebug;
+            @ToggleFPSDebug.canceled += instance.OnToggleFPSDebug;
+            @ToggleActionDebug.started += instance.OnToggleActionDebug;
+            @ToggleActionDebug.performed += instance.OnToggleActionDebug;
+            @ToggleActionDebug.canceled += instance.OnToggleActionDebug;
         }
 
         /// <summary>
@@ -671,12 +700,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleBeatDebug.started -= instance.OnToggleBeatDebug;
             @ToggleBeatDebug.performed -= instance.OnToggleBeatDebug;
             @ToggleBeatDebug.canceled -= instance.OnToggleBeatDebug;
-            @ToggleFPSDebug.started -= instance.OnToggleFPSDebug;
-            @ToggleFPSDebug.performed -= instance.OnToggleFPSDebug;
-            @ToggleFPSDebug.canceled -= instance.OnToggleFPSDebug;
             @ToggleTimelineDebug.started -= instance.OnToggleTimelineDebug;
             @ToggleTimelineDebug.performed -= instance.OnToggleTimelineDebug;
             @ToggleTimelineDebug.canceled -= instance.OnToggleTimelineDebug;
+            @ToggleFPSDebug.started -= instance.OnToggleFPSDebug;
+            @ToggleFPSDebug.performed -= instance.OnToggleFPSDebug;
+            @ToggleFPSDebug.canceled -= instance.OnToggleFPSDebug;
+            @ToggleActionDebug.started -= instance.OnToggleActionDebug;
+            @ToggleActionDebug.performed -= instance.OnToggleActionDebug;
+            @ToggleActionDebug.canceled -= instance.OnToggleActionDebug;
         }
 
         /// <summary>
@@ -808,6 +840,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleBeatDebug(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "ToggleTimelineDebug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleTimelineDebug(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "ToggleFPSDebug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -815,11 +854,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleFPSDebug(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ToggleTimelineDebug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ToggleActionDebug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnToggleTimelineDebug(InputAction.CallbackContext context);
+        void OnToggleActionDebug(InputAction.CallbackContext context);
     }
 }

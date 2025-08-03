@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Runtime._Debug;
 using Runtime.Enums;
 using Runtime.GameServices.Interfaces;
 using Debug = UnityEngine.Debug;
@@ -16,8 +17,11 @@ namespace Runtime.GameServices {
         private ComboManagerService _comboManager;
         private ActionDatabase _actionDatabase;
         private FightResolverService _fightResolverService;
+        public ActionDebugService _actionDebugService;
         
         internal Queue<(SO_ActionData, bool)> _actionQueue = new();
+        
+        public Queue<(SO_ActionData, bool)> ActionQueue => _actionQueue;
         
         private bool _waitForNextBeat = false;
         internal bool _inCombo = false;
@@ -54,6 +58,9 @@ namespace Runtime.GameServices {
             _inCombo = inCombo;
             _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
             _waitForNextBeat = waitForNextBeat;
+            
+            if(_actionDebugService!=null)
+                _actionDebugService.RegisterAction(data);
         }
         
         void PerformActionOnBeat() { //S'exécute sur chaque Temps
@@ -66,6 +73,9 @@ namespace Runtime.GameServices {
         
         void PerformActionOnQuarterBeat() { //S'exécute sur chaque Quart Temps
             CheckToExecuteAction(BeatFractionType.FirstQuarter);
+            
+            if(_actionDebugService!=null)
+                _actionDebugService.RegisterAction(null);
         }
 
         void CheckToExecuteAction(BeatFractionType fractionType) {
@@ -104,7 +114,10 @@ namespace Runtime.GameServices {
             
             if(_isAI) _fightResolverService.GetAIAction(action);
             else _fightResolverService.GetPlayerAction(action);
-            
+
+            if (_actionDebugService != null) 
+                _actionDebugService.MarkActionExecuted(action);
+
             if (!_inCombo) { //Évite d'enregistrer une action de combo dans la liste d'action précédent (on pourrait avoir des soucis de combo qui lance des combos)
                 RegisterPreviousAction(action);
             }
