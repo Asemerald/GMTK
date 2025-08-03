@@ -7,6 +7,7 @@ using Runtime.Enums;
 using Runtime.ScriptableObject;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -22,6 +23,8 @@ public class FeedbackPlayer : MonoBehaviour
 
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
+
+    [SerializeField] private Image HpImage;
 
     [Header("Ring")] [SerializeField] private bool enableRingColorSwitch = false;
     [SerializeField] private MeshRenderer ringMesh;
@@ -55,6 +58,19 @@ public class FeedbackPlayer : MonoBehaviour
             ringMat = new Material(ringMesh.material); 
             ringMesh.material = ringMat;
         }
+        
+    }
+    
+    public void ChangeImageAmount(float amount)
+    {
+        if (HpImage == null)
+        {
+            Debug.LogWarning("HpImage is not assigned. Cannot change image amount.");
+            return;
+        }
+        
+        amount = Mathf.Clamp01(amount / 100f); // Normalize to 0-1 range
+        HpImage.fillAmount = amount;
         
     }
 

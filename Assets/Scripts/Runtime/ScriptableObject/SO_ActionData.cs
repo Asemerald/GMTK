@@ -16,7 +16,7 @@ public class SO_ActionData : ScriptableObject
     public bool CanExecuteOnHalfBeat = false;
     
     [Header("Stats")]
-    public float damageAmount;
+    public int damageAmount;
     public int cooldown;
 
     [Header("Feedback")] 

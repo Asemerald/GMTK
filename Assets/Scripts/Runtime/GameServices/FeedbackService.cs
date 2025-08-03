@@ -10,6 +10,7 @@ public class FeedbackService : IGameSystem
     private readonly GameSystems _gameSystems;
     private SO_GameConfig _gameConfig;
     private BeatSyncService _beatSyncService;
+    private StructureService _structureService;
     
     bool debug;
 
@@ -27,7 +28,12 @@ public class FeedbackService : IGameSystem
 
         _beatSyncService = _gameSystems.Get<BeatSyncService>() ??
                            throw new System.NullReferenceException("BeatSyncService is not registered in GameSystems");
+        
+        _structureService = _gameSystems.Get<StructureService>() ??
+                            throw new System.NullReferenceException("StructureService is not registered in GameSystems");
+        
         _feedbackPlayer.Initialize();
+        
         
         _beatSyncService.OnBar += _feedbackPlayer.FeedbackEachBar;
     }
@@ -226,6 +232,7 @@ public class FeedbackService : IGameSystem
 
     public void Tick()
     {
+        _feedbackPlayer.ChangeImageAmount(_structureService.EnemyHP);
     }
 
     public void Dispose()

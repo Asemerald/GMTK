@@ -28,6 +28,7 @@ namespace Runtime.GameServices
         private AIService _aiService;
         private FeedbackService _feedbackService;
         private FightResolverService _fightResolverService;
+        private StructureService _structureService;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -53,7 +54,6 @@ namespace Runtime.GameServices
 
             // Instancie et enregistre les systèmes
             _gameConfigService = new GameConfigService(_gameConfig);
-
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(_gameConfigService.GameConfig.gameMusic);
             _hitHandlerService = new HitHandlerService(_gameSystems);
@@ -63,6 +63,7 @@ namespace Runtime.GameServices
             _feedbackService = new FeedbackService(_gameSystems, _feedbackPlayer);
             _aiService = new AIService(_gameSystems, _aiConfig);
             _fightResolverService = new FightResolverService(_gameSystems);
+            _structureService = new StructureService(_gameSystems);
             
             _feedbackService.SetDebug(debugFeedbackService); //pas la meilleure façon pour faire ça mais pas le temps
             _fightResolverService.SetDebug(debugFightResolverService);
@@ -77,6 +78,7 @@ namespace Runtime.GameServices
             _gameSystems.Register(_aiService);
             _gameSystems.Register(_feedbackService);
             _gameSystems.Register(_fightResolverService);
+            _gameSystems.Register(_structureService);
 
             _gameSystems.Initialize();
         }
