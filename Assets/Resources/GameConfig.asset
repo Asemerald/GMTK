@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184855dde03547e1877d4da4e46c9577, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
-  enemyPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 0}
-  blockEffectPrefab: {fileID: 0}
-  feedbackEachBeat: {fileID: 0}
-  feedbackEachBar: {fileID: 0}
-  blockRightPunchFeedback: {fileID: 0}
-  blockLeftPunchFeedback: {fileID: 0}
-  blockLeftHookFeedback: {fileID: 0}
-  blockRightHookFeedback: {fileID: 0}
+  playerPrefab: {fileID: 858457394571633899, guid: 0bbc838206f676a4083ba46e0517bd10, type: 3}
+  enemyPrefab: {fileID: 6700761641597571933, guid: 44197d4c36f16a849994f891c53ca8a3, type: 3}
+  hitEffectPrefab: {fileID: 7146060336480976771, guid: f4a7a21060e4a974abfcd8c9502b1608, type: 3}
+  blockEffectPrefab: {fileID: 7146060336480976771, guid: 698261e7495edb8429b5963935cccc82, type: 3}
+  feedbackEachBeat: {fileID: 11400000, guid: cb3970c727a00394dbff3bfdfa9883ed, type: 2}
+  feedbackEachBar: {fileID: 11400000, guid: 9426472f9c26fa64b879b036e6eaf412, type: 2}
+  blockRightPunchFeedback: {fileID: 11400000, guid: 09894c5eb079e8242930d69ce6de2c09, type: 2}
+  blockLeftPunchFeedback: {fileID: 11400000, guid: 7f7c328ba8e42104a9142a7c73ffbebb, type: 2}
+  blockLeftHookFeedback: {fileID: 11400000, guid: 21a0a0e69e670934d882318b0124ebec, type: 2}
+  blockRightHookFeedback: {fileID: 11400000, guid: 486870306ea08d44494573c7184cab64, type: 2}
   gameMusic:
     Guid:
       Data1: 1508263547

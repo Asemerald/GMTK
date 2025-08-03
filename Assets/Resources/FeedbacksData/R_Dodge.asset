@@ -15,6 +15,27 @@ MonoBehaviour:
   startAnimationName: 
   animationSuccessTriggerName: R_Dodge
   animationFailTriggerName: 
+  successSoundEffect:
+    Guid:
+      Data1: -2060891706
+      Data2: 1132662914
+      Data3: -1594393414
+      Data4: -973822592
+    Path: event:/NoHit
+  blockSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  failSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   side: 1
   successEnableLensDistortion: 0
   successTargetIntensity: -0.8

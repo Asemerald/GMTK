@@ -148,7 +148,8 @@ namespace Runtime.GameServices {
                     
                     
                     playerFeedbackSuccess = ActionCallbackType.OnBlock;
-                    
+
+                    aiFeedbackSuccess = ActionCallbackType.OnSuccess;
                     SetBlockFeedback(playerAction.actionName);
                     ResolveAction(playerAction,true,aiAction,true);                 // Résultat : joueur attaque et l'IA pare le coup
                     
@@ -213,6 +214,7 @@ namespace Runtime.GameServices {
 
                 case (ActionType.Parry, ActionType.Attack):                                             // Le joueur pare une attaque de l'IA
                     aiFeedbackSuccess = ActionCallbackType.OnBlock;
+                    playerFeedbackSuccess = ActionCallbackType.OnSuccess;
                     SetBlockFeedback(aiAction.actionName);
                     ResolveAction(playerAction,true,aiAction,true);    
                     break;
@@ -226,6 +228,7 @@ namespace Runtime.GameServices {
                     if (AISuccessInput())                                                                                    //L'IA réussit son combo
                     {
                         aiFeedbackSuccess = ActionCallbackType.OnBlock;
+                        playerFeedbackSuccess = ActionCallbackType.OnSuccess;
                         SetBlockFeedback(aiAction.actionName);
                         ResolveAction(playerAction,true,aiAction,true);             //Résultat : L'IA réussit son coup et le joueur le pare
                     }
@@ -322,6 +325,7 @@ namespace Runtime.GameServices {
                     if (PlayerSuccessInput())                                                                                    //Le joueur réussit son combo
                     {
                         playerFeedbackSuccess = ActionCallbackType.OnBlock;
+                        aiFeedbackSuccess = ActionCallbackType.OnSuccess;
                         SetBlockFeedback(playerAction.actionName);
                         ResolveAction(playerAction,true,aiAction,true);             //Résultat : Le joueur réussit son combo et l'IA le pare
                     }
@@ -350,8 +354,8 @@ namespace Runtime.GameServices {
                     }
                     break;                                           
                 case (ActionType.Combo, ActionType.Combo):                                              //Situation Impossible
-                    if(debug)
-                        Debug.LogWarning("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    Debug.LogError("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    ResolveAction(playerAction,false,aiAction,false); 
                     _gameSystems.TriggerComboMode(false);
                     break;                                            
                 case (ActionType.Combo, ActionType.Empty):                                              //Le joueur execute un combo et l'IA ne fait rien
@@ -396,13 +400,13 @@ namespace Runtime.GameServices {
                     break;
             }
             
-            if(playerActionType==ActionType.Parry)
+            /*if(playerActionType==ActionType.Parry)
                 playerFeedback = null;  //gestion du feedback de parry ne se fait pas ici
 
             if (aiActionType==ActionType.Parry)
             {
                 aiFeedback = null;      //gestion du feedback de parry ne se fait pas ici
-            }
+            }*/
             
             _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, playerFeedbackSuccess);
             _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, aiFeedbackSuccess);
@@ -412,7 +416,6 @@ namespace Runtime.GameServices {
 
         private void SetBlockFeedback(string actionName)
         {
-            Debug.Log("BLOCK");
             PunchType punchType = actionName.Contains("Hook") ? PunchType.Hook : PunchType.Punch;
             FeedbackSide punchSide = actionName.StartsWith("L") ? FeedbackSide.Left : FeedbackSide.Right;
             _feedbackService.PlayBlockFeedback(punchType,punchSide,FeedbackTarget.Player);
