@@ -412,7 +412,6 @@ namespace Runtime.GameServices {
 
         private void SetBlockFeedback(string actionName)
         {
-            Debug.Log("BLOCK");
             PunchType punchType = actionName.Contains("Hook") ? PunchType.Hook : PunchType.Punch;
             FeedbackSide punchSide = actionName.StartsWith("L") ? FeedbackSide.Left : FeedbackSide.Right;
             _feedbackService.PlayBlockFeedback(punchType,punchSide,FeedbackTarget.Player);
