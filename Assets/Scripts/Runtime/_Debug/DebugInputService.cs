@@ -11,6 +11,7 @@
         input.Debug.ToggleBeatDebug.performed += _ => _debugUIState.Toggle("BeatSync");
         input.Debug.ToggleFPSDebug.performed += _ => _debugUIState.Toggle("FPS");
         input.Debug.ToggleTimelineDebug.performed += _ => _debugUIState.Toggle("Timeline");
+        input.Debug.ToggleActionDebug.performed += _ => _debugUIState.Toggle("Action");
     }
 
     public void Initialize()

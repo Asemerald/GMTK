@@ -21,12 +21,15 @@ namespace Runtime.GameServices {
         float timer = 0;
         
         bool compareCalled = false;
+        
 
         bool playerTimerRunning = false;
         bool aiTimerRunning = false;
         
         float aiTimer = 0;
         float playerTimer = 0;
+
+        bool debug;
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
@@ -104,7 +107,8 @@ namespace Runtime.GameServices {
             if (timer > 0)
                 timer = 0;
             
-            Debug.LogWarning("FightResolverService:: Start CompareAction");
+            if(debug)
+                Debug.LogWarning("FightResolverService:: Start CompareAction");
             
             var playerActionType = ActionType.Empty;
             var aiActionType = ActionType.Empty;
@@ -341,7 +345,8 @@ namespace Runtime.GameServices {
                     }
                     break;                                           
                 case (ActionType.Combo, ActionType.Combo):                                              //Situation Impossible
-                    Debug.LogWarning("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
+                    if(debug)
+                        Debug.LogWarning("Les deux joueur ont lancé une attaque combo, c'est impossible. Il doit y avoir un attaquant et un défenseur");
                     _gameSystems.TriggerComboMode(false);
                     break;                                            
                 case (ActionType.Combo, ActionType.Empty):                                              //Le joueur execute un combo et l'IA ne fait rien
@@ -442,8 +447,10 @@ namespace Runtime.GameServices {
             if(playerFinalAction != null)
                 player = playerFinalAction.actionType;
             
-            Debug.Log("FightResolverService:: ResolveAction = Player Action Type : "+ player+" ---- > Player Action Success : "+ playerSuccess);
-            Debug.Log("FightResolverService:: ResolveAction = AI Action Type : "+ ia       +" ------ > AI Action Success : "+ iaSuccess);
+            if(debug)
+                Debug.Log("FightResolverService:: ResolveAction = Player Action Type : "+ player+" ---- > Player Action Success : "+ playerSuccess);
+            if(debug)
+                Debug.Log("FightResolverService:: ResolveAction = AI Action Type : "+ ia       +" ------ > AI Action Success : "+ iaSuccess);
             
             if(playerFinalAction != null)
                 ApplyAction(playerFinalAction, playerSuccess, true, ia);
@@ -508,6 +515,11 @@ namespace Runtime.GameServices {
         void ClearActions() {
             aiAction = null;
             playerAction = null;
+        }
+
+        public void SetDebug(bool state)
+        {
+            debug = state;
         }
     }
 }
