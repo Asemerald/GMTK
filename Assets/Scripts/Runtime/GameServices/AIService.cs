@@ -114,7 +114,7 @@ namespace Runtime.GameServices {
             else { //Roll une action en fonction de l'action choisis par le joueur
                     
                 var GetActionType = _playerActionHandler._actionQueue.Peek().Item1.actionType;
-               
+                
                 if (_aiActionHandler._previousActions[^1].actionType is ActionType.Dodge && RollAction(_aiConfig.chanceOfCounter)) {
                     _aiActionHandler.RegisterActionOnBeat(GetActionData(ActionType.Counter), false);
                 }  

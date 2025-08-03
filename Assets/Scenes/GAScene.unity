@@ -367,9 +367,9 @@ GameObject:
   m_Component:
   - component: {fileID: 387777829}
   - component: {fileID: 387777828}
-  - component: {fileID: 387777827}
   - component: {fileID: 387777831}
   - component: {fileID: 387777832}
+  - component: {fileID: 387777833}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -377,14 +377,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &387777827
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387777826}
-  m_Enabled: 1
 --- !u!20 &387777828
 Camera:
   m_ObjectHideFlags: 0
@@ -529,6 +521,20 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &387777833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387777826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!95 &571485136 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3143733291780583404, guid: 0bbc838206f676a4083ba46e0517bd10, type: 3}
@@ -554,7 +560,6 @@ GameObject:
   m_Component:
   - component: {fileID: 715006734}
   - component: {fileID: 715006730}
-  - component: {fileID: 715006733}
   - component: {fileID: 715006732}
   - component: {fileID: 715006731}
   m_Layer: 0
@@ -691,14 +696,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &715006733
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715006729}
-  m_Enabled: 1
 --- !u!4 &715006734
 Transform:
   m_ObjectHideFlags: 0
@@ -1029,7 +1026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: debugFeedbackService
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: musicEvent.Guid.Data1
@@ -1053,7 +1050,7 @@ PrefabInstance:
       objectReference: {fileID: 1933986186}
     - target: {fileID: 153109334054799959, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: debugFightResolverService
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5871342324690398060, guid: 9ffc985e9ab0c9d40a4dbe028e8ef05e, type: 3}
       propertyPath: m_LocalPosition.x

@@ -55,18 +55,20 @@ namespace Runtime.GameServices {
         }
 
         public void RegisterActionOnBeat(SO_ActionData data, bool waitForNextBeat, bool inCombo = false) { //Register les actions dans une Queue
-            _inCombo = inCombo;
 
-            if (_inCombo || _actionQueue.Count < 1)
+            if (data != null)
             {
-                _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
-                if (_actionDebugService != null)
-                    _actionDebugService.RegisterAction(data);
+                _inCombo = inCombo;
+                
+                if (_inCombo || _actionQueue.Count < 1 || _isAI)
+                {
+                    _actionQueue.Enqueue((data, data.CanExecuteOnHalfBeat));
+                    if (_actionDebugService != null)
+                        _actionDebugService.RegisterAction(data);
+                }
             }
 
             _waitForNextBeat = waitForNextBeat;
-            
-            
         }
         
         void PerformActionOnBeat() { //S'exécute sur chaque Temps

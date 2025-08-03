@@ -15,6 +15,27 @@ MonoBehaviour:
   startAnimationName: 
   animationSuccessTriggerName: L_Punch_S
   animationFailTriggerName: L_Punch_F
+  successSoundEffect:
+    Guid:
+      Data1: 95665794
+      Data2: 1283504506
+      Data3: -991690334
+      Data4: 725285709
+    Path: event:/PunchHit
+  blockSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  failSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   side: 0
   successEnableLensDistortion: 1
   successTargetIntensity: -0.5

@@ -15,6 +15,27 @@ MonoBehaviour:
   startAnimationName: L_Hook_Start
   animationSuccessTriggerName: L_Hook_Throw
   animationFailTriggerName: L_Hook_Throw
+  successSoundEffect:
+    Guid:
+      Data1: 1782364957
+      Data2: 1202791803
+      Data3: -954671202
+      Data4: -533455652
+    Path: event:/HookHit
+  blockSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  failSoundEffect:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   side: 0
   successEnableLensDistortion: 1
   successTargetIntensity: -0.8

@@ -21,4 +21,4 @@ MonoBehaviour:
   CanExecuteOnHalfBeat: 1
   damageAmount: 0
   cooldown: 0
-  feedbackData: {fileID: 0}
+  feedbackData: {fileID: 11400000, guid: f2fded86de19ada42be48fdb423b101b, type: 2}
