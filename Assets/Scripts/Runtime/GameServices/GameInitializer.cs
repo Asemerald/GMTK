@@ -54,7 +54,6 @@ namespace Runtime.GameServices
 
             // Instancie et enregistre les systèmes
             _gameConfigService = new GameConfigService(_gameConfig);
-
             _inputManager = new InputManager();
             _beatSyncService = new BeatSyncService(_gameConfigService.GameConfig.gameMusic);
             _hitHandlerService = new HitHandlerService(_gameSystems);

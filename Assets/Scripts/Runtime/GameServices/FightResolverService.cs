@@ -524,7 +524,6 @@ namespace Runtime.GameServices {
                     _structureService.ApplyDamage(toPlayer ? FeedbackTarget.Player : FeedbackTarget.Enemy, damage);
                     break;
             }
-            //réduire selon opponentParry
         }
 
         void ClearActions() {

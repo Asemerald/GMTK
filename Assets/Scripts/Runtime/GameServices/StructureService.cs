@@ -13,14 +13,17 @@ namespace Runtime.GameServices
         public event Action OnPlayerDeath;
         public event Action OnEnemyDeath;
 
-        private readonly SO_GameConfig _gameConfig;
+        private SO_GameConfig _gameConfig;
         private readonly GameSystems _gameSystems;
 
         public StructureService(GameSystems gameSystems)
         {
             _gameSystems = gameSystems ?? 
                            throw new ArgumentNullException(nameof(gameSystems), "GameSystems cannot be null");
-
+        }
+        
+        public void Initialize()
+        {
             _gameConfig = _gameSystems.Get<GameConfigService>()?.GameConfig ??
                           throw new NullReferenceException("GameConfigService is not registered in GameSystems");
 
@@ -56,10 +59,7 @@ namespace Runtime.GameServices
             // Nettoyage si nécessaire
         }
 
-        public void Initialize()
-        {
-            // Initialisation si nécessaire
-        }
+        
 
         public void Tick()
         {
