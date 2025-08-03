@@ -148,6 +148,8 @@ namespace Runtime.GameServices {
                     
                     
                     playerFeedbackSuccess = ActionCallbackType.OnBlock;
+                    
+                    SetBlockFeedback(playerAction.actionName);
                     ResolveAction(playerAction,true,aiAction,true);                 // Résultat : joueur attaque et l'IA pare le coup
                     
                     break;
@@ -211,6 +213,7 @@ namespace Runtime.GameServices {
 
                 case (ActionType.Parry, ActionType.Attack):                                             // Le joueur pare une attaque de l'IA
                     aiFeedbackSuccess = ActionCallbackType.OnBlock;
+                    SetBlockFeedback(aiAction.actionName);
                     ResolveAction(playerAction,true,aiAction,true);    
                     break;
                 case (ActionType.Parry, ActionType.Parry):                                              // Le joueur pare et l'IA pare
@@ -223,6 +226,7 @@ namespace Runtime.GameServices {
                     if (AISuccessInput())                                                                                    //L'IA réussit son combo
                     {
                         aiFeedbackSuccess = ActionCallbackType.OnBlock;
+                        SetBlockFeedback(aiAction.actionName);
                         ResolveAction(playerAction,true,aiAction,true);             //Résultat : L'IA réussit son coup et le joueur le pare
                     }
                     else
@@ -318,6 +322,7 @@ namespace Runtime.GameServices {
                     if (PlayerSuccessInput())                                                                                    //Le joueur réussit son combo
                     {
                         playerFeedbackSuccess = ActionCallbackType.OnBlock;
+                        SetBlockFeedback(playerAction.actionName);
                         ResolveAction(playerAction,true,aiAction,true);             //Résultat : Le joueur réussit son combo et l'IA le pare
                     }
                     else
@@ -404,7 +409,15 @@ namespace Runtime.GameServices {
             
             ClearActions();
         }
-        
+
+        private void SetBlockFeedback(string actionName)
+        {
+            Debug.Log("BLOCK");
+            PunchType punchType = actionName.Contains("Hook") ? PunchType.Hook : PunchType.Punch;
+            FeedbackSide punchSide = actionName.StartsWith("L") ? FeedbackSide.Left : FeedbackSide.Right;
+            _feedbackService.PlayBlockFeedback(punchType,punchSide,FeedbackTarget.Player);
+        }
+
         private bool ActionCounters(SO_ActionData source, SO_ActionData target)
         {
             return source != null && target != null && target.counterActions != null && target.counterActions.Contains(source);

@@ -186,21 +186,21 @@ public class FeedbackService : IGameSystem
     /// </summary>
     /// <param name="punchType">The type of punch (Punch or Hook).</param>
     /// <param name="punchSide">The side of the punch (Left or Right).</param>
-    public void PlayBlockFeedback(PunchType punchType, FeedbackSide punchSide)
+    public void PlayBlockFeedback(PunchType punchType, FeedbackSide punchSide,FeedbackTarget target)
     {
         switch (punchType, punchSide)
         {
             case (PunchType.Punch, FeedbackSide.Left):
-                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftPunchFeedback, FeedbackTarget.Player, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftPunchFeedback, target, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
                 break;
             case (PunchType.Punch, FeedbackSide.Right):
-                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightPunchFeedback, FeedbackTarget.Player, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightPunchFeedback,target, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
                 break;
             case (PunchType.Hook, FeedbackSide.Left):
-                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftHookFeedback, FeedbackTarget.Player, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockLeftHookFeedback,  target, FeedbackSide.Left, _gameConfig.blockEffectPrefab);
                 break;
             case (PunchType.Hook, FeedbackSide.Right):
-                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightHookFeedback, FeedbackTarget.Player, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
+                _feedbackPlayer.PlayBlockFeedback(_gameConfig.blockRightHookFeedback, target, FeedbackSide.Right, _gameConfig.blockEffectPrefab);
                 break;
             default:
                 if(debug)
