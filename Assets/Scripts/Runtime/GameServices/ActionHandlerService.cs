@@ -47,7 +47,7 @@ namespace Runtime.GameServices {
 
             _beatSyncService.OnBeat += PerformActionOnBeat;
             _beatSyncService.OnHalfBeat += PerformActionOnHalfBeat;
-            _beatSyncService.OnQuarterBeat += PerformActionOnQuarterBeat;
+            //_beatSyncService.OnQuarterBeat += PerformActionOnQuarterBeat;
         }
 
         public void Tick() {
@@ -79,17 +79,17 @@ namespace Runtime.GameServices {
             CheckToExecuteAction(BeatFractionType.Half);
         }
         
-        void PerformActionOnQuarterBeat() { //S'exécute sur chaque Quart Temps
+       /*void PerformActionOnQuarterBeat() { //S'exécute sur chaque Quart Temps
             CheckToExecuteAction(BeatFractionType.FirstQuarter);
             
             if(_actionDebugService!=null)
                 _actionDebugService.RegisterAction(null);
-        }
+        }*/
 
         void CheckToExecuteAction(BeatFractionType fractionType) {
             if(_actionQueue.Count <= 0) return;
             
-            if (_actionQueue.Peek().Item1.actionType is ActionType.Dodge) { //Pouvoir réaliser le dodge independent du temps
+            if (_actionQueue.Peek().Item1.actionType is ActionType.Dodge or ActionType.Parry) { //Pouvoir réaliser le dodge independent du temps
                 ExecuteAction();
                 return;
             }
@@ -99,10 +99,11 @@ namespace Runtime.GameServices {
                 return;
             }
             
-            if (fractionType is BeatFractionType.FirstQuarter) { // Quart de temps
+            /*if (fractionType is BeatFractionType.FirstQuarter) { // Quart de temps
                 if(_waitForNextBeat) return;
             }
-            else if (fractionType is BeatFractionType.Half) { // Demi temps
+            else*/ 
+            if (fractionType is BeatFractionType.Half) { // Demi temps
                 if(_waitForNextBeat) return;
                 
                 if (_actionQueue.Peek().Item2) //Check s'il s'agit d'une action qui s'execute sur un demi-temps

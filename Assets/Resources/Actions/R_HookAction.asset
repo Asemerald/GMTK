@@ -21,6 +21,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 733e6759e78d4334a97986a97b0823f0, type: 2}
   holdDuration: 2
   CanExecuteOnHalfBeat: 0
-  damageAmount: 0
+  damageAmount: 10
   cooldown: 0
   feedbackData: {fileID: 11400000, guid: 063bdfa1fb06e16469939fde92b35fb4, type: 2}

@@ -229,6 +229,13 @@ public class FeedbackService : IGameSystem
        
     }
 
+    public void FeedbackDeath(bool player) {
+        _feedbackPlayer.PlayAnimation(FeedbackSide.Center, player ? FeedbackTarget.Player : FeedbackTarget.Enemy, "P_Break");
+    }
+
+    public void EndScreen(bool player) {
+        _feedbackPlayer.DisplayWinCanvas(player);
+    }
 
     public void Tick()
     {

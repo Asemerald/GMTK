@@ -37,6 +37,10 @@ public class FeedbackPlayer : MonoBehaviour
     private LensDistortion lensDistortion;
     private Material ringMat;
 
+    [Header("Win/Loose Canva")]
+    [SerializeField] private GameObject winCanvas;
+    [SerializeField] private GameObject looseCanvas;
+    
     [Header("DEBUG")] [SerializeField] private SO_FeedbackData _feedbackDebugData;
     [SerializeField] private Volume debugGlobalVolume;
 
@@ -105,6 +109,11 @@ public class FeedbackPlayer : MonoBehaviour
         }
     }
 
+    public void DisplayWinCanvas(bool playerWon) {
+        if (playerWon) winCanvas.SetActive(true);
+        else looseCanvas.SetActive(true);
+    }
+    
     private void InitializeColorAdjustments()
     {
         if (globalVolume.profile.TryGet(out colorAdjustments))
