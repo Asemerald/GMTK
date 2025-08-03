@@ -54,6 +54,7 @@ namespace Runtime.GameServices
 
         public void TriggerComboMode(bool inCombo) {
             Get<HitHandlerService>()._inComboInputMode = inCombo;
+            Get<ActionHandlerService>()._inCombo = inCombo;
             Get<AIService>()._inComboInputMode = inCombo;
 
             if (!inCombo) {

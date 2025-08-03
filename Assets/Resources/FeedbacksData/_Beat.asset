@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: _Beat
   m_EditorClassIdentifier: 
   startAnimationName: 
-  animationSuccessTriggerName: 
+  animationSuccessTriggerName: P_Idle
   animationFailTriggerName: 
   successSoundEffect:
     Guid:
