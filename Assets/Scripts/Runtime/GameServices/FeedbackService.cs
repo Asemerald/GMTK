@@ -29,8 +29,7 @@ public class FeedbackService : IGameSystem
                            throw new System.NullReferenceException("BeatSyncService is not registered in GameSystems");
         _feedbackPlayer.Initialize();
         
-        
-
+        _beatSyncService.OnBar += _feedbackPlayer.FeedbackEachBar;
     }
 
     public void PlayActionFeedback(SO_FeedbackData feedback, FeedbackTarget feedbackTarget, ActionCallbackType callbackType)

@@ -23,9 +23,15 @@ public class FeedbackPlayer : MonoBehaviour
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
 
+    [Header("Ring")] [SerializeField] private bool enableRingColorSwitch = false;
+    [SerializeField] private MeshRenderer ringMesh;
+    [SerializeField] private Color ringColor = Color.white;
+    [SerializeField] private Color ringColor2 = Color.black;
+
     private Volume globalVolume;
     private ColorAdjustments colorAdjustments;
     private LensDistortion lensDistortion;
+    private Material ringMat;
 
     [Header("DEBUG")] [SerializeField] private SO_FeedbackData _feedbackDebugData;
     [SerializeField] private Volume debugGlobalVolume;
@@ -41,6 +47,31 @@ public class FeedbackPlayer : MonoBehaviour
 
         InitializeColorAdjustments();
         InitializeLensDistortion();
+        
+        // Create an instance of the ring material and each bar, switch its color if enabled
+
+        if (enableRingColorSwitch)
+        {
+            ringMat = new Material(ringMesh.material); 
+            ringMesh.material = ringMat;
+        }
+        
+    }
+
+    public void FeedbackEachBar()
+    {
+        if (enableRingColorSwitch)
+        {
+            // Change ringmat color to the other depending on the current color
+            if (ringMat.color == ringColor)
+            {
+                ringMat.color = ringColor2;
+            }
+            else
+            {
+                ringMat.color = ringColor;
+            }
+        }
     }
 
     private void InitializeColorAdjustments()
