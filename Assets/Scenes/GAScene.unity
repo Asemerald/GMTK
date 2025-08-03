@@ -187,13 +187,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 949222201}
     - target: {fileID: 5271250769774440327, guid: a521f5748840c4e46a177d3a7904115e, type: 3}
-      propertyPath: winCanvas
+      propertyPath: HpEnemyImage
       value: 
-      objectReference: {fileID: 9040965942706999562}
+      objectReference: {fileID: 1051362637}
     - target: {fileID: 5271250769774440327, guid: a521f5748840c4e46a177d3a7904115e, type: 3}
-      propertyPath: looseCanvas
+      propertyPath: HpPlayerImage
       value: 
-      objectReference: {fileID: 9040965942706999561}
+      objectReference: {fileID: 8612969566724844197}
     - target: {fileID: 5271250769774440327, guid: a521f5748840c4e46a177d3a7904115e, type: 3}
       propertyPath: enemyAnimator
       value: 
@@ -2344,6 +2344,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f0a20c4f6c343e4faba3cf91dacd04c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8612969566724844197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 818077693015453443, guid: 0bbc838206f676a4083ba46e0517bd10, type: 3}
+  m_PrefabInstance: {fileID: 8612969566724844193}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &9040965942706999560
