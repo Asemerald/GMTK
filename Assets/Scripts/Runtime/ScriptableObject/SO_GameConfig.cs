@@ -26,6 +26,9 @@ namespace Runtime.ScriptableObject
         [Header("Gameplay")] public int beatsPerBar = 4;
         public float maxRoundDuration = 120f; // en secondes
         public float inputTimingTolerance = 0.1f; // secondes de marge
+        public int maxHealth = 100;
+        public int maxStructure = 100;
+        public int timeBeforeStructureRegen = 5; 
 
         [Header("Debug")] public bool enableDebug = false;
     }

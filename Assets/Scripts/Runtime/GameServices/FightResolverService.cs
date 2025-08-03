@@ -14,6 +14,7 @@ namespace Runtime.GameServices {
         private GameSystems _gameSystems;
         private FeedbackService _feedbackService;
         private BeatSyncService _beatSyncService;
+        private StructureService _structureService;
         
         SO_ActionData aiAction;
         SO_ActionData playerAction;
@@ -33,6 +34,7 @@ namespace Runtime.GameServices {
         
         public FightResolverService(GameSystems gameSystems) {
             _gameSystems = gameSystems;
+            _structureService = _gameSystems.Get<StructureService>();
         }
         
         public void Dispose() {
@@ -481,19 +483,19 @@ namespace Runtime.GameServices {
                 switch (action.actionType)
                 {
                     case ActionType.Attack:
-                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false);
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false, action.damageAmount);
                         if (opponentAction == ActionType.Combo)
                         {
-                            ApplyDamages(action.holdDuration, !isPlayer, false,true); // stun son adversaire, ne doit pas s'activer si l'advenrsaire n'a pas raté son combo
+                            ApplyDamages(action.holdDuration, !isPlayer, false,true, action.damageAmount); // stun son adversaire, ne doit pas s'activer si l'advenrsaire n'a pas raté son combo
                         }
                         break;
                     
                     case ActionType.Combo:
-                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false);
+                        ApplyDamages(action.holdDuration, !isPlayer, opponentAction == ActionType.Parry,false, action.damageAmount);
                         break;
 
                     case ActionType.Parry:
-                        ApplyDamages(AttackHoldDuration.None, isPlayer, false,false);
+                        ApplyDamages(AttackHoldDuration.None, isPlayer, false,false, action.damageAmount);
                         break;
                     case ActionType.Dodge:
                         // réduit cooldown 
@@ -505,24 +507,21 @@ namespace Runtime.GameServices {
             }
         }
 
-        void ApplyDamages(AttackHoldDuration holdDuration, bool toPlayer, bool opponentParry,bool shouldStun)
+        void ApplyDamages(AttackHoldDuration holdDuration, bool toPlayer, bool opponentParry,bool shouldStun, int damageAmount)
         {
-            if (shouldStun)
-            {
-                //stun
-                return;
-            }
+            
+            var damage = opponentParry ? Mathf.RoundToInt(damageAmount * 0.5f) : damageAmount; // Si l'adversaire pare, les dégâts sont réduits de moitié
 
             switch (holdDuration)
             {
                 case AttackHoldDuration.None:
-                    // pour laconsommation q'endurance quand tu parry
+                    _structureService.ApplyDamage(toPlayer ? FeedbackTarget.Player : FeedbackTarget.Enemy, damage);
                     break;
                 case AttackHoldDuration.Half:
-                    //retirer un peu d'endurance
+                    _structureService.ApplyDamage(toPlayer ? FeedbackTarget.Player : FeedbackTarget.Enemy, damage);
                     break;
                 case AttackHoldDuration.Full:
-                    //retirer bcp d'endurance
+                    _structureService.ApplyDamage(toPlayer ? FeedbackTarget.Player : FeedbackTarget.Enemy, damage);
                     break;
             }
             //réduire selon opponentParry
