@@ -37,9 +37,12 @@ public class FeedbackService : IGameSystem
         if (feedback == null)
         {
            FeedbackToDoEachBeat(_gameConfig.feedbackEachBeat);
+           Debug.LogWarning("FeedbackService: PlayFeedback NULL by " + feedbackTarget);
         }
-        
-        Debug.LogWarning("FeedbackService: PlayFeedback");
+        else
+        {
+            Debug.Log("FeedbackService: PlayFeedback "+ feedback.name + " by " + feedbackTarget);
+        }
         
         switch (callbackType)
         {

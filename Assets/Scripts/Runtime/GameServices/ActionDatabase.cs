@@ -71,7 +71,6 @@ public class ActionDatabase : IGameSystem
                 actionDatas[data.inputsRequired[0]].Add(data);
             }
         }
-        
         foreach (var combo in allCombos)
         {
             if (combo.openingAction == null || combo.confirmationAction == null)
@@ -97,7 +96,7 @@ public class ActionDatabase : IGameSystem
             list.Add(combo);
         }
 
-        Debug.Log($"[ActionDatabase] Loaded {actionDatas.Count} actions and {comboDatas.Count} combos from Resources.");
+        Debug.Log($"[ActionDatabase] Loaded {allActions.Length} actions and {allCombos.Length} combos from Resources.");
 
     }
     

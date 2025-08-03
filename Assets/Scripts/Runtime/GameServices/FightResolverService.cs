@@ -104,7 +104,7 @@ namespace Runtime.GameServices {
             if (timer > 0)
                 timer = 0;
             
-            Debug.Log("FightResolverService::CompareAction");
+            Debug.LogWarning("FightResolverService:: Start CompareAction");
             
             var playerActionType = ActionType.Empty;
             var aiActionType = ActionType.Empty;
@@ -394,12 +394,10 @@ namespace Runtime.GameServices {
                 aiFeedback = null;      //gestion du feedback de parry ne se fait pas ici
             }
             
-            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, ActionCallbackType.OnSuccess);
-            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, ActionCallbackType.OnSuccess);
+            _feedbackService.PlayActionFeedback(playerFeedback, FeedbackTarget.Player, playerFeedbackSuccess);
+            _feedbackService.PlayActionFeedback(aiFeedback, FeedbackTarget.Enemy, aiFeedbackSuccess);
             
             ClearActions();
-            
-            //Faire la comparaison et qu'est-ce qui se passe
         }
         
         private bool ActionCounters(SO_ActionData source, SO_ActionData target)
@@ -443,6 +441,9 @@ namespace Runtime.GameServices {
             ActionType player = ActionType.Empty;
             if(playerFinalAction != null)
                 player = playerFinalAction.actionType;
+            
+            Debug.Log("FightResolverService:: ResolveAction = Player Action Type : "+ player+" ---- > Player Action Success : "+ playerSuccess);
+            Debug.Log("FightResolverService:: ResolveAction = AI Action Type : "+ ia       +" ------ > AI Action Success : "+ iaSuccess);
             
             if(playerFinalAction != null)
                 ApplyAction(playerFinalAction, playerSuccess, true, ia);
