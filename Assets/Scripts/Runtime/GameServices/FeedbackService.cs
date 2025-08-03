@@ -232,8 +232,10 @@ public class FeedbackService : IGameSystem
 
     public void Tick()
     {
-        _feedbackPlayer.ChangeImageAmount(_structureService.EnemyHP);
+        _feedbackPlayer.ChangeEnemyHpAmount(_structureService.EnemyHP);
+        _feedbackPlayer.ChangePlayerHpAmount(_structureService.PlayerHP);
     }
+    
 
     public void Dispose()
     {

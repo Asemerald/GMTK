@@ -24,7 +24,8 @@ public class FeedbackPlayer : MonoBehaviour
     [SerializeField] private ParticleSystem leftImpactParticles;
     [SerializeField] private ParticleSystem rightImpactParticles;
 
-    [SerializeField] private Image HpImage;
+    [SerializeField] private Image HpEnemyImage;
+    [SerializeField] private Image HpPlayerImage;
 
     [Header("Ring")] [SerializeField] private bool enableRingColorSwitch = false;
     [SerializeField] private MeshRenderer ringMesh;
@@ -61,18 +62,32 @@ public class FeedbackPlayer : MonoBehaviour
         
     }
     
-    public void ChangeImageAmount(float amount)
+    public void ChangeEnemyHpAmount(float amount)
     {
-        if (HpImage == null)
+        if (HpEnemyImage == null)
         {
             Debug.LogWarning("HpImage is not assigned. Cannot change image amount.");
             return;
         }
         
         amount = Mathf.Clamp01(amount / 100f); // Normalize to 0-1 range
-        HpImage.fillAmount = amount;
+        HpEnemyImage.fillAmount = amount;
         
     }
+    
+    public void ChangePlayerHpAmount(float amount)
+    {
+        if (HpPlayerImage == null)
+        {
+            Debug.LogWarning("HpImage is not assigned. Cannot change image amount.");
+            return;
+        }
+        
+        amount = Mathf.Clamp01(amount / 100f); // Normalize to 0-1 range
+        HpPlayerImage.fillAmount = amount;
+    }
+    
+    
 
     public void FeedbackEachBar()
     {
